@@ -756,8 +756,6 @@ namespace TP3SIM.Entidades
                 fila.RND_Llegada,
                 Math.Round(fila.TiempoEntreLlegadas, 2),
                 _ = (fila.ProximaLlegada == 9999) ? 0 : Math.Round(fila.ProximaLlegada, 2),
-                fila.ProximaLlegada,
-                Math.Round(fila.ProximaLlegada, 2),
                 _ = (fila.RND_TipoAtencion == 9999) ? 0 : Math.Round(fila.RND_TipoAtencion, 2),
                 fila.TipoAtencion,
                 Math.Round(fila.RND_FinAtencion, 2),

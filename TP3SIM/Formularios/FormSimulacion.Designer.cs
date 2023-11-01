@@ -40,7 +40,7 @@
             this.ProximaLlegada = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.RND_TipoAtencion = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.TipoAtencion = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.RND1_FinAtencion = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.RND_FinAtencion = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.TiempoAtencion = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ProxFinAtencion_1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ProxFinAtencion_2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -98,7 +98,7 @@
             this.ProximaLlegada,
             this.RND_TipoAtencion,
             this.TipoAtencion,
-            this.RND1_FinAtencion,
+            this.RND_FinAtencion,
             this.TiempoAtencion,
             this.ProxFinAtencion_1,
             this.ProxFinAtencion_2,
@@ -198,13 +198,13 @@
             this.TipoAtencion.ReadOnly = true;
             this.TipoAtencion.Width = 125;
             // 
-            // RND1_FinAtencion
+            // RND_FinAtencion
             // 
-            this.RND1_FinAtencion.HeaderText = "RND1_FinAtencion";
-            this.RND1_FinAtencion.MinimumWidth = 6;
-            this.RND1_FinAtencion.Name = "RND1_FinAtencion";
-            this.RND1_FinAtencion.ReadOnly = true;
-            this.RND1_FinAtencion.Width = 125;
+            this.RND_FinAtencion.HeaderText = "RND_FinAtencion";
+            this.RND_FinAtencion.MinimumWidth = 6;
+            this.RND_FinAtencion.Name = "RND_FinAtencion";
+            this.RND_FinAtencion.ReadOnly = true;
+            this.RND_FinAtencion.Width = 125;
             // 
             // TiempoAtencion
             // 
