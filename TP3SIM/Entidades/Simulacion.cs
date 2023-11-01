@@ -270,18 +270,11 @@ namespace TP3SIM.Entidades
                         fila2.TipoAtencion = log.CalcularTipoAtencion(fila2.RND_TipoAtencion);
                         cliente.Tipo = fila2.TipoAtencion;
 
-                        // Arrastrar otros eventos
-
-                        //fila2.ProximaLlegada = fila1.ProximaLlegada;
-                        //fila2.ProximaLlegada = fila1.ProximaLlegada;
 
                         fila2.CantTotalPersonas = fila1.CantTotalPersonas + 1;
 
                         fila2.Cola = fila1.Cola;
 
-                        //fila2.CantidadClientes_IM = fila1.CantidadClientes_IM;
-                        //fila2.CantidadClientes_RP = fila1.CantidadClientes_RP;
-                        //fila2.CantidadClientes_NP = fila1.CantidadClientes_NP;
 
                         if (fila1.Cola > 0)
                         {
@@ -290,7 +283,7 @@ namespace TP3SIM.Entidades
 
                             if (cantidadPersonasEnBiblioteca < 20)
                             {
-                                ++fila2.Cola;
+                                fila2.Cola = fila1.Cola+1;
                                 fila2.CantPersonasQueIngresanBiblio = fila1.CantPersonasQueIngresanBiblio+1;
                                 fila2.ProxFinAtencion_1 = fila1.ProxFinAtencion_1;
                                 fila2.ProxFinAtencion_2 = fila1.ProxFinAtencion_2;
@@ -332,7 +325,7 @@ namespace TP3SIM.Entidades
                             {
                                 fila2.RND_TipoAtencion = log.GenerarRND();
                                 cliente.Tipo = log.CalcularTipoAtencion(fila2.RND_TipoAtencion);
-
+                                fila2.RND_FinAtencion = log.GenerarRND();
                                 if (cliente.Tipo == "Pedir libro")
                                 {
                                     fila2.TiempoAtencion = log.VariableAleatoriaExponencial(6, fila2.RND_FinAtencion);
@@ -408,7 +401,7 @@ namespace TP3SIM.Entidades
 
                                     if (cantidadPersonasEnBiblioteca < 20)
                                     {
-                                        ++fila2.Cola;
+                                        fila2.Cola = fila1.Cola + 1;
                                         fila2.CantPersonasQueIngresanBiblio = fila1.CantPersonasQueIngresanBiblio+1;
                                         fila2.ProxFinAtencion_1 = fila1.ProxFinAtencion_1;
                                         fila2.ProxFinAtencion_2 = fila1.ProxFinAtencion_2;
@@ -588,7 +581,7 @@ namespace TP3SIM.Entidades
                         if (fila1.Cola > 0)
                         {
                             var proxCliente = log.proximoCliente(TodosLosClientes);
-
+                            fila2.RND_FinAtencion = log.GenerarRND();
                             if (proxCliente.Tipo == "Pedir libro")
                             {
                                 fila2.TiempoAtencion = log.VariableAleatoriaExponencial(6, fila2.RND_FinAtencion);
