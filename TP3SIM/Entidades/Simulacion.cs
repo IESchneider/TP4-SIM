@@ -273,7 +273,7 @@ namespace TP3SIM.Entidades
                         // Arrastrar otros eventos
 
                         //fila2.ProximaLlegada = fila1.ProximaLlegada;
-                        fila2.ProximaLlegada = fila1.ProximaLlegada;
+                        //fila2.ProximaLlegada = fila1.ProximaLlegada;
 
                         fila2.CantTotalPersonas = fila1.CantTotalPersonas + 1;
 
@@ -452,7 +452,7 @@ namespace TP3SIM.Entidades
 
                             // Arrastrar valores que no se utilizan.
                             fila2.EstadoEmpleado_2 = fila1.EstadoEmpleado_2;
-                            fila2.ProximaLlegada = fila1.ProximaLlegada;
+                            //fila2.ProximaLlegada = fila1.ProximaLlegada;
                             fila2.ProxFinAtencion_2 = fila1.ProxFinAtencion_2;
                         }
 
@@ -463,7 +463,7 @@ namespace TP3SIM.Entidades
                         // Se destruye cliente ya atendido
                         foreach (Temporal client in TodosLosClientes)
                         {
-                            if (client.Estado.SiendoAtendido && client.SiendoAtendidoPor == Empleado1)
+                            if (client.Estado == SiendoAtendido && client.SiendoAtendidoPor == Empleado1)
                             {
                                 if(client.Tipo == "Pedir libro")
                                 {
@@ -552,7 +552,7 @@ namespace TP3SIM.Entidades
                         // Se destruye cliente ya atendido
                         foreach (Temporal client in TodosLosClientes)
                         {
-                            if (client.Estado.SiendoAtendido && client.SiendoAtendidoPor == Empleado2)
+                            if (client.Estado == SiendoAtendido && client.SiendoAtendidoPor == Empleado2)
                             {
                                 if (client.Tipo == "Pedir libro")
                                 {
