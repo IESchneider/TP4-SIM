@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using TP3SIM.Entidades;
+using TP4SIM.Entidades;
 
-namespace TP3SIM.Logica
+namespace TP4SIM.Logica
 {
     public class LogSimulacion
     {
@@ -53,7 +53,7 @@ namespace TP3SIM.Logica
 
         public string CalcularTipoAtencion(double random)
         {
-            if(random <= 0 && random < 0.45)
+            if(random >= 0 && random < 0.45)
             {
                 return "Pedir libro";
             }
@@ -66,7 +66,7 @@ namespace TP3SIM.Logica
 
         public string CalcularSiSeQueda(double random)
         {
-            if (random <= 0 && random < 0.40)
+            if (random >= 0 && random < 0.40)
             {
                 return "Si";
             }

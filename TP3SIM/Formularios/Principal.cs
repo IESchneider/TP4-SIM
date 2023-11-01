@@ -7,10 +7,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using TP3SIM.Entidades;
-using TP3SIM.Formularios;
+using TP4SIM.Entidades;
+using TP4SIM.Formularios;
 
-namespace TP3SIM
+namespace TP4SIM
 {
     public partial class Principal : Form
     {

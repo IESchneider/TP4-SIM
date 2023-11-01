@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace TP3SIM
+namespace TP4SIM
 {
     internal static class Program
     {

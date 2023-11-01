@@ -7,11 +7,11 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using TP3SIM.Entidades.Estados;
-using TP3SIM.Formularios;
-using TP3SIM.Logica;
+using TP4SIM.Entidades.Estados;
+using TP4SIM.Formularios;
+using TP4SIM.Logica;
 
-namespace TP3SIM.Entidades
+namespace TP4SIM.Entidades
 {
     public class Simulacion
     {
@@ -65,6 +65,10 @@ namespace TP3SIM.Entidades
         readonly EConsultar EConsultar = new EConsultar();
         readonly EnBiblioteca EnBiblioteca = new EnBiblioteca();
         readonly Destruido Destruido = new Destruido();
+
+        // Estados inmutables para la biblioteca
+        readonly Abierta abierta = new Abierta();
+        readonly Cerrada cerrada = new Cerrada();
 
         public void Simular()
         {
@@ -143,6 +147,8 @@ namespace TP3SIM.Entidades
 
             fila1.EstadoEmpleado_1 = estadosLibre["Empleado 1"];
             fila1.EstadoEmpleado_2 = estadosLibre["Empleado 2"];
+            fila1.EstadoBiblioteca = abierta;
+            fila2.EstadoBiblioteca = abierta;
 
             // Inicializar eventos
 
@@ -272,9 +278,14 @@ namespace TP3SIM.Entidades
 
 
                         fila2.CantTotalPersonas = fila1.CantTotalPersonas + 1;
-
                         fila2.Cola = fila1.Cola;
 
+
+                        fila2.RND_FinLectura = 0;
+                        fila2.Se_queda = "";
+                        fila2.RND_TiempoLectura = 0;
+                        fila2.TiempoLectura = 0;
+                        fila2.ProxFinLectura = 0;
 
                         if (fila1.Cola > 0)
                         {
@@ -309,9 +320,11 @@ namespace TP3SIM.Entidades
                                     cliente.Estado = EConsultar;
                                 }
                                 fila2.CantPersonasQueIngresanBiblio = fila1.CantPersonasQueIngresanBiblio+1;
+                                fila2.CantPersonasBiblioteca = fila1.CantPersonasBiblioteca + 1;
                             }
                             else
                             {
+                                fila2.EstadoBiblioteca = cerrada;
                                 cliente = cliente.DestruirCliente(cliente);
                                 fila2.CantPersonasQueNoIngresanBiblio = fila1.CantPersonasQueNoIngresanBiblio+1;
                             }
@@ -325,6 +338,7 @@ namespace TP3SIM.Entidades
                             {
                                 fila2.RND_TipoAtencion = log.GenerarRND();
                                 cliente.Tipo = log.CalcularTipoAtencion(fila2.RND_TipoAtencion);
+
                                 fila2.RND_FinAtencion = log.GenerarRND();
                                 if (cliente.Tipo == "Pedir libro")
                                 {
@@ -356,6 +370,7 @@ namespace TP3SIM.Entidades
                                 cliente.EnFilaNumero = NumeroSimulacionActual;
                                 TodosLosClientes.Add(cliente.CopiarCliente(cliente));
                                 fila2.CantPersonasQueIngresanBiblio = fila1.CantPersonasQueIngresanBiblio+1;
+                                fila2.CantPersonasBiblioteca = fila1.CantPersonasBiblioteca + 1;
                             }
                             else
                             {
@@ -364,9 +379,10 @@ namespace TP3SIM.Entidades
                                     fila2.RND_TipoAtencion = log.GenerarRND();
                                     cliente.Tipo = log.CalcularTipoAtencion(fila2.RND_TipoAtencion);
 
+                                    fila2.RND_FinAtencion = log.GenerarRND();
                                     if (cliente.Tipo == "Pedir libro")
                                     {
-                                        fila2.TiempoAtencion = log.VariableAleatoriaExponencial(6, fila2.RND_TipoAtencion);
+                                        fila2.TiempoAtencion = log.VariableAleatoriaExponencial(6, fila2.RND_FinAtencion);
                                         fila2.ProxFinAtencion_2 = fila2.Reloj + fila2.TiempoAtencion;
                                         fila2.EstadoEmpleado_2 = estadosAPedidoLibro["Empleado 2"];
                                     }
@@ -378,7 +394,7 @@ namespace TP3SIM.Entidades
                                     }
                                     if (cliente.Tipo == "Consulta")
                                     {
-                                        fila2.TiempoAtencion = log.VariableAleatoriaUniforme(2, 5, fila2.RND_TipoAtencion);
+                                        fila2.TiempoAtencion = log.VariableAleatoriaUniforme(2, 5, fila2.RND_FinAtencion);
                                         fila2.ProxFinAtencion_2 = fila2.Reloj + fila2.TiempoAtencion;
                                         fila2.EstadoEmpleado_2 = estadosAConsulta["Empleado 2"];
                                     }
@@ -394,6 +410,7 @@ namespace TP3SIM.Entidades
                                     cliente.EnFilaNumero = NumeroSimulacionActual;
                                     TodosLosClientes.Add(cliente.CopiarCliente(cliente));
                                     fila2.CantPersonasQueIngresanBiblio = fila1.CantPersonasQueIngresanBiblio+1;
+                                    fila2.CantPersonasBiblioteca = fila1.CantPersonasBiblioteca + 1;
                                 }
                                 else
                                 {
@@ -428,25 +445,32 @@ namespace TP3SIM.Entidades
                                             cliente.Estado = EConsultar;
                                         }
                                         fila2.CantPersonasQueIngresanBiblio = fila1.CantPersonasQueIngresanBiblio+1;
+                                        fila2.CantPersonasBiblioteca = fila1.CantPersonasBiblioteca + 1;
                                     }
                                     else
                                     {
+                                        fila2.EstadoBiblioteca = cerrada;
                                         cliente = cliente.DestruirCliente(cliente);
                                         fila2.CantPersonasQueNoIngresanBiblio = fila1.CantPersonasQueNoIngresanBiblio+1;
+                                        fila2.ProxFinAtencion_2 = fila1.ProxFinAtencion_2;
+                                        fila2.EstadoEmpleado_2 = fila1.EstadoEmpleado_2;
                                     }
                                     TodosLosClientes.Add(cliente.CopiarCliente(cliente));
                                 }
                             }
 
-                            fila2.TiempoPermanenciaBiblioteca = fila1.TiempoPermanenciaBiblioteca + (fila2.Reloj - fila1.Reloj) * fila1.CantPersonasBiblioteca;
-                            fila2.PromTiempoPermanenciaBiblio = fila2.TiempoPermanenciaBiblioteca / fila2.CantPersonasBiblioteca;
+                            fila2.TiempoPermanenciaBiblioteca = fila1.TiempoPermanenciaBiblioteca + (fila2.Reloj - fila1.Reloj) * fila2.CantPersonasBiblioteca;
+                            if (fila2.CantPersonasBiblioteca > 0)
+                            {
+                                fila2.PromTiempoPermanenciaBiblio = fila2.TiempoPermanenciaBiblioteca / fila2.CantPersonasBiblioteca;
+                            }
+                            else
+                            {
+                                fila2.PromTiempoPermanenciaBiblio = fila2.TiempoPermanenciaBiblioteca / fila1.CantPersonasBiblioteca;
+                            }
 
                             fila2.PromPersonasQueNoIngresanBiblio = fila2.CantPersonasQueNoIngresanBiblio / fila2.CantTotalPersonas;
 
-                            // Arrastrar valores que no se utilizan.
-                            fila2.EstadoEmpleado_2 = fila1.EstadoEmpleado_2;
-                            //fila2.ProximaLlegada = fila1.ProximaLlegada;
-                            fila2.ProxFinAtencion_2 = fila1.ProxFinAtencion_2;
                         }
 
                         break;
@@ -467,10 +491,12 @@ namespace TP3SIM.Entidades
                                     if(fila2.Se_queda == "Si")
                                     {
                                         fila2.RND_TiempoLectura = log.GenerarRND();
-                                        fila2.ProxFinLectura = log.VariableAleatoriaExponencial(30, fila2.RND_TiempoLectura);
+                                        fila2.TiempoLectura = log.VariableAleatoriaExponencial(30, fila2.RND_TiempoLectura);
+                                        fila2.ProxFinLectura = fila2.Reloj + fila2.ProxFinLectura;
 
                                         client.HoraFinLectura = fila2.ProxFinLectura;
                                         client.Estado = EnBiblioteca;
+                                        fila2.EstadoBiblioteca = fila1.EstadoBiblioteca;
                                         break;
                                     }
                                     else
@@ -481,6 +507,12 @@ namespace TP3SIM.Entidades
                                 }
                                 else
                                 {
+                                    fila2.RND_FinLectura = 0;
+                                    fila2.Se_queda = "";
+                                    fila2.RND_TiempoLectura = 0;
+                                    fila2.TiempoLectura = 0;
+                                    fila2.ProxFinLectura = 0;
+                                    fila2.EstadoBiblioteca = abierta;
                                     client.DestruirCliente(client);
                                     break;
                                 }
@@ -511,14 +543,14 @@ namespace TP3SIM.Entidades
                                 fila2.ProxFinAtencion_1 = fila2.Reloj + fila2.TiempoAtencion;
                                 fila2.EstadoEmpleado_1 = estadosAConsulta["Empleado 1"];
                             }
-
-                            --fila2.Cola;
+                            fila2.EstadoBiblioteca = abierta;
+                            fila2.Cola = fila1.Cola-1;
 
 
                         }
                         else
                         {
-
+                            fila2.EstadoBiblioteca = abierta;
                             fila2.EstadoEmpleado_1 = estadosLibre["Empleado 1"];
 
                             fila2.ProxFinAtencion_1 = 0;
@@ -526,9 +558,16 @@ namespace TP3SIM.Entidades
                         }
 
 
-                        fila2.CantPersonasBiblioteca = --fila1.CantPersonasBiblioteca;
+                        fila2.CantPersonasBiblioteca = fila1.CantPersonasBiblioteca -1;
                         fila2.TiempoPermanenciaBiblioteca = fila1.TiempoPermanenciaBiblioteca + (fila2.Reloj - fila1.Reloj) * fila1.CantPersonasBiblioteca;
-                        fila2.PromTiempoPermanenciaBiblio = fila2.TiempoPermanenciaBiblioteca / fila2.CantPersonasBiblioteca;
+                        if (fila2.CantPersonasBiblioteca > 0)
+                        {
+                            fila2.PromTiempoPermanenciaBiblio = fila2.TiempoPermanenciaBiblioteca / fila2.CantPersonasBiblioteca;
+                        }
+                        else
+                        {
+                            fila2.PromTiempoPermanenciaBiblio = fila2.TiempoPermanenciaBiblioteca / fila1.CantPersonasBiblioteca;
+                        }
 
 
 
@@ -556,20 +595,29 @@ namespace TP3SIM.Entidades
                                     if (fila2.Se_queda == "Si")
                                     {
                                         fila2.RND_TiempoLectura = log.GenerarRND();
-                                        fila2.ProxFinLectura = log.VariableAleatoriaExponencial(30, fila2.RND_TiempoLectura);
+                                        fila2.TiempoLectura = log.VariableAleatoriaExponencial(30, fila2.RND_TiempoLectura);
+                                        fila2.ProxFinLectura = fila2.Reloj + fila2.ProxFinLectura;
 
                                         client.HoraFinLectura = fila2.ProxFinLectura;
                                         client.Estado = EnBiblioteca;
+                                        fila2.EstadoBiblioteca = fila1.EstadoBiblioteca;
                                         break;
                                     }
                                     else
                                     {
+                                        fila2.EstadoBiblioteca = abierta;
                                         client.DestruirCliente(client);
                                         break;
                                     }
                                 }
                                 else
                                 {
+                                    fila2.RND_FinLectura = 0;
+                                    fila2.Se_queda = "";
+                                    fila2.RND_TiempoLectura = 0;
+                                    fila2.TiempoLectura = 0;
+                                    fila2.ProxFinLectura = 0;
+                                    fila2.EstadoBiblioteca = abierta;
                                     client.DestruirCliente(client);
                                     break;
                                 }
@@ -600,14 +648,14 @@ namespace TP3SIM.Entidades
                                 fila2.ProxFinAtencion_1 = fila2.Reloj + fila2.TiempoAtencion;
                                 fila2.EstadoEmpleado_1 = estadosAConsulta["Empleado 2"];
                             }
-
-                            --fila2.Cola;
+                            fila2.EstadoBiblioteca = abierta;
+                            fila2.Cola = fila1.Cola -1 ;
 
 
                         }
                         else
                         {
-
+                            fila2.EstadoBiblioteca = abierta;
                             fila2.EstadoEmpleado_2 = estadosLibre["Empleado 2"];
 
                             fila2.ProxFinAtencion_2 = 0;
@@ -615,10 +663,16 @@ namespace TP3SIM.Entidades
                         }
 
 
-                        fila2.CantPersonasBiblioteca = --fila1.CantPersonasBiblioteca;
+                        fila2.CantPersonasBiblioteca = fila1.CantPersonasBiblioteca -1;
                         fila2.TiempoPermanenciaBiblioteca = fila1.TiempoPermanenciaBiblioteca + (fila2.Reloj - fila1.Reloj) * fila1.CantPersonasBiblioteca;
-                        fila2.PromTiempoPermanenciaBiblio = fila2.TiempoPermanenciaBiblioteca / fila2.CantPersonasBiblioteca;
-
+                        if(fila2.CantPersonasBiblioteca > 0)
+                        {
+                            fila2.PromTiempoPermanenciaBiblio = fila2.TiempoPermanenciaBiblioteca / fila2.CantPersonasBiblioteca;
+                        }
+                        else
+                        {
+                            fila2.PromTiempoPermanenciaBiblio = fila2.TiempoPermanenciaBiblioteca / fila1.CantPersonasBiblioteca;
+                        }
 
 
                         // Arrastrar valores que no se utilizan.
@@ -641,9 +695,22 @@ namespace TP3SIM.Entidades
                             }
                         }
 
-                        fila2.CantPersonasBiblioteca = --fila1.CantPersonasBiblioteca;
+                        fila2.RND_FinLectura = 0;
+                        fila2.Se_queda = "";
+                        fila2.RND_TiempoLectura = 0;
+                        fila2.TiempoLectura = 0;
+                        fila2.ProxFinLectura = 0;
+                        fila2.EstadoBiblioteca = abierta;
+                        fila2.CantPersonasBiblioteca = fila1.CantPersonasBiblioteca -1 ;
                         fila2.TiempoPermanenciaBiblioteca = fila1.TiempoPermanenciaBiblioteca + (fila2.Reloj - fila1.Reloj) * fila1.CantPersonasBiblioteca;
-                        fila2.PromTiempoPermanenciaBiblio = fila2.TiempoPermanenciaBiblioteca / fila2.CantPersonasBiblioteca;
+                        if (fila2.CantPersonasBiblioteca > 0)
+                        {
+                            fila2.PromTiempoPermanenciaBiblio = fila2.TiempoPermanenciaBiblioteca / fila2.CantPersonasBiblioteca;
+                        }
+                        else
+                        {
+                            fila2.PromTiempoPermanenciaBiblio = fila2.TiempoPermanenciaBiblioteca / fila1.CantPersonasBiblioteca;
+                        }
 
                         fila2.CantTotalPersonas = fila1.CantTotalPersonas;
                         fila2.PromPersonasQueNoIngresanBiblio = fila1.PromPersonasQueNoIngresanBiblio;
@@ -753,21 +820,22 @@ namespace TP3SIM.Entidades
                 _ = (fila.TiempoAtencion == 9999) ? 0 : Math.Round(fila.TiempoAtencion, 2),
                 Math.Round(fila.ProxFinAtencion_1, 2),
                 Math.Round(fila.ProxFinAtencion_2, 2),
-                fila.EstadoEmpleado_1.Nombre,
-                fila.EstadoEmpleado_2.Nombre,
-                fila.Cola,
                 Math.Round(fila.RND_FinLectura, 2),
                 fila.Se_queda,
                 Math.Round(fila.RND_TiempoLectura, 2),
                 Math.Round(fila.TiempoLectura, 2),
                 Math.Round(fila.ProxFinLectura, 2),
+                fila.EstadoEmpleado_1.Nombre,
+                fila.EstadoEmpleado_2.Nombre,
+                fila.Cola,
+                fila.EstadoBiblioteca.Nombre,
                 Math.Round(fila.TiempoPermanenciaBiblioteca, 2),
                 fila.CantPersonasBiblioteca,
                 Math.Round(fila.PromTiempoPermanenciaBiblio, 2),
                 fila.CantPersonasQueIngresanBiblio,
                 fila.CantPersonasQueNoIngresanBiblio,
-                Math.Round(fila.PromPersonasQueNoIngresanBiblio, 2),
-                fila.CantTotalPersonas
+                fila.CantTotalPersonas,
+                Math.Round(fila.PromPersonasQueNoIngresanBiblio, 2)
                 );
 
             // Colorea de rojo el valor del próximo reloj.

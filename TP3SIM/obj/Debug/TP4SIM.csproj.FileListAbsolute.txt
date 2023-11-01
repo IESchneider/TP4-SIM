@@ -1,7 +1,4 @@
 C:\TP4-SIM\TP3SIM\obj\Debug\TP4SIM.csproj.AssemblyReference.cache
-C:\TP4-SIM\TP3SIM\obj\Debug\TP3SIM.Formularios.FormMetricas.resources
-C:\TP4-SIM\TP3SIM\obj\Debug\TP3SIM.Formularios.FormSimulacion.resources
-C:\TP4-SIM\TP3SIM\obj\Debug\TP3SIM.Principal.resources
 C:\TP4-SIM\TP3SIM\obj\Debug\TP3SIM.Properties.Resources.resources
 C:\TP4-SIM\TP3SIM\obj\Debug\TP4SIM.csproj.GenerateResource.cache
 C:\TP4-SIM\TP3SIM\obj\Debug\TP4SIM.csproj.CoreCompileInputs.cache
@@ -32,3 +29,6 @@ C:\Users\schne\OneDrive\Escritorio\TP4-SIM\TP3SIM\obj\Debug\TP4SIM.csproj.CoreCo
 C:\Users\schne\OneDrive\Escritorio\TP4-SIM\TP3SIM\obj\Debug\TP4SIM.csproj.CopyComplete
 C:\Users\schne\OneDrive\Escritorio\TP4-SIM\TP3SIM\obj\Debug\TP3SIM.exe
 C:\Users\schne\OneDrive\Escritorio\TP4-SIM\TP3SIM\obj\Debug\TP3SIM.pdb
+C:\TP4-SIM\TP3SIM\obj\Debug\TP4SIM.Formularios.FormMetricas.resources
+C:\TP4-SIM\TP3SIM\obj\Debug\TP4SIM.Formularios.FormSimulacion.resources
+C:\TP4-SIM\TP3SIM\obj\Debug\TP4SIM.Principal.resources

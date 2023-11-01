@@ -1,4 +1,4 @@
-﻿namespace TP3SIM.Formularios
+﻿namespace TP4SIM.Formularios
 {
     partial class FormSimulacion
     {
@@ -55,7 +55,7 @@
             this.EstadoBiblioteca = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.TiempoPermanenciaBiblioteca = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.CantPersonasBiblioteca = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.PromCantPersonasQueNoIngresan = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.PromTiempoPermanenciaBiblio = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.CantPersonasQueIngresanBiblio = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.CantPersonasQueNoIngresan = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.CantTotalPersonas = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -113,7 +113,7 @@
             this.EstadoBiblioteca,
             this.TiempoPermanenciaBiblioteca,
             this.CantPersonasBiblioteca,
-            this.PromCantPersonasQueNoIngresan,
+            this.PromTiempoPermanenciaBiblio,
             this.CantPersonasQueIngresanBiblio,
             this.CantPersonasQueNoIngresan,
             this.CantTotalPersonas,
@@ -318,13 +318,13 @@
             this.CantPersonasBiblioteca.ReadOnly = true;
             this.CantPersonasBiblioteca.Width = 125;
             // 
-            // PromCantPersonasQueNoIngresan
+            // PromTiempoPermanenciaBiblio
             // 
-            this.PromCantPersonasQueNoIngresan.HeaderText = "PromCantPersonasQueNoIngresan";
-            this.PromCantPersonasQueNoIngresan.MinimumWidth = 6;
-            this.PromCantPersonasQueNoIngresan.Name = "PromCantPersonasQueNoIngresan";
-            this.PromCantPersonasQueNoIngresan.ReadOnly = true;
-            this.PromCantPersonasQueNoIngresan.Width = 125;
+            this.PromTiempoPermanenciaBiblio.HeaderText = "PromTiempoPermanenciaBiblio";
+            this.PromTiempoPermanenciaBiblio.MinimumWidth = 6;
+            this.PromTiempoPermanenciaBiblio.Name = "PromTiempoPermanenciaBiblio";
+            this.PromTiempoPermanenciaBiblio.ReadOnly = true;
+            this.PromTiempoPermanenciaBiblio.Width = 125;
             // 
             // CantPersonasQueIngresanBiblio
             // 
@@ -406,7 +406,5 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn CantPersonasQueNoIngresan;
         private System.Windows.Forms.DataGridViewTextBoxColumn CantTotalPersonas;
         private System.Windows.Forms.DataGridViewTextBoxColumn PromPersonasQueNoIngresan;
-        private System.Windows.Forms.DataGridViewTextBoxColumn RND1_FinAtencion;
-        private System.Windows.Forms.DataGridViewTextBoxColumn PromCantPersonasQueNoIngresan;
     }
 }

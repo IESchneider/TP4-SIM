@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Reflection;
 
-namespace TP3SIM.Formularios
+namespace TP4SIM.Formularios
 {
     public partial class FormSimulacion : Form
     {
