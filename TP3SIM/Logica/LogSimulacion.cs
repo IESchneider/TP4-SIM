@@ -51,7 +51,7 @@ namespace TP3SIM.Logica
             return Math.Round(variableAleatoria, 2);
         }
 
-        public string VariableAleatoriaTipo(double random)
+        public string CalcularTipoAtencion(double random)
         {
             if(random <= 0 && random < 0.45)
             {
@@ -62,6 +62,18 @@ namespace TP3SIM.Logica
                 return "Devolver libro";
             }
             return "Consulta";
+        }
+
+        public string CalcularSiSeQueda(double random)
+        {
+            if (random <= 0 && random < 0.40)
+            {
+                return "Si";
+            }
+            else 
+            {
+                return "No";
+            }
         }
 
         public double GenerarRND()
@@ -87,6 +99,27 @@ namespace TP3SIM.Logica
                 }
             }
             return cant;
+
+        }
+
+        public Temporal proximoCliente(List<Temporal> personas)
+        {
+            Temporal cliente = new Temporal();
+            cliente.Numero = 9999999;
+            var consulta = new EConsultar();
+            var pedirLibro = new EPedirLibro();
+            var devolverLibro = new EDevolverLibro();
+            foreach (var persona in personas)
+            {
+                if (persona.Estado == consulta || persona.Estado == pedirLibro || persona.Estado == devolverLibro )
+                {
+                    if(persona.Numero < cliente.Numero)
+                    {
+                        cliente = persona;
+                    }
+                }
+            }
+            return cliente;
 
         }
     }

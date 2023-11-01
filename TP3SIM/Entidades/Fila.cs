@@ -46,6 +46,7 @@ namespace TP3SIM.Entidades
         public double PromTiempoPermanenciaBiblio { get; set; }
         public int CantPersonasQueIngresanBiblio { get; set; }
         public int CantPersonasQueNoIngresanBiblio { get; set; }
+        public double PromPersonasQueNoIngresanBiblio { get; set; }
         public int CantTotalPersonas { get; set; }
 
         // Lista de todas las personas.
@@ -61,10 +62,7 @@ namespace TP3SIM.Entidades
             TiempoEntreLlegadas = 0.0;
             ProximaLlegada = 0.0;
             RND_TipoAtencion = 0.0;
-            TipoAtencion = 0.0;
-
-            RND1_FinAtencion = 0.0;
-            RND2_FinAtencion = 0.0;
+            TipoAtencion = "";
             TiempoAtencion = 0.0;
             ProxFinAtencion_1 = 0.0;
             ProxFinAtencion_2 = 0.0;
