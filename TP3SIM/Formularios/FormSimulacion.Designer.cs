@@ -40,7 +40,7 @@
             this.ProximaLlegada = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.RND_TipoAtencion = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.TipoAtencion = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.RND_FinAtencion = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.RND1_FinAtencion = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.TiempoAtencion = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ProxFinAtencion_1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ProxFinAtencion_2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -55,7 +55,7 @@
             this.EstadoBiblioteca = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.TiempoPermanenciaBiblioteca = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.CantPersonasBiblioteca = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.PromTiempoPermanenciaBiblio = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.PromCantPersonasQueNoIngresan = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.CantPersonasQueIngresanBiblio = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.CantPersonasQueNoIngresan = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.CantTotalPersonas = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -97,7 +97,7 @@
             this.ProximaLlegada,
             this.RND_TipoAtencion,
             this.TipoAtencion,
-            this.RND_FinAtencion,
+            this.RND1_FinAtencion,
             this.TiempoAtencion,
             this.ProxFinAtencion_1,
             this.ProxFinAtencion_2,
@@ -112,7 +112,7 @@
             this.EstadoBiblioteca,
             this.TiempoPermanenciaBiblioteca,
             this.CantPersonasBiblioteca,
-            this.PromTiempoPermanenciaBiblio,
+            this.PromCantPersonasQueNoIngresan,
             this.CantPersonasQueIngresanBiblio,
             this.CantPersonasQueNoIngresan,
             this.CantTotalPersonas,
@@ -125,7 +125,7 @@
             dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
             dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
             this.dgvGrillaSimulacion.DefaultCellStyle = dataGridViewCellStyle2;
-            this.dgvGrillaSimulacion.Location = new System.Drawing.Point(-1113, 29);
+            this.dgvGrillaSimulacion.Location = new System.Drawing.Point(-2043, -1);
             this.dgvGrillaSimulacion.Name = "dgvGrillaSimulacion";
             this.dgvGrillaSimulacion.ReadOnly = true;
             dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
@@ -137,7 +137,7 @@
             dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
             this.dgvGrillaSimulacion.RowHeadersDefaultCellStyle = dataGridViewCellStyle3;
             this.dgvGrillaSimulacion.RowHeadersWidth = 51;
-            this.dgvGrillaSimulacion.Size = new System.Drawing.Size(2627, 888);
+            this.dgvGrillaSimulacion.Size = new System.Drawing.Size(3401, 888);
             this.dgvGrillaSimulacion.TabIndex = 0;
             // 
             // Evento
@@ -198,11 +198,11 @@
             // 
             // RND1_FinAtencion
             // 
-            this.RND_FinAtencion.HeaderText = "RND1_FinAtencion";
-            this.RND_FinAtencion.MinimumWidth = 6;
-            this.RND_FinAtencion.Name = "RND1_FinAtencion";
-            this.RND_FinAtencion.ReadOnly = true;
-            this.RND_FinAtencion.Width = 125;
+            this.RND1_FinAtencion.HeaderText = "RND1_FinAtencion";
+            this.RND1_FinAtencion.MinimumWidth = 6;
+            this.RND1_FinAtencion.Name = "RND1_FinAtencion";
+            this.RND1_FinAtencion.ReadOnly = true;
+            this.RND1_FinAtencion.Width = 125;
             // 
             // TiempoAtencion
             // 
@@ -316,13 +316,13 @@
             this.CantPersonasBiblioteca.ReadOnly = true;
             this.CantPersonasBiblioteca.Width = 125;
             // 
-            // PromTiempoPermanenciaBiblio
+            // PromCantPersonasQueNoIngresan
             // 
-            this.PromTiempoPermanenciaBiblio.HeaderText = "PromTiempoPermanenciaBiblio";
-            this.PromTiempoPermanenciaBiblio.MinimumWidth = 6;
-            this.PromTiempoPermanenciaBiblio.Name = "PromTiempoPermanenciaBiblio";
-            this.PromTiempoPermanenciaBiblio.ReadOnly = true;
-            this.PromTiempoPermanenciaBiblio.Width = 125;
+            this.PromCantPersonasQueNoIngresan.HeaderText = "PromCantPersonasQueNoIngresan";
+            this.PromCantPersonasQueNoIngresan.MinimumWidth = 6;
+            this.PromCantPersonasQueNoIngresan.Name = "PromCantPersonasQueNoIngresan";
+            this.PromCantPersonasQueNoIngresan.ReadOnly = true;
+            this.PromCantPersonasQueNoIngresan.Width = 125;
             // 
             // CantPersonasQueIngresanBiblio
             // 
@@ -348,20 +348,18 @@
             this.CantTotalPersonas.ReadOnly = true;
             this.CantTotalPersonas.Width = 125;
             // 
-            // PromTiempoPermanenciaBiblio
+            // PromPersonasQueNoIngresan
             // 
-            this.PromTiempoPermanenciaBiblio.HeaderText = "PromCantPersonasQueNoIngresan";
-            this.PromTiempoPermanenciaBiblio.MinimumWidth = 6;
-            this.PromTiempoPermanenciaBiblio.Name = "PromCantPersonasQueNoIngresan";
-            this.PromTiempoPermanenciaBiblio.ReadOnly = true;
-            this.PromTiempoPermanenciaBiblio.Width = 125;
+            this.PromPersonasQueNoIngresan.Name = "PromPersonasQueNoIngresan";
+            this.PromPersonasQueNoIngresan.ReadOnly = true;
             // 
             // FormSimulacion
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoSize = true;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(1370, 609);
+            this.ClientSize = new System.Drawing.Size(984, 609);
             this.Controls.Add(this.btnGenerarMetrica);
             this.Controls.Add(this.dgvGrillaSimulacion);
             this.DoubleBuffered = true;
@@ -403,5 +401,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn CantPersonasQueNoIngresan;
         private System.Windows.Forms.DataGridViewTextBoxColumn CantTotalPersonas;
         private System.Windows.Forms.DataGridViewTextBoxColumn PromPersonasQueNoIngresan;
+        private System.Windows.Forms.DataGridViewTextBoxColumn RND1_FinAtencion;
+        private System.Windows.Forms.DataGridViewTextBoxColumn PromCantPersonasQueNoIngresan;
     }
 }

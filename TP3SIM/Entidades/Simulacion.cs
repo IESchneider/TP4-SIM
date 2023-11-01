@@ -277,7 +277,7 @@ namespace TP3SIM.Entidades
                         fila2.ProximaLlegada = fila1.ProximaLlegada;
                         fila2.ProximaLlegada = fila1.ProximaLlegada;
 
-                        fila2.CantTotalPersonas = fila1.CantTotalPersonas++;
+                        fila2.CantTotalPersonas = fila1.CantTotalPersonas + 1;
 
                         fila2.Cola = fila1.Cola;
 
@@ -293,7 +293,7 @@ namespace TP3SIM.Entidades
                             if (cantidadPersonasEnBiblioteca < 20)
                             {
                                 ++fila2.Cola;
-                                fila2.CantPersonasQueIngresanBiblio = fila1.CantPersonasQueIngresanBiblio++;
+                                fila2.CantPersonasQueIngresanBiblio = fila1.CantPersonasQueIngresanBiblio+1;
                                 fila2.ProxFinAtencion_1 = fila1.ProxFinAtencion_1;
                                 fila2.ProxFinAtencion_2 = fila1.ProxFinAtencion_2;
 
@@ -315,12 +315,12 @@ namespace TP3SIM.Entidades
                                 {
                                     cliente.Estado = EConsultar;
                                 }
-                                fila2.CantPersonasQueIngresanBiblio = fila1.CantPersonasQueIngresanBiblio++;
+                                fila2.CantPersonasQueIngresanBiblio = fila1.CantPersonasQueIngresanBiblio+1;
                             }
                             else
                             {
                                 cliente = cliente.DestruirCliente(cliente);
-                                fila2.CantPersonasQueNoIngresanBiblio = fila1.CantPersonasQueNoIngresanBiblio++;
+                                fila2.CantPersonasQueNoIngresanBiblio = fila1.CantPersonasQueNoIngresanBiblio+1;
                             }
                             TodosLosClientes.Add(cliente.CopiarCliente(cliente));
                         }
@@ -361,7 +361,7 @@ namespace TP3SIM.Entidades
                                 fila2.Persona.Add(cliente);
                                 cliente.EnFilaNumero = NumeroSimulacionActual;
                                 TodosLosClientes.Add(cliente.CopiarCliente(cliente));
-                                fila2.CantPersonasQueIngresanBiblio = fila1.CantPersonasQueIngresanBiblio++;
+                                fila2.CantPersonasQueIngresanBiblio = fila1.CantPersonasQueIngresanBiblio+1;
                             }
                             else
                             {
@@ -398,7 +398,7 @@ namespace TP3SIM.Entidades
                                     fila2.Persona.Add(cliente);
                                     cliente.EnFilaNumero = NumeroSimulacionActual;
                                     TodosLosClientes.Add(cliente.CopiarCliente(cliente));
-                                    fila2.CantPersonasQueIngresanBiblio = fila1.CantPersonasQueIngresanBiblio++;
+                                    fila2.CantPersonasQueIngresanBiblio = fila1.CantPersonasQueIngresanBiblio+1;
                                 }
                                 else
                                 {
@@ -407,7 +407,7 @@ namespace TP3SIM.Entidades
                                     if (cantidadPersonasEnBiblioteca < 20)
                                     {
                                         ++fila2.Cola;
-                                        fila2.CantPersonasQueIngresanBiblio = fila1.CantPersonasQueIngresanBiblio++;
+                                        fila2.CantPersonasQueIngresanBiblio = fila1.CantPersonasQueIngresanBiblio+1;
                                         fila2.ProxFinAtencion_1 = fila1.ProxFinAtencion_1;
                                         fila2.ProxFinAtencion_2 = fila1.ProxFinAtencion_2;
 
@@ -429,12 +429,12 @@ namespace TP3SIM.Entidades
                                         {
                                             cliente.Estado = EConsultar;
                                         }
-                                        fila2.CantPersonasQueIngresanBiblio = fila1.CantPersonasQueIngresanBiblio++;
+                                        fila2.CantPersonasQueIngresanBiblio = fila1.CantPersonasQueIngresanBiblio+1;
                                     }
                                     else
                                     {
                                         cliente = cliente.DestruirCliente(cliente);
-                                        fila2.CantPersonasQueNoIngresanBiblio = ++fila1.CantPersonasQueNoIngresanBiblio;
+                                        fila2.CantPersonasQueNoIngresanBiblio = fila1.CantPersonasQueNoIngresanBiblio+1;
                                     }
                                     TodosLosClientes.Add(cliente.CopiarCliente(cliente));
                                 }
