@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using TP3SIM.Entidades;
 
 namespace TP3SIM.Logica
 {
@@ -50,6 +51,19 @@ namespace TP3SIM.Logica
             return Math.Round(variableAleatoria, 2);
         }
 
+        public string VariableAleatoriaTipo(double random)
+        {
+            if(random <= 0 && random < 0.45)
+            {
+                return "Pedir libro";
+            }
+            else if (random >= 0.45 && random < 0.9)
+            {
+                return "Devolver libro";
+            }
+            return "Consulta";
+        }
+
         public double GenerarRND()
         {
             double random;
@@ -62,5 +76,18 @@ namespace TP3SIM.Logica
             return random;
         }
 
+        public int CantidadPersonasBiblioteca(List<Temporal> personas)
+        {
+            var cant = 0;
+            var destruido = new Destruido();
+            foreach (var persona in personas) {
+                if(persona.Estado != destruido)
+                {
+                    cant++;
+                }
+            }
+            return cant;
+
+        }
     }
 }

@@ -18,12 +18,11 @@ namespace TP3SIM.Entidades
         public double TiempoEntreLlegadas { get; set; }
         public double ProximaLlegada { get; set; }
         public double RND_TipoAtencion { get; set; }
-        public double TipoAtencion { get; set; }
+        public string TipoAtencion { get; set; }
 
         // Fin atención y empleados.
 
-        public double RND1_FinAtencion{ get; set; }
-        public double RND2_FinAtencion { get; set; }
+        public double RND_FinAtencion{ get; set; }
         public double TiempoAtencion { get; set; }
         public double ProxFinAtencion_1 { get; set; }
         public double ProxFinAtencion_2 { get; set; }

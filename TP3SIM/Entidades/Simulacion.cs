@@ -34,9 +34,9 @@ namespace TP3SIM.Entidades
 
         readonly LogSimulacion log = new LogSimulacion();
 
-        public int CantidadSimulaciones { get; set; }
-        public int NumeroSimulacionActual { get; set; }
-
+        public int CantidadSimulaciones { get; set; } = 0;
+        public int NumeroSimulacionActual { get; set; } = 0;
+        public int cantidadPersonasEnBiblioteca { get; set; } = 0;
         // Atributos específicos para la simulación
 
         //private double CantidadClientesNP { get; set; }
@@ -87,7 +87,7 @@ namespace TP3SIM.Entidades
 
             // Inicializar diccionarios de estados inmutables, son 4 estados por servidor.
 
-            string[] nombresServidores = {"Empleado 1", "Empleado 2"};
+            string[] nombresServidores = { "Empleado 1", "Empleado 2" };
 
             foreach (string nombre in nombresServidores)
             {
@@ -280,14 +280,20 @@ namespace TP3SIM.Entidades
                         fila2.TiempoEntreLlegadas = log.VariableAleatoriaExponencial(4, fila2.RND_Llegada);
                         fila2.ProximaLlegada = fila2.Reloj + fila2.TiempoEntreLlegadas;
 
+                        // Obtener RNDS y tipo atencion
+
+                        fila2.RND_TipoAtencion = log.GenerarRND();
+                        fila2.TipoAtencion = log.VariableAleatoriaTipo(fila2.RND_TipoAtencion);
+                        cliente.Tipo = fila2.TipoAtencion;
+
                         // Arrastrar otros eventos
 
                         fila2.ProximaLlegada = fila1.ProximaLlegada;
                         fila2.ProximaLlegada = fila1.ProximaLlegada;
 
-                        
-      
-                        fila2.Cola = fila1.Cola; 
+
+
+                        fila2.Cola = fila1.Cola;
 
                         //fila2.CantidadClientes_IM = fila1.CantidadClientes_IM;
                         //fila2.CantidadClientes_RP = fila1.CantidadClientes_RP;
@@ -296,102 +302,141 @@ namespace TP3SIM.Entidades
                         if (fila1.Cola > 0)
                         {
                             // Si la cola es mayor que cero, implica que el servidor está ocupado y por ende se debe incrementar la cola.
+                            cantidadPersonasEnBiblioteca = log.CantidadPersonasBiblioteca(TodosLosClientes);
 
-                            ++fila2.Cola;
-
-                            fila2.ProxFinAtencion_1 = fila1.ProxFinAtencion_1;
-                            fila2.ProxFinAtencion_2 = fila1.ProxFinAtencion_2;
-
-                            fila2.EstadoEmpleado_1 = fila1.EstadoEmpleado_1;
-                            fila2.EstadoEmpleado_2 = fila1.EstadoEmpleado_2;
-
-                            cliente.Estado = EsperandoAtencion;
-                            fila2.Cliente.Add(clienteIM);
-                            clienteIM.EnFilaNumero = NumeroSimulacionActual;
-                            TodosLosClientes.Add(clienteIM.CopiarCliente(clienteIM));
-                        }
-
-                        if (fila1.Cola_IM == 0)
-                        {
-
-                            if (fila1.Estado_Tomas_FinAtencionIM.Libre)
+                            if (cantidadPersonasEnBiblioteca < 20)
                             {
-                                fila2.RND_FinAtencionIM = log.GenerarRND();
-                                fila2.TiempoAtencion_FinAtencionIM = log.VariableAleatoriaUniforme(8.7, 15.2, fila2.RND_FinAtencionIM);
-                                fila2.FinAtencion_Tomas_FinAtencionIM = fila2.Reloj + fila2.TiempoAtencion_FinAtencionIM;
+                                ++fila2.Cola;
+                                fila2.CantPersonasQueIngresanBiblio = fila1.CantPersonasQueIngresanBiblio++;
+                                fila2.ProxFinAtencion_1 = fila1.ProxFinAtencion_1;
+                                fila2.ProxFinAtencion_2 = fila1.ProxFinAtencion_2;
 
-                                fila2.Estado_Tomas_FinAtencionIM = estadosOcupado["Tomas"];
+                                fila2.EstadoEmpleado_1 = fila1.EstadoEmpleado_1;
+                                fila2.EstadoEmpleado_2 = fila1.EstadoEmpleado_2;
 
-                                fila2.Estado_Alicia_FinAtencionIM = fila1.Estado_Alicia_FinAtencionIM;
-                                fila2.FinAtencion_Alicia_FinAtencionIM = fila1.FinAtencion_Alicia_FinAtencionIM;
-                                fila2.Estado_Manuel = fila1.Estado_Manuel;
-                                fila2.FinAtencion_Manuel = fila1.FinAtencion_Manuel;
+                                fila2.Persona.Add(cliente);
+                                cliente.EnFilaNumero = NumeroSimulacionActual;
 
-                                clienteIM.Estado = SiendoAtendido;
-                                clienteIM.SiendoAtendidoPor = Tomas;
-                                fila2.ClienteIM.Add(clienteIM);
-                                clienteIM.EnFilaNumero = NumeroSimulacionActual;
-                                TodosLosClientes.Add(clienteIM.CopiarCliente(clienteIM));
+                                if (cliente.Tipo == "Pedir libro")
+                                {
+                                    cliente.Estado = EPedirLibro;
+                                }
+                                if (cliente.Tipo == "Devolver libro")
+                                {
+                                    cliente.Estado = EDevolverLibro;
+                                }
+                                if (cliente.Tipo == "Consulta")
+                                {
+                                    cliente.Estado = EConsultar;
+                                }
                             }
                             else
                             {
-                                if (fila1.Estado_Alicia_FinAtencionIM.Libre)
+                                cliente = cliente.DestruirCliente(cliente);
+                                fila2.CantPersonasQueNoIngresanBiblio++;
+                            }
+                            TodosLosClientes.Add(cliente.CopiarCliente(cliente));
+                        }
+
+                        if (fila1.Cola == 0)
+                        {
+
+                            if (fila1.EstadoEmpleado_1.Libre)
+                            {
+                                fila2.RND_FinAtencion = log.GenerarRND();
+
+                                if (cliente.Tipo == "Pedir libro")
                                 {
-                                    fila2.RND_FinAtencionIM = log.GenerarRND();
-                                    fila2.TiempoAtencion_FinAtencionIM = log.VariableAleatoriaUniforme(8.7, 15.2, fila2.RND_FinAtencionIM);
-                                    fila2.FinAtencion_Alicia_FinAtencionIM = fila2.Reloj + fila2.TiempoAtencion_FinAtencionIM;
+                                    fila2.TiempoAtencion = log.VariableAleatoriaExponencial(6, fila2.RND_FinAtencion);
+                                    fila2.ProxFinAtencion_1 = fila2.Reloj + fila2.TiempoAtencion;
+                                    fila2.EstadoEmpleado_1 = estadosAPedidoLibro["Empleado 1"];
+                                }
+                                if (cliente.Tipo == "Devolver libro")
+                                {
+                                    fila2.TiempoAtencion = log.VariableAleatoriaConvolucion(2, 0.5);
+                                    fila2.ProxFinAtencion_1 = fila2.Reloj + fila2.TiempoAtencion;
+                                    fila2.EstadoEmpleado_1 = estadosADevolucionLibro["Empleado 1"];
+                                }
+                                if (cliente.Tipo == "Consulta")
+                                {
+                                    fila2.TiempoAtencion = log.VariableAleatoriaUniforme(2, 5, fila2.RND_FinAtencion);
+                                    fila2.ProxFinAtencion_1 = fila2.Reloj + fila2.TiempoAtencion;
+                                    fila2.EstadoEmpleado_1 = estadosAConsulta["Empleado 1"];
+                                }
 
-                                    fila2.Estado_Alicia_FinAtencionIM = estadosOcupado["Alicia"];
+                                fila2.EstadoEmpleado_2 = fila1.EstadoEmpleado_2;
+                                fila2.ProxFinAtencion_2 = fila1.ProxFinAtencion_2;
+                                fila2.EstadoEmpleado_2 = fila1.EstadoEmpleado_2;
+                                fila2.EstadoEmpleado_2 = fila1.EstadoEmpleado_2;
 
-                                    fila2.Estado_Tomas_FinAtencionIM = fila1.Estado_Tomas_FinAtencionIM;
-                                    fila2.FinAtencion_Tomas_FinAtencionIM = fila1.FinAtencion_Tomas_FinAtencionIM;
-                                    fila2.Estado_Manuel = fila1.Estado_Manuel;
-                                    fila2.FinAtencion_Manuel = fila1.FinAtencion_Manuel;
+                                cliente.Estado = SiendoAtendido;
+                                cliente.SiendoAtendidoPor = Empleado1;
+                                fila2.Persona.Add(cliente);
+                                cliente.EnFilaNumero = NumeroSimulacionActual;
+                                TodosLosClientes.Add(cliente.CopiarCliente(cliente));
+                            }
+                            else
+                            {
+                                if (fila1.EstadoEmpleado_2.Libre)
+                                {
+                                    fila2.RND_FinAtencion = log.GenerarRND();
 
-                                    clienteIM.Estado = SiendoAtendido;
-                                    clienteIM.SiendoAtendidoPor = Alicia;
-                                    clienteIM.EnFilaNumero = NumeroSimulacionActual;
-                                    fila2.ClienteIM.Add(clienteIM);
-                                    TodosLosClientes.Add(clienteIM.CopiarCliente(clienteIM));
+                                    if (cliente.Tipo == "Pedir libro")
+                                    {
+                                        fila2.TiempoAtencion = log.VariableAleatoriaExponencial(6, fila2.RND_FinAtencion);
+                                        fila2.ProxFinAtencion_2 = fila2.Reloj + fila2.TiempoAtencion;
+                                        fila2.EstadoEmpleado_2 = estadosAPedidoLibro["Empleado 1"];
+                                    }
+                                    if (cliente.Tipo == "Devolver libro")
+                                    {
+                                        fila2.TiempoAtencion = log.VariableAleatoriaConvolucion(2, 0.5);
+                                        fila2.ProxFinAtencion_2 = fila2.Reloj + fila2.TiempoAtencion;
+                                        fila2.EstadoEmpleado_2 = estadosADevolucionLibro["Empleado 1"];
+                                    }
+                                    if (cliente.Tipo == "Consulta")
+                                    {
+                                        fila2.TiempoAtencion = log.VariableAleatoriaUniforme(2, 5, fila2.RND_FinAtencion);
+                                        fila2.ProxFinAtencion_2 = fila2.Reloj + fila2.TiempoAtencion;
+                                        fila2.EstadoEmpleado_2 = estadosAConsulta["Empleado 1"];
+                                    }
+
+                                    fila2.EstadoEmpleado_1 = fila1.EstadoEmpleado_1;
+                                    fila2.ProxFinAtencion_1 = fila1.ProxFinAtencion_1;
+                                    fila2.EstadoEmpleado_1 = fila1.EstadoEmpleado_1;
+                                    fila2.EstadoEmpleado_1 = fila1.EstadoEmpleado_1;
+
+                                    cliente.Estado = SiendoAtendido;
+                                    cliente.SiendoAtendidoPor = Empleado1;
+                                    fila2.Persona.Add(cliente);
+                                    cliente.EnFilaNumero = NumeroSimulacionActual;
+                                    TodosLosClientes.Add(cliente.CopiarCliente(cliente));
                                 }
                                 else
                                 {
-                                    if (fila1.Estado_Manuel.Libre)
+                                    ++fila2.Cola;
+                                    fila2.CantPersonasQueIngresanBiblio = fila1.CantPersonasQueIngresanBiblio++;
+                                    fila2.ProxFinAtencion_1 = fila1.ProxFinAtencion_1;
+                                    fila2.ProxFinAtencion_2 = fila1.ProxFinAtencion_2;
+
+                                    fila2.EstadoEmpleado_1 = fila1.EstadoEmpleado_1;
+                                    fila2.EstadoEmpleado_2 = fila1.EstadoEmpleado_2;
+
+                                    fila2.Persona.Add(cliente);
+                                    cliente.EnFilaNumero = NumeroSimulacionActual;
+
+                                    if (cliente.Tipo == "Pedir libro")
                                     {
-                                        fila2.RND_FinAtencionIM = log.GenerarRND();
-                                        fila2.TiempoAtencion_FinAtencionIM = log.VariableAleatoriaUniforme(8.7, 15.2, fila2.RND_FinAtencionIM);
-                                        fila2.FinAtencion_Manuel = fila2.Reloj + fila2.TiempoAtencion_FinAtencionIM;
-
-                                        fila2.Estado_Manuel = estadosOcupado["Manuel"];
-
-                                        fila2.Estado_Tomas_FinAtencionIM = fila1.Estado_Tomas_FinAtencionIM;
-                                        fila2.FinAtencion_Tomas_FinAtencionIM = fila1.FinAtencion_Tomas_FinAtencionIM;
-                                        fila2.Estado_Alicia_FinAtencionIM = fila1.Estado_Alicia_FinAtencionIM;
-                                        fila2.FinAtencion_Alicia_FinAtencionIM = fila1.FinAtencion_Alicia_FinAtencionIM;
-
-                                        clienteIM.Estado = SiendoAtendido;
-                                        clienteIM.SiendoAtendidoPor = Manuel;
-                                        fila2.ClienteIM.Add(clienteIM);
-                                        clienteIM.EnFilaNumero = NumeroSimulacionActual;
-                                        TodosLosClientes.Add(clienteIM.CopiarCliente(clienteIM));
-
+                                        cliente.Estado = EPedirLibro;
                                     }
-                                    else
+                                    if (cliente.Tipo == "Devolver libro")
                                     {
-                                        ++fila2.Cola_IM;
-
-                                        fila2.Estado_Alicia_FinAtencionIM = fila1.Estado_Alicia_FinAtencionIM;
-                                        fila2.FinAtencion_Alicia_FinAtencionIM = fila1.FinAtencion_Alicia_FinAtencionIM;
-                                        fila2.Estado_Tomas_FinAtencionIM = fila1.Estado_Tomas_FinAtencionIM;
-                                        fila2.FinAtencion_Tomas_FinAtencionIM = fila1.FinAtencion_Tomas_FinAtencionIM;
-                                        fila2.Estado_Manuel = fila1.Estado_Manuel;
-                                        fila2.FinAtencion_Manuel = fila1.FinAtencion_Manuel;
-
-                                        clienteIM.Estado = EsperandoAtencion;
-                                        fila2.ClienteIM.Add(clienteIM);
-                                        clienteIM.EnFilaNumero = NumeroSimulacionActual;
-                                        TodosLosClientes.Add(clienteIM.CopiarCliente(clienteIM));
+                                        cliente.Estado = EDevolverLibro;
                                     }
+                                    if (cliente.Tipo == "Consulta")
+                                    {
+                                        cliente.Estado = EConsultar;
+                                    }
+                                    TodosLosClientes.Add(cliente.CopiarCliente(cliente));
                                 }
                             }
                         }
