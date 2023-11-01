@@ -182,12 +182,10 @@ namespace TP3SIM.Entidades
 
             object[,] posiblesProximoReloj =
                      {
-                      { fila1.ProximaLlegada, "Llegada_Persona" },
-
+                      { fila1.ProximaLlegada, "Llegada_Persona"},
                       { fila1.ProxFinAtencion_1, "FinAtención_1"},
                       { fila1.ProxFinAtencion_2, "FinAtención_2"},
-
-                      { fila1.ProxFinLectura, "FinLectura" },
+                      { fila1.ProxFinLectura, "FinLectura"},
                     };
 
             double proximoReloj = (double)posiblesProximoReloj[0, 0];
@@ -274,7 +272,7 @@ namespace TP3SIM.Entidades
 
                         // Arrastrar otros eventos
 
-                        fila2.ProximaLlegada = fila1.ProximaLlegada;
+                        //fila2.ProximaLlegada = fila1.ProximaLlegada;
                         fila2.ProximaLlegada = fila1.ProximaLlegada;
 
                         fila2.CantTotalPersonas = fila1.CantTotalPersonas + 1;
