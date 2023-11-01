@@ -303,6 +303,8 @@ namespace TP3SIM.Entidades
                                 fila2.Persona.Add(cliente);
                                 cliente.EnFilaNumero = NumeroSimulacionActual;
 
+                                fila2.RND_TipoAtencion = log.GenerarRND();
+                                cliente.Tipo = log.CalcularTipoAtencion(fila2.RND_TipoAtencion);
                                 if (cliente.Tipo == "Pedir libro")
                                 {
                                     cliente.Estado = EPedirLibro;
@@ -330,7 +332,8 @@ namespace TP3SIM.Entidades
 
                             if (fila1.EstadoEmpleado_1.Libre)
                             {
-                                fila2.RND_FinAtencion = log.GenerarRND();
+                                fila2.RND_TipoAtencion = log.GenerarRND();
+                                cliente.Tipo = log.CalcularTipoAtencion(fila2.RND_TipoAtencion);
 
                                 if (cliente.Tipo == "Pedir libro")
                                 {
@@ -367,11 +370,12 @@ namespace TP3SIM.Entidades
                             {
                                 if (fila1.EstadoEmpleado_2.Libre)
                                 {
-                                    fila2.RND_FinAtencion = log.GenerarRND();
+                                    fila2.RND_TipoAtencion = log.GenerarRND();
+                                    cliente.Tipo = log.CalcularTipoAtencion(fila2.RND_TipoAtencion);
 
                                     if (cliente.Tipo == "Pedir libro")
                                     {
-                                        fila2.TiempoAtencion = log.VariableAleatoriaExponencial(6, fila2.RND_FinAtencion);
+                                        fila2.TiempoAtencion = log.VariableAleatoriaExponencial(6, fila2.RND_TipoAtencion);
                                         fila2.ProxFinAtencion_2 = fila2.Reloj + fila2.TiempoAtencion;
                                         fila2.EstadoEmpleado_2 = estadosAPedidoLibro["Empleado 2"];
                                     }
@@ -383,7 +387,7 @@ namespace TP3SIM.Entidades
                                     }
                                     if (cliente.Tipo == "Consulta")
                                     {
-                                        fila2.TiempoAtencion = log.VariableAleatoriaUniforme(2, 5, fila2.RND_FinAtencion);
+                                        fila2.TiempoAtencion = log.VariableAleatoriaUniforme(2, 5, fila2.RND_TipoAtencion);
                                         fila2.ProxFinAtencion_2 = fila2.Reloj + fila2.TiempoAtencion;
                                         fila2.EstadoEmpleado_2 = estadosAConsulta["Empleado 2"];
                                     }
@@ -416,6 +420,9 @@ namespace TP3SIM.Entidades
 
                                         fila2.Persona.Add(cliente);
                                         cliente.EnFilaNumero = NumeroSimulacionActual;
+
+                                        fila2.RND_TipoAtencion = log.GenerarRND();
+                                        cliente.Tipo = log.CalcularTipoAtencion(fila2.RND_TipoAtencion);
 
                                         if (cliente.Tipo == "Pedir libro")
                                         {
