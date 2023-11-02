@@ -28,6 +28,10 @@ namespace TP4SIM.Entidades
 
         public int FilaDesde { get; set; }
         public int FilaHasta { get; set; }
+
+        public List<double> tiemposFinLectura = new List<double> { 0 };
+
+
         public FormSimulacion FormularioSimulacion { get; set; }
         public HashSet<int> iteracionesGrilla { get; set; }
         public DataGridView Grilla { get; set; }
@@ -172,6 +176,7 @@ namespace TP4SIM.Entidades
             Temporal clienteFalsoInicializacion = new Temporal();
             //clienteFalsoInicializacion.Tipo = "Inicializacion";
             clienteFalsoInicializacion.EnFilaNumero = NumeroSimulacionActual;
+            clienteFalsoInicializacion.Estado = Destruido;
             TodosLosClientes.Add(clienteFalsoInicializacion);
 
             // Cargar inicialización solo si es la primera o alguna dentro de la selección del usuario.
@@ -201,12 +206,22 @@ namespace TP4SIM.Entidades
             {
                 double valorActual = (double)posiblesProximoReloj[j, 0];
 
-                if (valorActual < proximoReloj && valorActual != 0)
+                if (valorActual < proximoReloj && valorActual != 0 && proximoReloj != 0)
                 {
                     proximoReloj = valorActual;
                     evento = (string)posiblesProximoReloj[j, 1];
                 }
             }
+            foreach (double numero in tiemposFinLectura)
+            {
+                if (numero < proximoReloj && numero != 0 && proximoReloj != 0)
+                {
+                    proximoReloj = numero;
+                    evento = (string)posiblesProximoReloj[3, 1];
+                }
+            }
+
+
 
             return (proximoReloj, evento);
         }
@@ -248,6 +263,7 @@ namespace TP4SIM.Entidades
 
                 fila2.Evento = evento;
                 fila2.Reloj = proximoReloj;
+                
 
                 switch (evento)
                 {
@@ -267,7 +283,7 @@ namespace TP4SIM.Entidades
                         // Obtener RNDs y Llegadas
 
                         fila2.RND_Llegada = log.GenerarRND();
-                        fila2.TiempoEntreLlegadas = log.VariableAleatoriaExponencial(4, fila2.RND_Llegada);
+                        fila2.TiempoEntreLlegadas = log.VariableAleatoriaExponencial(1, fila2.RND_Llegada);
                         fila2.ProximaLlegada = fila2.Reloj + fila2.TiempoEntreLlegadas;
 
                         // Obtener RNDS y tipo atencion
@@ -286,7 +302,7 @@ namespace TP4SIM.Entidades
                         fila2.RND_TiempoLectura = 0;
                         fila2.TiempoLectura = 0;
                         fila2.ProxFinLectura = 0;
-
+                        fila2.CantPersonasQueIngresanBiblio = fila1.CantPersonasQueIngresanBiblio + 1;
                         if (fila1.Cola > 0)
                         {
                             // Si la cola es mayor que cero, implica que el servidor está ocupado y por ende se debe incrementar la cola.
@@ -294,8 +310,8 @@ namespace TP4SIM.Entidades
 
                             if (cantidadPersonasEnBiblioteca < 20)
                             {
-                                fila2.Cola = fila1.Cola+1;
-                                fila2.CantPersonasQueIngresanBiblio = fila1.CantPersonasQueIngresanBiblio+1;
+                                fila2.Cola = fila1.Cola + 1;
+                                fila2.CantPersonasBiblioteca = fila1.CantPersonasBiblioteca + 1;
                                 fila2.ProxFinAtencion_1 = fila1.ProxFinAtencion_1;
                                 fila2.ProxFinAtencion_2 = fila1.ProxFinAtencion_2;
 
@@ -319,14 +335,14 @@ namespace TP4SIM.Entidades
                                 {
                                     cliente.Estado = EConsultar;
                                 }
-                                fila2.CantPersonasQueIngresanBiblio = fila1.CantPersonasQueIngresanBiblio+1;
-                                fila2.CantPersonasBiblioteca = fila1.CantPersonasBiblioteca + 1;
+                                
                             }
                             else
                             {
                                 fila2.EstadoBiblioteca = cerrada;
                                 cliente = cliente.DestruirCliente(cliente);
-                                fila2.CantPersonasQueNoIngresanBiblio = fila1.CantPersonasQueNoIngresanBiblio+1;
+                                fila2.CantPersonasQueNoIngresanBiblio = fila1.CantPersonasQueNoIngresanBiblio + 1;
+                                fila2.CantPersonasQueIngresanBiblio = fila1.CantPersonasQueIngresanBiblio - 1;
                             }
                             TodosLosClientes.Add(cliente.CopiarCliente(cliente));
                         }
@@ -369,7 +385,7 @@ namespace TP4SIM.Entidades
                                 fila2.Persona.Add(cliente);
                                 cliente.EnFilaNumero = NumeroSimulacionActual;
                                 TodosLosClientes.Add(cliente.CopiarCliente(cliente));
-                                fila2.CantPersonasQueIngresanBiblio = fila1.CantPersonasQueIngresanBiblio+1;
+                                fila2.CantPersonasQueIngresanBiblio = fila1.CantPersonasQueIngresanBiblio + 1;
                                 fila2.CantPersonasBiblioteca = fila1.CantPersonasBiblioteca + 1;
                             }
                             else
@@ -405,11 +421,11 @@ namespace TP4SIM.Entidades
                                     fila2.EstadoEmpleado_1 = fila1.EstadoEmpleado_1;
 
                                     cliente.Estado = SiendoAtendido;
-                                    cliente.SiendoAtendidoPor = Empleado1;
+                                    cliente.SiendoAtendidoPor = Empleado2;
                                     fila2.Persona.Add(cliente);
                                     cliente.EnFilaNumero = NumeroSimulacionActual;
                                     TodosLosClientes.Add(cliente.CopiarCliente(cliente));
-                                    fila2.CantPersonasQueIngresanBiblio = fila1.CantPersonasQueIngresanBiblio+1;
+                                    fila2.CantPersonasQueIngresanBiblio = fila1.CantPersonasQueIngresanBiblio + 1;
                                     fila2.CantPersonasBiblioteca = fila1.CantPersonasBiblioteca + 1;
                                 }
                                 else
@@ -419,7 +435,7 @@ namespace TP4SIM.Entidades
                                     if (cantidadPersonasEnBiblioteca < 20)
                                     {
                                         fila2.Cola = fila1.Cola + 1;
-                                        fila2.CantPersonasQueIngresanBiblio = fila1.CantPersonasQueIngresanBiblio+1;
+                                        fila2.CantPersonasQueIngresanBiblio = fila1.CantPersonasQueIngresanBiblio + 1;
                                         fila2.ProxFinAtencion_1 = fila1.ProxFinAtencion_1;
                                         fila2.ProxFinAtencion_2 = fila1.ProxFinAtencion_2;
 
@@ -444,14 +460,15 @@ namespace TP4SIM.Entidades
                                         {
                                             cliente.Estado = EConsultar;
                                         }
-                                        fila2.CantPersonasQueIngresanBiblio = fila1.CantPersonasQueIngresanBiblio+1;
+                                        fila2.CantPersonasQueIngresanBiblio = fila1.CantPersonasQueIngresanBiblio + 1;
                                         fila2.CantPersonasBiblioteca = fila1.CantPersonasBiblioteca + 1;
+                                        fila2.RND_FinAtencion = 0;
+                                        fila2.TiempoAtencion = 0;
                                     }
                                     else
                                     {
                                         fila2.EstadoBiblioteca = cerrada;
                                         cliente = cliente.DestruirCliente(cliente);
-                                        fila2.CantPersonasQueNoIngresanBiblio = fila1.CantPersonasQueNoIngresanBiblio+1;
                                         fila2.ProxFinAtencion_2 = fila1.ProxFinAtencion_2;
                                         fila2.EstadoEmpleado_2 = fila1.EstadoEmpleado_2;
                                     }
@@ -466,7 +483,7 @@ namespace TP4SIM.Entidades
                             }
                             else
                             {
-                                fila2.PromTiempoPermanenciaBiblio = fila2.TiempoPermanenciaBiblioteca / fila1.CantPersonasBiblioteca;
+                                fila2.PromTiempoPermanenciaBiblio = fila2.TiempoPermanenciaBiblioteca / (fila1.CantPersonasBiblioteca + 1);
                             }
 
                             fila2.PromPersonasQueNoIngresanBiblio = fila2.CantPersonasQueNoIngresanBiblio / fila2.CantTotalPersonas;
@@ -477,26 +494,30 @@ namespace TP4SIM.Entidades
 
                     case "FinAtención_1":
 
+                        fila2.CantPersonasBiblioteca = fila1.CantPersonasBiblioteca - 1;
                         // Se destruye cliente ya atendido
                         foreach (Temporal client in TodosLosClientes)
                         {
                             if (client.Estado == SiendoAtendido && client.SiendoAtendidoPor == Empleado1)
                             {
-                                if(client.Tipo == "Pedir libro")
+                                if (client.Tipo == "Pedir libro")
                                 {
                                     // Calculamos si se queda a leer si pidio un libro prestado
                                     fila2.RND_FinLectura = log.GenerarRND();
                                     fila2.Se_queda = log.CalcularSiSeQueda(fila2.RND_FinLectura);
 
-                                    if(fila2.Se_queda == "Si")
+                                    if (fila2.Se_queda == "Si")
                                     {
                                         fila2.RND_TiempoLectura = log.GenerarRND();
                                         fila2.TiempoLectura = log.VariableAleatoriaExponencial(30, fila2.RND_TiempoLectura);
-                                        fila2.ProxFinLectura = fila2.Reloj + fila2.ProxFinLectura;
+                                        fila2.ProxFinLectura = fila2.Reloj + fila2.TiempoLectura;
 
+                                        client.Estado = EnBiblioteca;
                                         client.HoraFinLectura = fila2.ProxFinLectura;
                                         client.Estado = EnBiblioteca;
                                         fila2.EstadoBiblioteca = fila1.EstadoBiblioteca;
+                                        tiemposFinLectura.Add((double)fila2.ProxFinLectura);
+                                        fila2.CantPersonasBiblioteca = fila1.CantPersonasBiblioteca + 1;
                                         break;
                                     }
                                     else
@@ -512,11 +533,12 @@ namespace TP4SIM.Entidades
                                     fila2.RND_TiempoLectura = 0;
                                     fila2.TiempoLectura = 0;
                                     fila2.ProxFinLectura = 0;
+                                    fila2.ProxFinAtencion_1 = 0;
                                     fila2.EstadoBiblioteca = abierta;
                                     client.DestruirCliente(client);
                                     break;
                                 }
-                                
+
                             }
                         }
 
@@ -544,7 +566,7 @@ namespace TP4SIM.Entidades
                                 fila2.EstadoEmpleado_1 = estadosAConsulta["Empleado 1"];
                             }
                             fila2.EstadoBiblioteca = abierta;
-                            fila2.Cola = fila1.Cola-1;
+                            fila2.Cola = fila1.Cola - 1;
 
 
                         }
@@ -557,8 +579,6 @@ namespace TP4SIM.Entidades
 
                         }
 
-
-                        fila2.CantPersonasBiblioteca = fila1.CantPersonasBiblioteca -1;
                         fila2.TiempoPermanenciaBiblioteca = fila1.TiempoPermanenciaBiblioteca + (fila2.Reloj - fila1.Reloj) * fila1.CantPersonasBiblioteca;
                         if (fila2.CantPersonasBiblioteca > 0)
                         {
@@ -566,7 +586,7 @@ namespace TP4SIM.Entidades
                         }
                         else
                         {
-                            fila2.PromTiempoPermanenciaBiblio = fila2.TiempoPermanenciaBiblioteca / fila1.CantPersonasBiblioteca;
+                            fila2.PromTiempoPermanenciaBiblio = fila2.TiempoPermanenciaBiblioteca / (fila1.CantPersonasBiblioteca+1);
                         }
 
 
@@ -580,7 +600,7 @@ namespace TP4SIM.Entidades
                         break;
 
                     case "FinAtención_2":
-
+                        fila2.CantPersonasBiblioteca = fila1.CantPersonasBiblioteca - 1;
                         // Se destruye cliente ya atendido
                         foreach (Temporal client in TodosLosClientes)
                         {
@@ -596,11 +616,13 @@ namespace TP4SIM.Entidades
                                     {
                                         fila2.RND_TiempoLectura = log.GenerarRND();
                                         fila2.TiempoLectura = log.VariableAleatoriaExponencial(30, fila2.RND_TiempoLectura);
-                                        fila2.ProxFinLectura = fila2.Reloj + fila2.ProxFinLectura;
+                                        fila2.ProxFinLectura = fila2.Reloj + fila2.TiempoLectura;
 
                                         client.HoraFinLectura = fila2.ProxFinLectura;
                                         client.Estado = EnBiblioteca;
                                         fila2.EstadoBiblioteca = fila1.EstadoBiblioteca;
+                                        tiemposFinLectura.Add((int)fila2.ProxFinLectura);
+                                        fila2.CantPersonasBiblioteca = fila1.CantPersonasBiblioteca + 1;
                                         break;
                                     }
                                     else
@@ -617,6 +639,7 @@ namespace TP4SIM.Entidades
                                     fila2.RND_TiempoLectura = 0;
                                     fila2.TiempoLectura = 0;
                                     fila2.ProxFinLectura = 0;
+                                    fila2.ProxFinAtencion_2 = 0;
                                     fila2.EstadoBiblioteca = abierta;
                                     client.DestruirCliente(client);
                                     break;
@@ -633,23 +656,24 @@ namespace TP4SIM.Entidades
                             if (proxCliente.Tipo == "Pedir libro")
                             {
                                 fila2.TiempoAtencion = log.VariableAleatoriaExponencial(6, fila2.RND_FinAtencion);
-                                fila2.ProxFinAtencion_1 = fila2.Reloj + fila2.TiempoAtencion;
-                                fila2.EstadoEmpleado_1 = estadosAPedidoLibro["Empleado 2"];
+                                fila2.ProxFinAtencion_2 = fila2.Reloj + fila2.TiempoAtencion;
+                                fila2.EstadoEmpleado_2 = estadosAPedidoLibro["Empleado 2"];
                             }
                             if (proxCliente.Tipo == "Devolver libro")
                             {
                                 fila2.TiempoAtencion = log.VariableAleatoriaConvolucion(2, 0.5);
-                                fila2.ProxFinAtencion_1 = fila2.Reloj + fila2.TiempoAtencion;
-                                fila2.EstadoEmpleado_1 = estadosADevolucionLibro["Empleado 2"];
+                                fila2.ProxFinAtencion_2 = fila2.Reloj + fila2.TiempoAtencion;
+                                fila2.EstadoEmpleado_2 = estadosADevolucionLibro["Empleado 2"];
                             }
                             if (proxCliente.Tipo == "Consulta")
                             {
                                 fila2.TiempoAtencion = log.VariableAleatoriaUniforme(2, 5, fila2.RND_FinAtencion);
-                                fila2.ProxFinAtencion_1 = fila2.Reloj + fila2.TiempoAtencion;
-                                fila2.EstadoEmpleado_1 = estadosAConsulta["Empleado 2"];
+                                fila2.ProxFinAtencion_2 = fila2.Reloj + fila2.TiempoAtencion;
+                                fila2.EstadoEmpleado_2 = estadosAConsulta["Empleado 2"];
                             }
+
                             fila2.EstadoBiblioteca = abierta;
-                            fila2.Cola = fila1.Cola -1 ;
+                            fila2.Cola = fila1.Cola - 1;
 
 
                         }
@@ -663,15 +687,14 @@ namespace TP4SIM.Entidades
                         }
 
 
-                        fila2.CantPersonasBiblioteca = fila1.CantPersonasBiblioteca -1;
                         fila2.TiempoPermanenciaBiblioteca = fila1.TiempoPermanenciaBiblioteca + (fila2.Reloj - fila1.Reloj) * fila1.CantPersonasBiblioteca;
-                        if(fila2.CantPersonasBiblioteca > 0)
+                        if (fila2.CantPersonasBiblioteca > 0)
                         {
                             fila2.PromTiempoPermanenciaBiblio = fila2.TiempoPermanenciaBiblioteca / fila2.CantPersonasBiblioteca;
                         }
                         else
                         {
-                            fila2.PromTiempoPermanenciaBiblio = fila2.TiempoPermanenciaBiblioteca / fila1.CantPersonasBiblioteca;
+                            fila2.PromTiempoPermanenciaBiblio = fila2.TiempoPermanenciaBiblioteca / (fila1.CantPersonasBiblioteca + 1);
                         }
 
 
@@ -685,23 +708,24 @@ namespace TP4SIM.Entidades
 
                     case "FinLectura":
 
+                        fila2.CantPersonasBiblioteca = fila1.CantPersonasBiblioteca - 1;
                         // Se destruye cliente ya atendido
                         foreach (Temporal client in TodosLosClientes)
                         {
-                            if(client.HoraFinLectura == fila2.Reloj)
+                            if (client.HoraFinLectura == fila2.Reloj)
                             {
                                 client.DestruirCliente(client);
                                 break;
                             }
                         }
 
+                        tiemposFinLectura.Remove((double)fila2.Reloj);
                         fila2.RND_FinLectura = 0;
                         fila2.Se_queda = "";
                         fila2.RND_TiempoLectura = 0;
                         fila2.TiempoLectura = 0;
                         fila2.ProxFinLectura = 0;
                         fila2.EstadoBiblioteca = abierta;
-                        fila2.CantPersonasBiblioteca = fila1.CantPersonasBiblioteca -1 ;
                         fila2.TiempoPermanenciaBiblioteca = fila1.TiempoPermanenciaBiblioteca + (fila2.Reloj - fila1.Reloj) * fila1.CantPersonasBiblioteca;
                         if (fila2.CantPersonasBiblioteca > 0)
                         {
@@ -719,7 +743,7 @@ namespace TP4SIM.Entidades
                         break;
                 }
 
-
+                
                 // La fila anterior pasa a tener los nuevos valores para repetir el proceso.
 
                 fila1.Evento = fila2.Evento;

@@ -45,7 +45,7 @@ namespace TP4SIM.Entidades
             clienteDestruido.EnFilaNumero = cliente.EnFilaNumero;
             //clienteDestruido.TiempoEspera = cliente.TiempoEspera; // Esto no va a ser lo mismo porque se calcula al final.
             clienteDestruido.SiendoAtendidoPor = cliente.SiendoAtendidoPor;
-
+            cliente.Estado = new Destruido();
             return clienteDestruido;
         }
     }

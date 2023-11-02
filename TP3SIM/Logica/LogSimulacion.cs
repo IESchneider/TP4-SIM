@@ -93,7 +93,7 @@ namespace TP4SIM.Logica
             var cant = 0;
             var destruido = new Destruido();
             foreach (var persona in personas) {
-                if(persona.Estado != destruido)
+                if(persona.Estado.Nombre != destruido.Nombre)
                 {
                     cant++;
                 }
@@ -106,19 +106,12 @@ namespace TP4SIM.Logica
         {
             Temporal cliente = new Temporal();
             cliente.Numero = 9999999;
-            var consulta = new EConsultar();
-            var pedirLibro = new EPedirLibro();
-            var devolverLibro = new EDevolverLibro();
-            foreach (var persona in personas)
-            {
-                if (persona.Estado == consulta || persona.Estado == pedirLibro || persona.Estado == devolverLibro )
-                {
-                    if(persona.Numero < cliente.Numero)
-                    {
-                        cliente = persona;
-                    }
-                }
-            }
+            EConsultar consulta = new EConsultar();
+            EPedirLibro pedirLibro = new EPedirLibro();
+            EDevolverLibro devolverLibro = new EDevolverLibro();
+
+            cliente = personas.OrderBy(o => o.Numero).Where(o => o.Estado.Nombre == consulta.Nombre || o.Estado.Nombre == pedirLibro.Nombre || o.Estado.Nombre == devolverLibro.Nombre).FirstOrDefault();
+            personas.OrderBy(o => o.Numero).Where(o => o.Estado.Nombre == consulta.Nombre || o.Estado.Nombre == pedirLibro.Nombre || o.Estado.Nombre == devolverLibro.Nombre).First().Estado = new Destruido();
             return cliente;
 
         }
