@@ -310,13 +310,11 @@ namespace TP4SIM.Entidades
                         fila2.RND_TiempoLectura = 0;
                         fila2.TiempoLectura = 0;
                         fila2.ProxFinLectura = 0;
-                        fila2.CantPersonasQueIngresanBiblio = fila1.CantPersonasQueIngresanBiblio + 1;
                         if (fila1.Cola > 0)
                         {
                             // Si la cola es mayor que cero, implica que el servidor está ocupado y por ende se debe incrementar la cola.
-                            cantidadPersonasEnBiblioteca = log.CantidadPersonasBiblioteca(TodosLosClientes);
 
-                            if (cantidadPersonasEnBiblioteca < 20)
+                            if (fila1.CantPersonasBiblioteca < 20)
                             {
                                 fila2.Cola = fila1.Cola + 1;
                                 fila2.CantPersonasBiblioteca = fila1.CantPersonasBiblioteca + 1;
@@ -438,9 +436,8 @@ namespace TP4SIM.Entidades
                                 }
                                 else
                                 {
-                                    cantidadPersonasEnBiblioteca = log.CantidadPersonasBiblioteca(TodosLosClientes);
 
-                                    if (cantidadPersonasEnBiblioteca < 20)
+                                    if (fila1.CantPersonasBiblioteca < 20)
                                     {
                                         fila2.Cola = fila1.Cola + 1;
                                         fila2.CantPersonasQueIngresanBiblio = fila1.CantPersonasQueIngresanBiblio + 1;
