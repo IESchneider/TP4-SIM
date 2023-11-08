@@ -36,7 +36,7 @@ namespace TP4SIM
             //txtFilaDesde.Text = 0.ToString();
             //txtFilaHasta.Text = 5000.ToString();
 
-            if (!ValidacionDesdeHasta()) return;
+            if (!ValidacionDesdeHasta() || !ValidacionMedia()) return;
 
             // Si validó la información, comenzar la simulación.
 
@@ -52,13 +52,27 @@ namespace TP4SIM
             simulacion.CantidadSimulaciones = Convert.ToInt32(txtNumeroSimulaciones.Text.Trim());
             simulacion.FilaDesde = Convert.ToInt32(txtFilaDesde.Text.Trim());
             simulacion.FilaHasta = Convert.ToInt32(txtFilaHasta.Text.Trim());
+            simulacion.MediaClientes = Convert.ToInt32(TxtMediaClientes.Text.Trim());
+            simulacion.MediaLectura = Convert.ToInt32(TxtMediaLectura.Text.Trim());
 
             simulacion.FormularioSimulacion = new FormSimulacion();
 
             simulacion.Simular();
         }
+        private bool ValidacionMedia()
+        {
+            
+            if (TxtMediaClientes.Text.Equals("") || TxtMediaLectura.Text.Equals(""))
+            {
+                MessageBox.Show("No ha ingresado todos los datos requeridos, intente nuevamente.", "Datos incompletos", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
+            return true;
+        }
+        
+            
 
-        private bool ValidacionDesdeHasta()
+            private bool ValidacionDesdeHasta()
         {
             // Lista de validaciones para los números desde y hasta.
 
