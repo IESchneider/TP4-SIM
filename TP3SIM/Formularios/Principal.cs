@@ -18,6 +18,7 @@ namespace TP4SIM
         {
             InitializeComponent();
             LimpiarCampos();
+            CargarValoresPorDefecto();
         }
 
         private void btnSimular_Click(object sender, EventArgs e)
@@ -36,7 +37,7 @@ namespace TP4SIM
             //txtFilaDesde.Text = 0.ToString();
             //txtFilaHasta.Text = 5000.ToString();
 
-            if (!ValidacionDesdeHasta() || !ValidacionMedia() || !ValidacionAB()) return;
+            if (!ValidacionDesdeHasta() || !ValidacionMedia() || !ValidacionAB() || !ValidacionesParametros()) return;
 
             // Si validó la información, comenzar la simulación.
 
@@ -117,6 +118,33 @@ namespace TP4SIM
             }
 
             return true;
+        }
+        private bool ValidacionesParametros()
+        {
+            // Lista de validaciones de todos los parámetros
+
+            if ((Math.Abs(Convert.ToDouble(nrcDevolverLibro.Value + nrcPedirLibro.Value + nrcConsulta.Value) - 1.0) > 0.001))
+            {
+                MessageBox.Show("La suma de las probabilidades tiene que sumar 1, intente nuevamente.", "Datos incorrectos", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
+            if (Convert.ToDouble(nrcProbabilidadNo.Value) == 0.00)
+            {
+                MessageBox.Show("La probabilidad de que una persona se vaya de la biblioteca debe ser mayor a cero, intente nuevamente.", "Datos incorrectos", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
+            return true;
+        }
+        private void CargarValoresPorDefecto()
+        {
+            // Insertar valores por defecto en los numerics.
+
+            nrcPedirLibro.Value = 0.45M;
+            nrcDevolverLibro.Value = 0.45M;
+            nrcConsulta.Value = 0.10M;
+
+            nrcProbabilidadNo.Value = 0.60M;
+            
         }
 
         private void LimpiarCampos()
