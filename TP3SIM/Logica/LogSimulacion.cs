@@ -51,22 +51,22 @@ namespace TP4SIM.Logica
             return Math.Round(variableAleatoria, 2);
         }
 
-        public string CalcularTipoAtencion(double random)
+        public string CalcularTipoAtencion(double random, double pedirLibro, double devolverLibro, double consulta)
         {
-            if(random >= 0 && random < 0.45)
+            if(random >= 0 && random < pedirLibro)
             {
                 return "Pedir libro";
             }
-            else if (random >= 0.45 && random < 0.9)
+            else if (random >= pedirLibro && random < (pedirLibro + devolverLibro))
             {
                 return "Devolver libro";
             }
             return "Consulta";
         }
 
-        public string CalcularSiSeQueda(double random)
+        public string CalcularSiSeQueda(double random, double probabilidadNo)
         {
-            if (random >= 0 && random < 0.40)
+            if (random >= 0 && random < (1-probabilidadNo))
             {
                 return "Si";
             }

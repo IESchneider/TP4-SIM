@@ -32,10 +32,10 @@ namespace TP4SIM.Entidades
         public int MediaLectura { get; set; }
         public double A { get; set; }
         public double B { get; set; }
-        public float PorcentajeNo { get; set; }
-        public float PorcentajePedirLibro { get; set; }
-        public float PorcentajeDevolverLibro { get; set; }
-        public float PorcentajeConsulta { get; set; }
+        public double ProbabilidadNo { get; set; }
+        public double ProbabilidadPedirLibro { get; set; }
+        public double ProbabilidadDevolverLibro { get; set; }
+        public double ProbabilidadConsulta { get; set; }
 
         public List<double> tiemposFinLectura = new List<double> { 0 };
 
@@ -297,7 +297,7 @@ namespace TP4SIM.Entidades
                         // Obtener RNDS y tipo atencion
 
                         fila2.RND_TipoAtencion = log.GenerarRND();
-                        fila2.TipoAtencion = log.CalcularTipoAtencion(fila2.RND_TipoAtencion);
+                        fila2.TipoAtencion = log.CalcularTipoAtencion(fila2.RND_TipoAtencion,ProbabilidadPedirLibro, ProbabilidadDevolverLibro, ProbabilidadConsulta);
                         cliente.Tipo = fila2.TipoAtencion;
 
 
@@ -330,7 +330,7 @@ namespace TP4SIM.Entidades
                                 cliente.EnFilaNumero = NumeroSimulacionActual;
 
                                 fila2.RND_TipoAtencion = log.GenerarRND();
-                                cliente.Tipo = log.CalcularTipoAtencion(fila2.RND_TipoAtencion);
+                                cliente.Tipo = log.CalcularTipoAtencion(fila2.RND_TipoAtencion, ProbabilidadPedirLibro, ProbabilidadDevolverLibro, ProbabilidadConsulta);
                                 if (cliente.Tipo == "Pedir libro")
                                 {
                                     cliente.Estado = EPedirLibro;
@@ -361,7 +361,7 @@ namespace TP4SIM.Entidades
                             if (fila1.EstadoEmpleado_1.Libre)
                             {
                                 fila2.RND_TipoAtencion = log.GenerarRND();
-                                cliente.Tipo = log.CalcularTipoAtencion(fila2.RND_TipoAtencion);
+                                cliente.Tipo = log.CalcularTipoAtencion(fila2.RND_TipoAtencion, ProbabilidadPedirLibro, ProbabilidadDevolverLibro, ProbabilidadConsulta);
 
                                 fila2.RND_FinAtencion = log.GenerarRND();
                                 if (cliente.Tipo == "Pedir libro")
@@ -401,7 +401,7 @@ namespace TP4SIM.Entidades
                                 if (fila1.EstadoEmpleado_2.Libre)
                                 {
                                     fila2.RND_TipoAtencion = log.GenerarRND();
-                                    cliente.Tipo = log.CalcularTipoAtencion(fila2.RND_TipoAtencion);
+                                    cliente.Tipo = log.CalcularTipoAtencion(fila2.RND_TipoAtencion, ProbabilidadPedirLibro, ProbabilidadDevolverLibro, ProbabilidadConsulta);
 
                                     fila2.RND_FinAtencion = log.GenerarRND();
                                     if (cliente.Tipo == "Pedir libro")
@@ -454,7 +454,7 @@ namespace TP4SIM.Entidades
                                         cliente.EnFilaNumero = NumeroSimulacionActual;
 
                                         fila2.RND_TipoAtencion = log.GenerarRND();
-                                        cliente.Tipo = log.CalcularTipoAtencion(fila2.RND_TipoAtencion);
+                                        cliente.Tipo = log.CalcularTipoAtencion(fila2.RND_TipoAtencion, ProbabilidadPedirLibro, ProbabilidadDevolverLibro, ProbabilidadConsulta);
 
                                         if (cliente.Tipo == "Pedir libro")
                                         {
@@ -512,7 +512,7 @@ namespace TP4SIM.Entidades
                                 {
                                     // Calculamos si se queda a leer si pidio un libro prestado
                                     fila2.RND_FinLectura = log.GenerarRND();
-                                    fila2.Se_queda = log.CalcularSiSeQueda(fila2.RND_FinLectura);
+                                    fila2.Se_queda = log.CalcularSiSeQueda(fila2.RND_FinLectura, ProbabilidadNo);
 
                                     if (fila2.Se_queda == "Si")
                                     {
@@ -618,7 +618,7 @@ namespace TP4SIM.Entidades
                                 {
                                     // Calculamos si se queda a leer si pidio un libro prestado
                                     fila2.RND_FinLectura = log.GenerarRND();
-                                    fila2.Se_queda = log.CalcularSiSeQueda(fila2.RND_FinLectura);
+                                    fila2.Se_queda = log.CalcularSiSeQueda(fila2.RND_FinLectura, ProbabilidadNo);
 
                                     if (fila2.Se_queda == "Si")
                                     {

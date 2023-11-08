@@ -59,6 +59,11 @@ namespace TP4SIM
             simulacion.MediaLectura = Convert.ToInt32(TxtMediaLectura.Text.Trim());
             simulacion.A = Convert.ToDouble(txtAConsulta.Text.Trim());
             simulacion.B = Convert.ToDouble(txtBConsulta.Text.Trim());
+            simulacion.ProbabilidadPedirLibro = Convert.ToDouble(nrcPedirLibro.Value);
+            simulacion.ProbabilidadDevolverLibro = Convert.ToDouble(nrcDevolverLibro.Value);
+            simulacion.ProbabilidadConsulta = Convert.ToDouble(nrcConsulta.Value);
+            simulacion.ProbabilidadNo = Convert.ToDouble(nrcProbabilidadNo.Value);
+
 
 
             simulacion.FormularioSimulacion = new FormSimulacion();
