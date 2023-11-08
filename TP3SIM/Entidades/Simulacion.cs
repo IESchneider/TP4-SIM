@@ -28,6 +28,14 @@ namespace TP4SIM.Entidades
 
         public int FilaDesde { get; set; }
         public int FilaHasta { get; set; }
+        public int MediaClientes { get; set; }
+        public int MediaLectura { get; set; }
+        public int A { get; set; }
+        public int B { get; set; }
+        public float PorcentajeNo { get; set; }
+        public float PorcentajePedirLibro { get; set; }
+        public float PorcentajeDevolverLibro { get; set; }
+        public float PorcentajeConsulta { get; set; }
 
         public List<double> tiemposFinLectura = new List<double> { 0 };
 
@@ -139,7 +147,7 @@ namespace TP4SIM.Entidades
             // Obtiene los randoms y las próximas llegadas para la fila de inicialización.
 
             fila1.RND_Llegada = log.GenerarRND();
-            fila1.TiempoEntreLlegadas = log.VariableAleatoriaExponencial(4, fila1.RND_Llegada);
+            fila1.TiempoEntreLlegadas = log.VariableAleatoriaExponencial(MediaClientes, fila1.RND_Llegada);
             fila1.ProximaLlegada = fila1.TiempoEntreLlegadas;
 
             // Obtiene el primer próximo reloj solo para mostrarlo en la grilla de otro color.
@@ -283,7 +291,7 @@ namespace TP4SIM.Entidades
                         // Obtener RNDs y Llegadas
 
                         fila2.RND_Llegada = log.GenerarRND();
-                        fila2.TiempoEntreLlegadas = log.VariableAleatoriaExponencial(1, fila2.RND_Llegada);
+                        fila2.TiempoEntreLlegadas = log.VariableAleatoriaExponencial(MediaClientes, fila2.RND_Llegada);
                         fila2.ProximaLlegada = fila2.Reloj + fila2.TiempoEntreLlegadas;
 
                         // Obtener RNDS y tipo atencion
@@ -509,7 +517,7 @@ namespace TP4SIM.Entidades
                                     if (fila2.Se_queda == "Si")
                                     {
                                         fila2.RND_TiempoLectura = log.GenerarRND();
-                                        fila2.TiempoLectura = log.VariableAleatoriaExponencial(30, fila2.RND_TiempoLectura);
+                                        fila2.TiempoLectura = log.VariableAleatoriaExponencial(MediaLectura, fila2.RND_TiempoLectura);
                                         fila2.ProxFinLectura = fila2.Reloj + fila2.TiempoLectura;
 
                                         client.Estado = EnBiblioteca;
@@ -615,7 +623,7 @@ namespace TP4SIM.Entidades
                                     if (fila2.Se_queda == "Si")
                                     {
                                         fila2.RND_TiempoLectura = log.GenerarRND();
-                                        fila2.TiempoLectura = log.VariableAleatoriaExponencial(30, fila2.RND_TiempoLectura);
+                                        fila2.TiempoLectura = log.VariableAleatoriaExponencial(MediaLectura, fila2.RND_TiempoLectura);
                                         fila2.ProxFinLectura = fila2.Reloj + fila2.TiempoLectura;
 
                                         client.HoraFinLectura = fila2.ProxFinLectura;
