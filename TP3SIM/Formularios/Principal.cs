@@ -36,12 +36,14 @@ namespace TP4SIM
             //txtFilaDesde.Text = 0.ToString();
             //txtFilaHasta.Text = 5000.ToString();
 
-            if (!ValidacionDesdeHasta() || !ValidacionMedia()) return;
+            if (!ValidacionDesdeHasta() || !ValidacionMedia() || !ValidacionAB()) return;
 
             // Si validó la información, comenzar la simulación.
 
             ComenzarPrimeraSimulacion();
         }
+
+       
 
         private void ComenzarPrimeraSimulacion()
         {
@@ -54,15 +56,29 @@ namespace TP4SIM
             simulacion.FilaHasta = Convert.ToInt32(txtFilaHasta.Text.Trim());
             simulacion.MediaClientes = Convert.ToInt32(TxtMediaClientes.Text.Trim());
             simulacion.MediaLectura = Convert.ToInt32(TxtMediaLectura.Text.Trim());
+            simulacion.A = Convert.ToDouble(txtAConsulta.Text.Trim());
+            simulacion.B = Convert.ToDouble(txtBConsulta.Text.Trim());
+
 
             simulacion.FormularioSimulacion = new FormSimulacion();
 
             simulacion.Simular();
+        } 
+        private bool ValidacionAB()
+        {
+            double a = Convert.ToDouble(txtAConsulta.Text.Trim());
+            double b = Convert.ToDouble(txtBConsulta.Text.Trim());
+            if (b < a)
+            {
+                MessageBox.Show("El valor ingresado en b debe ser menor al de a, intente nuevamente.", "Datos incorrectos", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            };
+            return true;
         }
         private bool ValidacionMedia()
         {
             
-            if (TxtMediaClientes.Text.Equals("") || TxtMediaLectura.Text.Equals(""))
+            if (TxtMediaClientes.Text.Equals("") || TxtMediaLectura.Text.Equals("") || txtAConsulta.Text.Equals("") || txtBConsulta.Text.Equals(""))
             {
                 MessageBox.Show("No ha ingresado todos los datos requeridos, intente nuevamente.", "Datos incompletos", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
@@ -70,8 +86,6 @@ namespace TP4SIM
             return true;
         }
         
-            
-
             private bool ValidacionDesdeHasta()
         {
             // Lista de validaciones para los números desde y hasta.

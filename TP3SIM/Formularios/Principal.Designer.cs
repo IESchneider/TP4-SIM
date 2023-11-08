@@ -57,9 +57,9 @@
             this.label10 = new System.Windows.Forms.Label();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.label8 = new System.Windows.Forms.Label();
-            this.maskedTextBox2 = new System.Windows.Forms.MaskedTextBox();
+            this.txtAConsulta = new System.Windows.Forms.MaskedTextBox();
             this.label11 = new System.Windows.Forms.Label();
-            this.maskedTextBox3 = new System.Windows.Forms.MaskedTextBox();
+            this.txtBConsulta = new System.Windows.Forms.MaskedTextBox();
             this.gbPrincipal.SuspendLayout();
             this.gbSimular.SuspendLayout();
             this.gbDatosGenerales.SuspendLayout();
@@ -356,10 +356,10 @@
             // 
             // groupBox5
             // 
-            this.groupBox5.Controls.Add(this.maskedTextBox3);
+            this.groupBox5.Controls.Add(this.txtBConsulta);
             this.groupBox5.Controls.Add(this.label11);
             this.groupBox5.Controls.Add(this.label8);
-            this.groupBox5.Controls.Add(this.maskedTextBox2);
+            this.groupBox5.Controls.Add(this.txtAConsulta);
             this.groupBox5.Location = new System.Drawing.Point(587, 284);
             this.groupBox5.Name = "groupBox5";
             this.groupBox5.Size = new System.Drawing.Size(212, 124);
@@ -377,15 +377,15 @@
             this.label8.TabIndex = 16;
             this.label8.Text = "a:";
             // 
-            // maskedTextBox2
+            // txtAConsulta
             // 
-            this.maskedTextBox2.Location = new System.Drawing.Point(74, 41);
-            this.maskedTextBox2.Mask = "9999999";
-            this.maskedTextBox2.Name = "maskedTextBox2";
-            this.maskedTextBox2.Size = new System.Drawing.Size(57, 20);
-            this.maskedTextBox2.TabIndex = 3;
-            this.maskedTextBox2.Text = "2";
-            this.maskedTextBox2.ValidatingType = typeof(int);
+            this.txtAConsulta.Location = new System.Drawing.Point(74, 41);
+            this.txtAConsulta.Mask = "9999999";
+            this.txtAConsulta.Name = "txtAConsulta";
+            this.txtAConsulta.Size = new System.Drawing.Size(57, 20);
+            this.txtAConsulta.TabIndex = 3;
+            this.txtAConsulta.Text = "2";
+            this.txtAConsulta.ValidatingType = typeof(int);
             // 
             // label11
             // 
@@ -397,15 +397,15 @@
             this.label11.TabIndex = 17;
             this.label11.Text = "b:";
             // 
-            // maskedTextBox3
+            // txtBConsulta
             // 
-            this.maskedTextBox3.Location = new System.Drawing.Point(74, 71);
-            this.maskedTextBox3.Mask = "9999999";
-            this.maskedTextBox3.Name = "maskedTextBox3";
-            this.maskedTextBox3.Size = new System.Drawing.Size(57, 20);
-            this.maskedTextBox3.TabIndex = 18;
-            this.maskedTextBox3.Text = "5";
-            this.maskedTextBox3.ValidatingType = typeof(int);
+            this.txtBConsulta.Location = new System.Drawing.Point(74, 71);
+            this.txtBConsulta.Mask = "9999999";
+            this.txtBConsulta.Name = "txtBConsulta";
+            this.txtBConsulta.Size = new System.Drawing.Size(57, 20);
+            this.txtBConsulta.TabIndex = 18;
+            this.txtBConsulta.Text = "5";
+            this.txtBConsulta.ValidatingType = typeof(int);
             // 
             // Principal
             // 
@@ -468,10 +468,10 @@
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.MaskedTextBox maskedTextBox1;
         private System.Windows.Forms.GroupBox groupBox5;
-        private System.Windows.Forms.MaskedTextBox maskedTextBox3;
+        private System.Windows.Forms.MaskedTextBox txtBConsulta;
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.Label label8;
-        private System.Windows.Forms.MaskedTextBox maskedTextBox2;
+        private System.Windows.Forms.MaskedTextBox txtAConsulta;
     }
 }
 

@@ -30,8 +30,8 @@ namespace TP4SIM.Entidades
         public int FilaHasta { get; set; }
         public int MediaClientes { get; set; }
         public int MediaLectura { get; set; }
-        public int A { get; set; }
-        public int B { get; set; }
+        public double A { get; set; }
+        public double B { get; set; }
         public float PorcentajeNo { get; set; }
         public float PorcentajePedirLibro { get; set; }
         public float PorcentajeDevolverLibro { get; set; }
@@ -378,7 +378,7 @@ namespace TP4SIM.Entidades
                                 }
                                 if (cliente.Tipo == "Consulta")
                                 {
-                                    fila2.TiempoAtencion = log.VariableAleatoriaUniforme(2, 5, fila2.RND_FinAtencion);
+                                    fila2.TiempoAtencion = log.VariableAleatoriaUniforme(A, B, fila2.RND_FinAtencion);
                                     fila2.ProxFinAtencion_1 = fila2.Reloj + fila2.TiempoAtencion;
                                     fila2.EstadoEmpleado_1 = estadosAConsulta["Empleado 1"];
                                 }
@@ -418,7 +418,7 @@ namespace TP4SIM.Entidades
                                     }
                                     if (cliente.Tipo == "Consulta")
                                     {
-                                        fila2.TiempoAtencion = log.VariableAleatoriaUniforme(2, 5, fila2.RND_FinAtencion);
+                                        fila2.TiempoAtencion = log.VariableAleatoriaUniforme(A, B, fila2.RND_FinAtencion);
                                         fila2.ProxFinAtencion_2 = fila2.Reloj + fila2.TiempoAtencion;
                                         fila2.EstadoEmpleado_2 = estadosAConsulta["Empleado 2"];
                                     }
@@ -569,7 +569,7 @@ namespace TP4SIM.Entidades
                             }
                             if (proxCliente.Tipo == "Consulta")
                             {
-                                fila2.TiempoAtencion = log.VariableAleatoriaUniforme(2, 5, fila2.RND_FinAtencion);
+                                fila2.TiempoAtencion = log.VariableAleatoriaUniforme(A, B, fila2.RND_FinAtencion);
                                 fila2.ProxFinAtencion_1 = fila2.Reloj + fila2.TiempoAtencion;
                                 fila2.EstadoEmpleado_1 = estadosAConsulta["Empleado 1"];
                             }
@@ -675,7 +675,7 @@ namespace TP4SIM.Entidades
                             }
                             if (proxCliente.Tipo == "Consulta")
                             {
-                                fila2.TiempoAtencion = log.VariableAleatoriaUniforme(2, 5, fila2.RND_FinAtencion);
+                                fila2.TiempoAtencion = log.VariableAleatoriaUniforme(A, B, fila2.RND_FinAtencion);
                                 fila2.ProxFinAtencion_2 = fila2.Reloj + fila2.TiempoAtencion;
                                 fila2.EstadoEmpleado_2 = estadosAConsulta["Empleado 2"];
                             }
