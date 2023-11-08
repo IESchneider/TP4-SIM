@@ -59,7 +59,7 @@
             this.CantPersonasQueIngresanBiblio = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.CantPersonasQueNoIngresan = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.CantTotalPersonas = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.PromPersonasQueNoIngresan = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.PromPersonasQueNoIngresanBiblio = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.dgvGrillaSimulacion)).BeginInit();
             this.SuspendLayout();
             // 
@@ -116,7 +116,7 @@
             this.CantPersonasQueIngresanBiblio,
             this.CantPersonasQueNoIngresan,
             this.CantTotalPersonas,
-            this.PromPersonasQueNoIngresan});
+            this.PromPersonasQueNoIngresanBiblio});
             dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
             dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -349,12 +349,12 @@
             this.CantTotalPersonas.ReadOnly = true;
             this.CantTotalPersonas.Width = 125;
             // 
-            // PromPersonasQueNoIngresan
+            // PromPersonasQueNoIngresanBiblio
             // 
-            this.PromPersonasQueNoIngresan.MinimumWidth = 6;
-            this.PromPersonasQueNoIngresan.Name = "PromPersonasQueNoIngresan";
-            this.PromPersonasQueNoIngresan.ReadOnly = true;
-            this.PromPersonasQueNoIngresan.Width = 125;
+            this.PromPersonasQueNoIngresanBiblio.MinimumWidth = 6;
+            this.PromPersonasQueNoIngresanBiblio.Name = "PromPersonasQueNoIngresanBiblio";
+            this.PromPersonasQueNoIngresanBiblio.ReadOnly = true;
+            this.PromPersonasQueNoIngresanBiblio.Width = 125;
             // 
             // FormSimulacion
             // 
@@ -404,6 +404,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn CantPersonasQueIngresanBiblio;
         private System.Windows.Forms.DataGridViewTextBoxColumn CantPersonasQueNoIngresan;
         private System.Windows.Forms.DataGridViewTextBoxColumn CantTotalPersonas;
-        private System.Windows.Forms.DataGridViewTextBoxColumn PromPersonasQueNoIngresan;
+        private System.Windows.Forms.DataGridViewTextBoxColumn PromPersonasQueNoIngresanBiblio;
     }
 }

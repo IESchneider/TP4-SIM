@@ -82,6 +82,7 @@ namespace TP4SIM.Entidades
             PromTiempoPermanenciaBiblio = 0.0;
             CantPersonasQueIngresanBiblio = 0;
             CantPersonasQueNoIngresanBiblio = 0;
+            PromPersonasQueNoIngresanBiblio = 0.0;
             CantTotalPersonas = 0;
 
             Persona.Clear();

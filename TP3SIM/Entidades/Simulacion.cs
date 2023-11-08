@@ -510,17 +510,20 @@ namespace TP4SIM.Entidades
                         fila2.TiempoPermanenciaBiblioteca = fila1.TiempoPermanenciaBiblioteca + (fila2.Reloj - fila1.Reloj) * fila2.CantPersonasBiblioteca;
                         if (fila2.CantPersonasBiblioteca > 0)
                         {
-                            fila2.PromTiempoPermanenciaBiblio = fila2.TiempoPermanenciaBiblioteca / fila2.CantTotalPersonas;
+                            fila2.PromTiempoPermanenciaBiblio = fila2.TiempoPermanenciaBiblioteca / fila2.CantPersonasQueIngresanBiblio;
                         }
                         else
                         {
-                            fila2.PromTiempoPermanenciaBiblio = fila2.TiempoPermanenciaBiblioteca / (fila1.CantTotalPersonas + 1);
+                            fila2.PromTiempoPermanenciaBiblio = fila2.TiempoPermanenciaBiblioteca / (fila1.CantPersonasQueIngresanBiblio + 1);
                         }
-                        if (fila2.CantPersonasQueNoIngresanBiblio > 0)
+                        if (fila2.CantPersonasBiblioteca > 0)
                         {
-                            fila2.PromPersonasQueNoIngresanBiblio = fila2.CantPersonasQueNoIngresanBiblio / fila2.CantTotalPersonas;
+                            fila2.PromPersonasQueNoIngresanBiblio = (double)fila2.CantPersonasQueNoIngresanBiblio / fila2.CantTotalPersonas;
                         }
-                        fila2.PromPersonasQueNoIngresanBiblio = fila2.CantPersonasQueNoIngresanBiblio / fila2.CantTotalPersonas;
+                        else
+                        {
+                            fila2.PromPersonasQueNoIngresanBiblio = (double) fila2.CantPersonasQueNoIngresanBiblio / (fila1.CantTotalPersonas + 1);
+                        }
 
                         break;
 
@@ -614,11 +617,11 @@ namespace TP4SIM.Entidades
                         fila2.TiempoPermanenciaBiblioteca = fila1.TiempoPermanenciaBiblioteca + (fila2.Reloj - fila1.Reloj) * fila1.CantPersonasBiblioteca;
                         if (fila2.CantPersonasBiblioteca > 0)
                         {
-                            fila2.PromTiempoPermanenciaBiblio = fila2.TiempoPermanenciaBiblioteca / fila2.CantPersonasBiblioteca;
+                            fila2.PromTiempoPermanenciaBiblio = fila2.TiempoPermanenciaBiblioteca / fila2.CantPersonasQueIngresanBiblio;
                         }
                         else
                         {
-                            fila2.PromTiempoPermanenciaBiblio = fila2.TiempoPermanenciaBiblioteca / (fila1.CantPersonasBiblioteca + 1);
+                            fila2.PromTiempoPermanenciaBiblio = fila2.TiempoPermanenciaBiblioteca / (fila1.CantPersonasQueIngresanBiblio + 1);
                         }
 
 
@@ -627,7 +630,14 @@ namespace TP4SIM.Entidades
                         fila2.EstadoEmpleado_2 = fila1.EstadoEmpleado_2;
                         fila2.ProximaLlegada = fila1.ProximaLlegada;
                         fila2.ProxFinAtencion_2 = fila1.ProxFinAtencion_2;
-                        fila2.PromPersonasQueNoIngresanBiblio = fila1.PromPersonasQueNoIngresanBiblio;
+                        if (fila2.CantTotalPersonas > 0)
+                        {
+                            fila2.PromPersonasQueNoIngresanBiblio = (double)fila2.CantPersonasQueNoIngresanBiblio / fila2.CantTotalPersonas;
+                        }
+                        else
+                        {
+                            fila2.PromPersonasQueNoIngresanBiblio = (double)fila2.CantPersonasQueNoIngresanBiblio / (fila1.CantTotalPersonas + 1);
+                        }
 
                         break;
 
@@ -722,11 +732,11 @@ namespace TP4SIM.Entidades
                         fila2.TiempoPermanenciaBiblioteca = fila1.TiempoPermanenciaBiblioteca + (fila2.Reloj - fila1.Reloj) * fila1.CantPersonasBiblioteca;
                         if (fila2.CantPersonasBiblioteca > 0)
                         {
-                            fila2.PromTiempoPermanenciaBiblio = fila2.TiempoPermanenciaBiblioteca / fila2.CantPersonasBiblioteca;
+                            fila2.PromTiempoPermanenciaBiblio = fila2.TiempoPermanenciaBiblioteca / fila2.CantPersonasQueIngresanBiblio;
                         }
                         else
                         {
-                            fila2.PromTiempoPermanenciaBiblio = fila2.TiempoPermanenciaBiblioteca / (fila1.CantPersonasBiblioteca + 1);
+                            fila2.PromTiempoPermanenciaBiblio = fila2.TiempoPermanenciaBiblioteca / (fila1.CantPersonasQueIngresanBiblio + 1);
                         }
 
 
@@ -734,7 +744,15 @@ namespace TP4SIM.Entidades
                         fila2.EstadoEmpleado_1 = fila1.EstadoEmpleado_1;
                         fila2.ProximaLlegada = fila1.ProximaLlegada;
                         fila2.ProxFinAtencion_1 = fila1.ProxFinAtencion_1;
-                        fila2.PromPersonasQueNoIngresanBiblio = fila1.PromPersonasQueNoIngresanBiblio;
+
+                        if (fila2.CantTotalPersonas > 0)
+                        {
+                            fila2.PromPersonasQueNoIngresanBiblio = (double)fila2.CantPersonasQueNoIngresanBiblio / fila2.CantTotalPersonas;
+                        }
+                        else
+                        {
+                            fila2.PromPersonasQueNoIngresanBiblio = (double)fila2.CantPersonasQueNoIngresanBiblio / (fila1.CantTotalPersonas + 1);
+                        }
 
                         break;
 
@@ -761,15 +779,22 @@ namespace TP4SIM.Entidades
                         fila2.TiempoPermanenciaBiblioteca = fila1.TiempoPermanenciaBiblioteca + (fila2.Reloj - fila1.Reloj) * fila1.CantPersonasBiblioteca;
                         if (fila2.CantPersonasBiblioteca > 0)
                         {
-                            fila2.PromTiempoPermanenciaBiblio = fila2.TiempoPermanenciaBiblioteca / fila2.CantPersonasBiblioteca;
+                            fila2.PromTiempoPermanenciaBiblio = fila2.TiempoPermanenciaBiblioteca / fila2.CantPersonasQueIngresanBiblio;
                         }
                         else
                         {
-                            fila2.PromTiempoPermanenciaBiblio = fila2.TiempoPermanenciaBiblioteca / fila1.CantPersonasBiblioteca;
+                            fila2.PromTiempoPermanenciaBiblio = fila2.TiempoPermanenciaBiblioteca / fila1.CantPersonasQueIngresanBiblio;
                         }
 
                         fila2.CantTotalPersonas = fila1.CantTotalPersonas;
-                        fila2.PromPersonasQueNoIngresanBiblio = fila1.PromPersonasQueNoIngresanBiblio;
+                        if (fila2.CantTotalPersonas > 0)
+                        {
+                            fila2.PromPersonasQueNoIngresanBiblio = (double) fila2.CantPersonasQueNoIngresanBiblio / fila2.CantTotalPersonas;
+                        }
+                        else
+                        {
+                            fila2.PromPersonasQueNoIngresanBiblio = (double) fila2.CantPersonasQueNoIngresanBiblio / (fila1.CantTotalPersonas + 1);
+                        }
                         fila2.ProximaLlegada = fila1.ProximaLlegada;
 
                         break;
