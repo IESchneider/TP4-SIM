@@ -18,6 +18,7 @@ namespace TP4SIM
         {
             InitializeComponent();
             LimpiarCampos();
+            CargarValoresPorDefecto();
         }
 
         private void btnSimular_Click(object sender, EventArgs e)
@@ -36,12 +37,14 @@ namespace TP4SIM
             //txtFilaDesde.Text = 0.ToString();
             //txtFilaHasta.Text = 5000.ToString();
 
-            if (!ValidacionDesdeHasta() || !ValidacionMedia()) return;
+            if (!ValidacionDesdeHasta() || !ValidacionMedia() || !ValidacionAB() || !ValidacionesParametros()) return;
 
             // Si validó la información, comenzar la simulación.
 
             ComenzarPrimeraSimulacion();
         }
+
+       
 
         private void ComenzarPrimeraSimulacion()
         {
@@ -54,15 +57,34 @@ namespace TP4SIM
             simulacion.FilaHasta = Convert.ToInt32(txtFilaHasta.Text.Trim());
             simulacion.MediaClientes = Convert.ToInt32(TxtMediaClientes.Text.Trim());
             simulacion.MediaLectura = Convert.ToInt32(TxtMediaLectura.Text.Trim());
+            simulacion.A = Convert.ToDouble(txtAConsulta.Text.Trim());
+            simulacion.B = Convert.ToDouble(txtBConsulta.Text.Trim());
+            simulacion.ProbabilidadPedirLibro = Convert.ToDouble(nrcPedirLibro.Value);
+            simulacion.ProbabilidadDevolverLibro = Convert.ToDouble(nrcDevolverLibro.Value);
+            simulacion.ProbabilidadConsulta = Convert.ToDouble(nrcConsulta.Value);
+            simulacion.ProbabilidadNo = Convert.ToDouble(nrcProbabilidadNo.Value);
+
+
 
             simulacion.FormularioSimulacion = new FormSimulacion();
 
             simulacion.Simular();
+        } 
+        private bool ValidacionAB()
+        {
+            double a = Convert.ToDouble(txtAConsulta.Text.Trim());
+            double b = Convert.ToDouble(txtBConsulta.Text.Trim());
+            if (b < a)
+            {
+                MessageBox.Show("El valor ingresado en b debe ser menor al de a, intente nuevamente.", "Datos incorrectos", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            };
+            return true;
         }
         private bool ValidacionMedia()
         {
             
-            if (TxtMediaClientes.Text.Equals("") || TxtMediaLectura.Text.Equals(""))
+            if (TxtMediaClientes.Text.Equals("") || TxtMediaLectura.Text.Equals("") || txtAConsulta.Text.Equals("") || txtBConsulta.Text.Equals(""))
             {
                 MessageBox.Show("No ha ingresado todos los datos requeridos, intente nuevamente.", "Datos incompletos", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
@@ -70,8 +92,6 @@ namespace TP4SIM
             return true;
         }
         
-            
-
             private bool ValidacionDesdeHasta()
         {
             // Lista de validaciones para los números desde y hasta.
@@ -103,6 +123,33 @@ namespace TP4SIM
             }
 
             return true;
+        }
+        private bool ValidacionesParametros()
+        {
+            // Lista de validaciones de todos los parámetros
+
+            if ((Math.Abs(Convert.ToDouble(nrcDevolverLibro.Value + nrcPedirLibro.Value + nrcConsulta.Value) - 1.0) > 0.001))
+            {
+                MessageBox.Show("La suma de las probabilidades tiene que sumar 1, intente nuevamente.", "Datos incorrectos", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
+            if (Convert.ToDouble(nrcProbabilidadNo.Value) == 0.00)
+            {
+                MessageBox.Show("La probabilidad de que una persona se vaya de la biblioteca debe ser mayor a cero, intente nuevamente.", "Datos incorrectos", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
+            return true;
+        }
+        private void CargarValoresPorDefecto()
+        {
+            // Insertar valores por defecto en los numerics.
+
+            nrcPedirLibro.Value = 0.45M;
+            nrcDevolverLibro.Value = 0.45M;
+            nrcConsulta.Value = 0.10M;
+
+            nrcProbabilidadNo.Value = 0.60M;
+            
         }
 
         private void LimpiarCampos()

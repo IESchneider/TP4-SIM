@@ -40,26 +40,26 @@
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.label3 = new System.Windows.Forms.Label();
             this.TxtMediaClientes = new System.Windows.Forms.MaskedTextBox();
-            this.TxtDevolverLibro = new System.Windows.Forms.MaskedTextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.label4 = new System.Windows.Forms.Label();
             this.TxtMediaLectura = new System.Windows.Forms.MaskedTextBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.TxtConsulta = new System.Windows.Forms.MaskedTextBox();
             this.label7 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
-            this.TxtPedirLibro = new System.Windows.Forms.MaskedTextBox();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
-            this.maskedTextBox1 = new System.Windows.Forms.MaskedTextBox();
             this.label9 = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.label8 = new System.Windows.Forms.Label();
-            this.maskedTextBox2 = new System.Windows.Forms.MaskedTextBox();
+            this.txtAConsulta = new System.Windows.Forms.MaskedTextBox();
             this.label11 = new System.Windows.Forms.Label();
-            this.maskedTextBox3 = new System.Windows.Forms.MaskedTextBox();
+            this.txtBConsulta = new System.Windows.Forms.MaskedTextBox();
+            this.nrcPedirLibro = new System.Windows.Forms.NumericUpDown();
+            this.nrcDevolverLibro = new System.Windows.Forms.NumericUpDown();
+            this.nrcConsulta = new System.Windows.Forms.NumericUpDown();
+            this.nrcProbabilidadNo = new System.Windows.Forms.NumericUpDown();
             this.gbPrincipal.SuspendLayout();
             this.gbSimular.SuspendLayout();
             this.gbDatosGenerales.SuspendLayout();
@@ -68,6 +68,10 @@
             this.groupBox3.SuspendLayout();
             this.groupBox4.SuspendLayout();
             this.groupBox5.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nrcPedirLibro)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nrcDevolverLibro)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nrcConsulta)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nrcProbabilidadNo)).BeginInit();
             this.SuspendLayout();
             // 
             // gbPrincipal
@@ -112,7 +116,7 @@
             this.btnSimular.Location = new System.Drawing.Point(81, 39);
             this.btnSimular.Name = "btnSimular";
             this.btnSimular.Size = new System.Drawing.Size(96, 34);
-            this.btnSimular.TabIndex = 19;
+            this.btnSimular.TabIndex = 11;
             this.btnSimular.Text = "Simular";
             this.btnSimular.UseVisualStyleBackColor = true;
             this.btnSimular.Click += new System.EventHandler(this.btnSimular_Click);
@@ -136,7 +140,7 @@
             this.txtFilaHasta.Mask = "9999999";
             this.txtFilaHasta.Name = "txtFilaHasta";
             this.txtFilaHasta.Size = new System.Drawing.Size(57, 20);
-            this.txtFilaHasta.TabIndex = 20;
+            this.txtFilaHasta.TabIndex = 2;
             this.txtFilaHasta.ValidatingType = typeof(int);
             // 
             // label1
@@ -165,7 +169,7 @@
             this.txtNumeroSimulaciones.Mask = "9999999";
             this.txtNumeroSimulaciones.Name = "txtNumeroSimulaciones";
             this.txtNumeroSimulaciones.Size = new System.Drawing.Size(57, 20);
-            this.txtNumeroSimulaciones.TabIndex = 3;
+            this.txtNumeroSimulaciones.TabIndex = 1;
             this.txtNumeroSimulaciones.ValidatingType = typeof(int);
             // 
             // groupBox1
@@ -196,17 +200,9 @@
             this.TxtMediaClientes.Name = "TxtMediaClientes";
             this.TxtMediaClientes.Size = new System.Drawing.Size(57, 20);
             this.TxtMediaClientes.TabIndex = 3;
+            this.TxtMediaClientes.TabStop = false;
             this.TxtMediaClientes.Text = "4";
             this.TxtMediaClientes.ValidatingType = typeof(int);
-            // 
-            // TxtDevolverLibro
-            // 
-            this.TxtDevolverLibro.Location = new System.Drawing.Point(146, 92);
-            this.TxtDevolverLibro.Mask = "9999999";
-            this.TxtDevolverLibro.Name = "TxtDevolverLibro";
-            this.TxtDevolverLibro.Size = new System.Drawing.Size(57, 20);
-            this.TxtDevolverLibro.TabIndex = 20;
-            this.TxtDevolverLibro.ValidatingType = typeof(int);
             // 
             // label2
             // 
@@ -245,18 +241,18 @@
             this.TxtMediaLectura.Mask = "9999999";
             this.TxtMediaLectura.Name = "TxtMediaLectura";
             this.TxtMediaLectura.Size = new System.Drawing.Size(57, 20);
-            this.TxtMediaLectura.TabIndex = 3;
+            this.TxtMediaLectura.TabIndex = 4;
             this.TxtMediaLectura.Text = "6";
             this.TxtMediaLectura.ValidatingType = typeof(int);
             // 
             // groupBox3
             // 
-            this.groupBox3.Controls.Add(this.TxtConsulta);
+            this.groupBox3.Controls.Add(this.nrcConsulta);
+            this.groupBox3.Controls.Add(this.nrcDevolverLibro);
+            this.groupBox3.Controls.Add(this.nrcPedirLibro);
             this.groupBox3.Controls.Add(this.label7);
             this.groupBox3.Controls.Add(this.label6);
-            this.groupBox3.Controls.Add(this.TxtDevolverLibro);
             this.groupBox3.Controls.Add(this.label5);
-            this.groupBox3.Controls.Add(this.TxtPedirLibro);
             this.groupBox3.Controls.Add(this.label2);
             this.groupBox3.Location = new System.Drawing.Point(299, 101);
             this.groupBox3.Name = "groupBox3";
@@ -264,15 +260,6 @@
             this.groupBox3.TabIndex = 20;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Tipo de Atención";
-            // 
-            // TxtConsulta
-            // 
-            this.TxtConsulta.Location = new System.Drawing.Point(146, 124);
-            this.TxtConsulta.Mask = "9999999";
-            this.TxtConsulta.Name = "TxtConsulta";
-            this.TxtConsulta.Size = new System.Drawing.Size(57, 20);
-            this.TxtConsulta.TabIndex = 21;
-            this.TxtConsulta.ValidatingType = typeof(int);
             // 
             // label7
             // 
@@ -304,35 +291,17 @@
             this.label5.TabIndex = 16;
             this.label5.Text = "Pedir Libro";
             // 
-            // TxtPedirLibro
-            // 
-            this.TxtPedirLibro.Location = new System.Drawing.Point(146, 62);
-            this.TxtPedirLibro.Mask = "9999999";
-            this.TxtPedirLibro.Name = "TxtPedirLibro";
-            this.TxtPedirLibro.Size = new System.Drawing.Size(57, 20);
-            this.TxtPedirLibro.TabIndex = 3;
-            this.TxtPedirLibro.ValidatingType = typeof(int);
-            // 
             // groupBox4
             // 
+            this.groupBox4.Controls.Add(this.nrcProbabilidadNo);
             this.groupBox4.Controls.Add(this.label10);
             this.groupBox4.Controls.Add(this.label9);
-            this.groupBox4.Controls.Add(this.maskedTextBox1);
             this.groupBox4.Location = new System.Drawing.Point(299, 284);
             this.groupBox4.Name = "groupBox4";
             this.groupBox4.Size = new System.Drawing.Size(264, 124);
             this.groupBox4.TabIndex = 20;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Lectura en la Biblioteca";
-            // 
-            // maskedTextBox1
-            // 
-            this.maskedTextBox1.Location = new System.Drawing.Point(99, 89);
-            this.maskedTextBox1.Mask = "9999999";
-            this.maskedTextBox1.Name = "maskedTextBox1";
-            this.maskedTextBox1.Size = new System.Drawing.Size(57, 20);
-            this.maskedTextBox1.TabIndex = 3;
-            this.maskedTextBox1.ValidatingType = typeof(int);
             // 
             // label9
             // 
@@ -356,10 +325,10 @@
             // 
             // groupBox5
             // 
-            this.groupBox5.Controls.Add(this.maskedTextBox3);
+            this.groupBox5.Controls.Add(this.txtBConsulta);
             this.groupBox5.Controls.Add(this.label11);
             this.groupBox5.Controls.Add(this.label8);
-            this.groupBox5.Controls.Add(this.maskedTextBox2);
+            this.groupBox5.Controls.Add(this.txtAConsulta);
             this.groupBox5.Location = new System.Drawing.Point(587, 284);
             this.groupBox5.Name = "groupBox5";
             this.groupBox5.Size = new System.Drawing.Size(212, 124);
@@ -377,15 +346,15 @@
             this.label8.TabIndex = 16;
             this.label8.Text = "a:";
             // 
-            // maskedTextBox2
+            // txtAConsulta
             // 
-            this.maskedTextBox2.Location = new System.Drawing.Point(74, 41);
-            this.maskedTextBox2.Mask = "9999999";
-            this.maskedTextBox2.Name = "maskedTextBox2";
-            this.maskedTextBox2.Size = new System.Drawing.Size(57, 20);
-            this.maskedTextBox2.TabIndex = 3;
-            this.maskedTextBox2.Text = "2";
-            this.maskedTextBox2.ValidatingType = typeof(int);
+            this.txtAConsulta.Location = new System.Drawing.Point(74, 41);
+            this.txtAConsulta.Mask = "9999999";
+            this.txtAConsulta.Name = "txtAConsulta";
+            this.txtAConsulta.Size = new System.Drawing.Size(57, 20);
+            this.txtAConsulta.TabIndex = 9;
+            this.txtAConsulta.Text = "2";
+            this.txtAConsulta.ValidatingType = typeof(int);
             // 
             // label11
             // 
@@ -397,15 +366,87 @@
             this.label11.TabIndex = 17;
             this.label11.Text = "b:";
             // 
-            // maskedTextBox3
+            // txtBConsulta
             // 
-            this.maskedTextBox3.Location = new System.Drawing.Point(74, 71);
-            this.maskedTextBox3.Mask = "9999999";
-            this.maskedTextBox3.Name = "maskedTextBox3";
-            this.maskedTextBox3.Size = new System.Drawing.Size(57, 20);
-            this.maskedTextBox3.TabIndex = 18;
-            this.maskedTextBox3.Text = "5";
-            this.maskedTextBox3.ValidatingType = typeof(int);
+            this.txtBConsulta.Location = new System.Drawing.Point(74, 71);
+            this.txtBConsulta.Mask = "9999999";
+            this.txtBConsulta.Name = "txtBConsulta";
+            this.txtBConsulta.Size = new System.Drawing.Size(57, 20);
+            this.txtBConsulta.TabIndex = 10;
+            this.txtBConsulta.Text = "5";
+            this.txtBConsulta.ValidatingType = typeof(int);
+            // 
+            // nrcPedirLibro
+            // 
+            this.nrcPedirLibro.DecimalPlaces = 2;
+            this.nrcPedirLibro.Increment = new decimal(new int[] {
+            1,
+            0,
+            0,
+            131072});
+            this.nrcPedirLibro.Location = new System.Drawing.Point(163, 63);
+            this.nrcPedirLibro.Maximum = new decimal(new int[] {
+            999999,
+            0,
+            0,
+            0});
+            this.nrcPedirLibro.Name = "nrcPedirLibro";
+            this.nrcPedirLibro.Size = new System.Drawing.Size(77, 20);
+            this.nrcPedirLibro.TabIndex = 5;
+            // 
+            // nrcDevolverLibro
+            // 
+            this.nrcDevolverLibro.DecimalPlaces = 2;
+            this.nrcDevolverLibro.Increment = new decimal(new int[] {
+            1,
+            0,
+            0,
+            131072});
+            this.nrcDevolverLibro.Location = new System.Drawing.Point(163, 95);
+            this.nrcDevolverLibro.Maximum = new decimal(new int[] {
+            999999,
+            0,
+            0,
+            0});
+            this.nrcDevolverLibro.Name = "nrcDevolverLibro";
+            this.nrcDevolverLibro.Size = new System.Drawing.Size(77, 20);
+            this.nrcDevolverLibro.TabIndex = 6;
+            // 
+            // nrcConsulta
+            // 
+            this.nrcConsulta.DecimalPlaces = 2;
+            this.nrcConsulta.Increment = new decimal(new int[] {
+            1,
+            0,
+            0,
+            131072});
+            this.nrcConsulta.Location = new System.Drawing.Point(163, 124);
+            this.nrcConsulta.Maximum = new decimal(new int[] {
+            999999,
+            0,
+            0,
+            0});
+            this.nrcConsulta.Name = "nrcConsulta";
+            this.nrcConsulta.Size = new System.Drawing.Size(77, 20);
+            this.nrcConsulta.TabIndex = 7;
+            // 
+            // nrcProbabilidadNo
+            // 
+            this.nrcProbabilidadNo.DecimalPlaces = 2;
+            this.nrcProbabilidadNo.Increment = new decimal(new int[] {
+            1,
+            0,
+            0,
+            131072});
+            this.nrcProbabilidadNo.Location = new System.Drawing.Point(101, 89);
+            this.nrcProbabilidadNo.Maximum = new decimal(new int[] {
+            999999,
+            0,
+            0,
+            0});
+            this.nrcProbabilidadNo.Name = "nrcProbabilidadNo";
+            this.nrcProbabilidadNo.Size = new System.Drawing.Size(77, 20);
+            this.nrcProbabilidadNo.TabIndex = 8;
             // 
             // Principal
             // 
@@ -434,6 +475,10 @@
             this.groupBox4.PerformLayout();
             this.groupBox5.ResumeLayout(false);
             this.groupBox5.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nrcPedirLibro)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nrcDevolverLibro)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nrcConsulta)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nrcProbabilidadNo)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -450,7 +495,6 @@
         private System.Windows.Forms.GroupBox gbSimular;
         private System.Windows.Forms.MaskedTextBox txtFilaDesde;
         private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.MaskedTextBox TxtDevolverLibro;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.MaskedTextBox TxtMediaClientes;
@@ -458,20 +502,21 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.MaskedTextBox TxtMediaLectura;
         private System.Windows.Forms.GroupBox groupBox3;
-        private System.Windows.Forms.MaskedTextBox TxtConsulta;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.MaskedTextBox TxtPedirLibro;
         private System.Windows.Forms.GroupBox groupBox4;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Label label9;
-        private System.Windows.Forms.MaskedTextBox maskedTextBox1;
         private System.Windows.Forms.GroupBox groupBox5;
-        private System.Windows.Forms.MaskedTextBox maskedTextBox3;
+        private System.Windows.Forms.MaskedTextBox txtBConsulta;
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.Label label8;
-        private System.Windows.Forms.MaskedTextBox maskedTextBox2;
+        private System.Windows.Forms.MaskedTextBox txtAConsulta;
+        private System.Windows.Forms.NumericUpDown nrcProbabilidadNo;
+        private System.Windows.Forms.NumericUpDown nrcConsulta;
+        private System.Windows.Forms.NumericUpDown nrcDevolverLibro;
+        private System.Windows.Forms.NumericUpDown nrcPedirLibro;
     }
 }
 

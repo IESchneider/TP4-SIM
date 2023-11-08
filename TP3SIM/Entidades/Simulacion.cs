@@ -30,12 +30,12 @@ namespace TP4SIM.Entidades
         public int FilaHasta { get; set; }
         public int MediaClientes { get; set; }
         public int MediaLectura { get; set; }
-        public int A { get; set; }
-        public int B { get; set; }
-        public float PorcentajeNo { get; set; }
-        public float PorcentajePedirLibro { get; set; }
-        public float PorcentajeDevolverLibro { get; set; }
-        public float PorcentajeConsulta { get; set; }
+        public double A { get; set; }
+        public double B { get; set; }
+        public double ProbabilidadNo { get; set; }
+        public double ProbabilidadPedirLibro { get; set; }
+        public double ProbabilidadDevolverLibro { get; set; }
+        public double ProbabilidadConsulta { get; set; }
 
         public List<double> tiemposFinLectura = new List<double> { 0 };
 
@@ -326,7 +326,7 @@ namespace TP4SIM.Entidades
                                 cliente.EnFilaNumero = NumeroSimulacionActual;
 
                                 fila2.RND_TipoAtencion = log.GenerarRND();
-                                cliente.Tipo = log.CalcularTipoAtencion(fila2.RND_TipoAtencion);
+                                cliente.Tipo = log.CalcularTipoAtencion(fila2.RND_TipoAtencion, ProbabilidadPedirLibro, ProbabilidadDevolverLibro, ProbabilidadConsulta);
                                 if (cliente.Tipo == "Pedir libro")
                                 {
                                     cliente.Estado = EPedirLibro;
@@ -346,10 +346,53 @@ namespace TP4SIM.Entidades
                             if (fila1.Cola == 0)
                             {
 
-                                if (fila1.EstadoEmpleado_1.Libre)
+                        if (fila1.Cola == 0)
+                        {
+
+                            if (fila1.EstadoEmpleado_1.Libre)
+                            {
+                                fila2.RND_TipoAtencion = log.GenerarRND();
+                                cliente.Tipo = log.CalcularTipoAtencion(fila2.RND_TipoAtencion, ProbabilidadPedirLibro, ProbabilidadDevolverLibro, ProbabilidadConsulta);
+
+                                fila2.RND_FinAtencion = log.GenerarRND();
+                                if (cliente.Tipo == "Pedir libro")
+                                {
+                                    fila2.TiempoAtencion = log.VariableAleatoriaExponencial(6, fila2.RND_FinAtencion);
+                                    fila2.ProxFinAtencion_1 = fila2.Reloj + fila2.TiempoAtencion;
+                                    fila2.EstadoEmpleado_1 = estadosAPedidoLibro["Empleado 1"];
+                                }
+                                if (cliente.Tipo == "Devolver libro")
+                                {
+                                    fila2.TiempoAtencion = log.VariableAleatoriaConvolucion(2, 0.5);
+                                    fila2.ProxFinAtencion_1 = fila2.Reloj + fila2.TiempoAtencion;
+                                    fila2.EstadoEmpleado_1 = estadosADevolucionLibro["Empleado 1"];
+                                }
+                                if (cliente.Tipo == "Consulta")
+                                {
+                                    fila2.TiempoAtencion = log.VariableAleatoriaUniforme(A, B, fila2.RND_FinAtencion);
+                                    fila2.ProxFinAtencion_1 = fila2.Reloj + fila2.TiempoAtencion;
+                                    fila2.EstadoEmpleado_1 = estadosAConsulta["Empleado 1"];
+                                }
+
+                                fila2.EstadoEmpleado_2 = fila1.EstadoEmpleado_2;
+                                fila2.ProxFinAtencion_2 = fila1.ProxFinAtencion_2;
+                                fila2.EstadoEmpleado_2 = fila1.EstadoEmpleado_2;
+                                fila2.EstadoEmpleado_2 = fila1.EstadoEmpleado_2;
+
+                                cliente.Estado = SiendoAtendido;
+                                cliente.SiendoAtendidoPor = Empleado1;
+                                fila2.Persona.Add(cliente);
+                                cliente.EnFilaNumero = NumeroSimulacionActual;
+                                TodosLosClientes.Add(cliente.CopiarCliente(cliente));
+                                fila2.CantPersonasQueIngresanBiblio = fila1.CantPersonasQueIngresanBiblio + 1;
+                                fila2.CantPersonasBiblioteca = fila1.CantPersonasBiblioteca + 1;
+                            }
+                            else
+                            {
+                                if (fila1.EstadoEmpleado_2.Libre)
                                 {
                                     fila2.RND_TipoAtencion = log.GenerarRND();
-                                    cliente.Tipo = log.CalcularTipoAtencion(fila2.RND_TipoAtencion);
+                                    cliente.Tipo = log.CalcularTipoAtencion(fila2.RND_TipoAtencion, ProbabilidadPedirLibro, ProbabilidadDevolverLibro, ProbabilidadConsulta);
 
                                     fila2.RND_FinAtencion = log.GenerarRND();
                                     if (cliente.Tipo == "Pedir libro")
@@ -366,9 +409,9 @@ namespace TP4SIM.Entidades
                                     }
                                     if (cliente.Tipo == "Consulta")
                                     {
-                                        fila2.TiempoAtencion = log.VariableAleatoriaUniforme(2, 5, fila2.RND_FinAtencion);
-                                        fila2.ProxFinAtencion_1 = fila2.Reloj + fila2.TiempoAtencion;
-                                        fila2.EstadoEmpleado_1 = estadosAConsulta["Empleado 1"];
+                                        fila2.TiempoAtencion = log.VariableAleatoriaUniforme(A, B, fila2.RND_FinAtencion);
+                                        fila2.ProxFinAtencion_2 = fila2.Reloj + fila2.TiempoAtencion;
+                                        fila2.EstadoEmpleado_2 = estadosAConsulta["Empleado 2"];
                                     }
 
                                     fila2.EstadoEmpleado_2 = fila1.EstadoEmpleado_2;
@@ -432,7 +475,7 @@ namespace TP4SIM.Entidades
                                         cliente.EnFilaNumero = NumeroSimulacionActual;
 
                                         fila2.RND_TipoAtencion = log.GenerarRND();
-                                        cliente.Tipo = log.CalcularTipoAtencion(fila2.RND_TipoAtencion);
+                                        cliente.Tipo = log.CalcularTipoAtencion(fila2.RND_TipoAtencion, ProbabilidadPedirLibro, ProbabilidadDevolverLibro, ProbabilidadConsulta);
 
                                         if (cliente.Tipo == "Pedir libro")
                                         {
@@ -492,7 +535,7 @@ namespace TP4SIM.Entidades
                                 {
                                     // Calculamos si se queda a leer si pidio un libro prestado
                                     fila2.RND_FinLectura = log.GenerarRND();
-                                    fila2.Se_queda = log.CalcularSiSeQueda(fila2.RND_FinLectura);
+                                    fila2.Se_queda = log.CalcularSiSeQueda(fila2.RND_FinLectura, ProbabilidadNo);
 
                                     if (fila2.Se_queda == "Si")
                                     {
@@ -549,7 +592,7 @@ namespace TP4SIM.Entidades
                             }
                             if (proxCliente.Tipo == "Consulta")
                             {
-                                fila2.TiempoAtencion = log.VariableAleatoriaUniforme(2, 5, fila2.RND_FinAtencion);
+                                fila2.TiempoAtencion = log.VariableAleatoriaUniforme(A, B, fila2.RND_FinAtencion);
                                 fila2.ProxFinAtencion_1 = fila2.Reloj + fila2.TiempoAtencion;
                                 fila2.EstadoEmpleado_1 = estadosAConsulta["Empleado 1"];
                             }
@@ -598,7 +641,7 @@ namespace TP4SIM.Entidades
                                 {
                                     // Calculamos si se queda a leer si pidio un libro prestado
                                     fila2.RND_FinLectura = log.GenerarRND();
-                                    fila2.Se_queda = log.CalcularSiSeQueda(fila2.RND_FinLectura);
+                                    fila2.Se_queda = log.CalcularSiSeQueda(fila2.RND_FinLectura, ProbabilidadNo);
 
                                     if (fila2.Se_queda == "Si")
                                     {
@@ -655,7 +698,7 @@ namespace TP4SIM.Entidades
                             }
                             if (proxCliente.Tipo == "Consulta")
                             {
-                                fila2.TiempoAtencion = log.VariableAleatoriaUniforme(2, 5, fila2.RND_FinAtencion);
+                                fila2.TiempoAtencion = log.VariableAleatoriaUniforme(A, B, fila2.RND_FinAtencion);
                                 fila2.ProxFinAtencion_2 = fila2.Reloj + fila2.TiempoAtencion;
                                 fila2.EstadoEmpleado_2 = estadosAConsulta["Empleado 2"];
                             }
