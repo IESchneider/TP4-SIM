@@ -96,7 +96,7 @@
             this.gbSimular.Controls.Add(this.btnSimular);
             this.gbSimular.Location = new System.Drawing.Point(8, 298);
             this.gbSimular.Name = "gbSimular";
-            this.gbSimular.Size = new System.Drawing.Size(269, 100);
+            this.gbSimular.Size = new System.Drawing.Size(279, 100);
             this.gbSimular.TabIndex = 21;
             this.gbSimular.TabStop = false;
             this.gbSimular.Text = "Simular";
@@ -129,7 +129,7 @@
             this.gbDatosGenerales.Controls.Add(this.txtNumeroSimulaciones);
             this.gbDatosGenerales.Location = new System.Drawing.Point(8, 35);
             this.gbDatosGenerales.Name = "gbDatosGenerales";
-            this.gbDatosGenerales.Size = new System.Drawing.Size(269, 232);
+            this.gbDatosGenerales.Size = new System.Drawing.Size(279, 232);
             this.gbDatosGenerales.TabIndex = 18;
             this.gbDatosGenerales.TabStop = false;
             this.gbDatosGenerales.Text = "Datos Generales";
@@ -298,7 +298,7 @@
             this.groupBox4.Controls.Add(this.label9);
             this.groupBox4.Location = new System.Drawing.Point(299, 284);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(264, 124);
+            this.groupBox4.Size = new System.Drawing.Size(274, 124);
             this.groupBox4.TabIndex = 20;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Lectura en la Biblioteca";
@@ -307,9 +307,9 @@
             // 
             this.label9.AutoSize = true;
             this.label9.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label9.Location = new System.Drawing.Point(-1, 26);
+            this.label9.Location = new System.Drawing.Point(-1, 27);
             this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(265, 17);
+            this.label9.Size = new System.Drawing.Size(275, 17);
             this.label9.TabIndex = 22;
             this.label9.Text = "Ingrese la probabilidad de que un cliente";
             // 

@@ -11,7 +11,7 @@ namespace TP4SIM.Entidades
 
         public double Numero { get; set; }
         public string Tipo { get; set; }
-        //public string TipoResumido { get; set; }
+        public string TipoResumido { get; set; }
         public Estado Estado { get; set; }
         public double HoraIngreso { get; set; }
         //public double TiempoEspera { get; set; }

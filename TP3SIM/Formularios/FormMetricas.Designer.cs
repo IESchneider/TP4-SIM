@@ -58,7 +58,7 @@
             this.gbMetricas.Controls.Add(this.lblDescripcionCostoPromedio);
             this.gbMetricas.Location = new System.Drawing.Point(7, 4);
             this.gbMetricas.Name = "gbMetricas";
-            this.gbMetricas.Size = new System.Drawing.Size(655, 262);
+            this.gbMetricas.Size = new System.Drawing.Size(655, 272);
             this.gbMetricas.TabIndex = 0;
             this.gbMetricas.TabStop = false;
             this.gbMetricas.Text = "Métricas";
@@ -92,7 +92,7 @@
             this.lblPromedioPermanenciaRP.Location = new System.Drawing.Point(413, 109);
             this.lblPromedioPermanenciaRP.Name = "lblPromedioPermanenciaRP";
             this.lblPromedioPermanenciaRP.Size = new System.Drawing.Size(21, 24);
-            this.lblPromedioPermanenciaRP.TabIndex = 26;
+            this.lblPromedioPermanenciaRP.TabIndex = 27;
             this.lblPromedioPermanenciaRP.Text = "0";
             // 
             // lblPromedioPermanenciaIM

@@ -127,7 +127,6 @@ namespace TP4SIM.Entidades
 
             CargarFilas(fila1, fila2, iteracionesGrilla);
 
-
             // Mostrar formulario.
 
             MostrarFormulario(FormularioSimulacion, Grilla);
@@ -272,7 +271,6 @@ namespace TP4SIM.Entidades
                 fila2.Evento = evento;
                 fila2.Reloj = proximoReloj;
                 fila2.Cola = fila1.Cola;
-
                 switch (evento)
                 {
                     case "Llegada_Persona":
@@ -282,6 +280,7 @@ namespace TP4SIM.Entidades
 
                         Temporal cliente = new Temporal();
                         cliente.Numero = numeroCliente;
+                        cliente.EnFilaNumero = NumeroSimulacionActual;
                         //cliente.Numero = ++CantidadClientesIM;
                         cliente.HoraIngreso = fila2.Reloj;
                         fila2.CantTotalPersonas = fila1.CantTotalPersonas + 1;
@@ -324,8 +323,8 @@ namespace TP4SIM.Entidades
                                 fila2.Persona.Add(cliente);
                                 cliente.EnFilaNumero = NumeroSimulacionActual;
 
-                                fila2.RND_TipoAtencion = log.GenerarRND();
                                 cliente.Tipo = log.CalcularTipoAtencion(fila2.RND_TipoAtencion, ProbabilidadPedirLibro, ProbabilidadDevolverLibro, ProbabilidadConsulta);
+                                fila2.TipoAtencion = cliente.Tipo;
                                 if (cliente.Tipo == "Pedir libro")
                                 {
                                     cliente.Estado = EPedirLibro;
@@ -345,157 +344,105 @@ namespace TP4SIM.Entidades
                             if (fila1.Cola == 0)
                             {
 
-                                if (fila1.Cola == 0)
+                                if (fila1.EstadoEmpleado_1.Libre)
                                 {
+                                    cliente.Tipo = log.CalcularTipoAtencion(fila2.RND_TipoAtencion, ProbabilidadPedirLibro, ProbabilidadDevolverLibro, ProbabilidadConsulta);
 
-                                    if (fila1.EstadoEmpleado_1.Libre)
+                                    fila2.RND_FinAtencion = log.GenerarRND();
+                                    if (cliente.Tipo == "Pedir libro")
                                     {
-                                        fila2.RND_TipoAtencion = log.GenerarRND();
+                                        fila2.TiempoAtencion = log.VariableAleatoriaExponencial(6, fila2.RND_FinAtencion);
+                                        fila2.ProxFinAtencion_1 = fila2.Reloj + fila2.TiempoAtencion;
+                                        fila2.EstadoEmpleado_1 = estadosAPedidoLibro["Empleado 1"];
+                                    }
+                                    if (cliente.Tipo == "Devolver libro")
+                                    {
+                                        fila2.TiempoAtencion = log.VariableAleatoriaConvolucion(2, 0.5);
+                                        fila2.ProxFinAtencion_1 = fila2.Reloj + fila2.TiempoAtencion;
+                                        fila2.EstadoEmpleado_1 = estadosADevolucionLibro["Empleado 1"];
+                                    }
+                                    if (cliente.Tipo == "Consulta")
+                                    {
+                                        fila2.TiempoAtencion = log.VariableAleatoriaUniforme(A, B, fila2.RND_FinAtencion);
+                                        fila2.ProxFinAtencion_1 = fila2.Reloj + fila2.TiempoAtencion;
+                                        fila2.EstadoEmpleado_1 = estadosAConsulta["Empleado 1"];
+                                    }
+
+                                    fila2.EstadoEmpleado_2 = fila1.EstadoEmpleado_2;
+                                    fila2.ProxFinAtencion_2 = fila1.ProxFinAtencion_2;
+                                    fila2.EstadoEmpleado_2 = fila1.EstadoEmpleado_2;
+                                    fila2.EstadoEmpleado_2 = fila1.EstadoEmpleado_2;
+
+                                    cliente.Estado = SiendoAtendido;
+                                    cliente.SiendoAtendidoPor = Empleado1;
+                                    fila2.Persona.Add(cliente);
+                                    cliente.EnFilaNumero = NumeroSimulacionActual;
+                                    fila2.CantPersonasQueIngresanBiblio = fila1.CantPersonasQueIngresanBiblio + 1;
+                                    fila2.CantPersonasBiblioteca = fila1.CantPersonasBiblioteca + 1;
+                                }
+                                else
+                                {
+                                    if (fila1.EstadoEmpleado_2.Libre)
+                                    {
                                         cliente.Tipo = log.CalcularTipoAtencion(fila2.RND_TipoAtencion, ProbabilidadPedirLibro, ProbabilidadDevolverLibro, ProbabilidadConsulta);
 
                                         fila2.RND_FinAtencion = log.GenerarRND();
                                         if (cliente.Tipo == "Pedir libro")
                                         {
                                             fila2.TiempoAtencion = log.VariableAleatoriaExponencial(6, fila2.RND_FinAtencion);
-                                            fila2.ProxFinAtencion_1 = fila2.Reloj + fila2.TiempoAtencion;
-                                            fila2.EstadoEmpleado_1 = estadosAPedidoLibro["Empleado 1"];
+                                            fila2.ProxFinAtencion_2 = fila2.Reloj + fila2.TiempoAtencion;
+                                            fila2.EstadoEmpleado_2 = estadosAPedidoLibro["Empleado 1"];
                                         }
                                         if (cliente.Tipo == "Devolver libro")
                                         {
                                             fila2.TiempoAtencion = log.VariableAleatoriaConvolucion(2, 0.5);
-                                            fila2.ProxFinAtencion_1 = fila2.Reloj + fila2.TiempoAtencion;
-                                            fila2.EstadoEmpleado_1 = estadosADevolucionLibro["Empleado 1"];
+                                            fila2.ProxFinAtencion_2 = fila2.Reloj + fila2.TiempoAtencion;
+                                            fila2.EstadoEmpleado_2 = estadosADevolucionLibro["Empleado 1"];
                                         }
                                         if (cliente.Tipo == "Consulta")
                                         {
                                             fila2.TiempoAtencion = log.VariableAleatoriaUniforme(A, B, fila2.RND_FinAtencion);
-                                            fila2.ProxFinAtencion_1 = fila2.Reloj + fila2.TiempoAtencion;
-                                            fila2.EstadoEmpleado_1 = estadosAConsulta["Empleado 1"];
+                                            fila2.ProxFinAtencion_2 = fila2.Reloj + fila2.TiempoAtencion;
+                                            fila2.EstadoEmpleado_2 = estadosAConsulta["Empleado 2"];
                                         }
-
-                                        fila2.EstadoEmpleado_2 = fila1.EstadoEmpleado_2;
-                                        fila2.ProxFinAtencion_2 = fila1.ProxFinAtencion_2;
-                                        fila2.EstadoEmpleado_2 = fila1.EstadoEmpleado_2;
-                                        fila2.EstadoEmpleado_2 = fila1.EstadoEmpleado_2;
 
                                         cliente.Estado = SiendoAtendido;
                                         cliente.SiendoAtendidoPor = Empleado1;
                                         fila2.Persona.Add(cliente);
                                         cliente.EnFilaNumero = NumeroSimulacionActual;
-                                        TodosLosClientes.Add(cliente.CopiarCliente(cliente));
-                                        fila2.CantPersonasQueIngresanBiblio = fila1.CantPersonasQueIngresanBiblio + 1;
-                                        fila2.CantPersonasBiblioteca = fila1.CantPersonasBiblioteca + 1;
                                     }
                                     else
                                     {
-                                        if (fila1.EstadoEmpleado_2.Libre)
+
+                                        fila2.Cola = fila1.Cola + 1;
+                                        fila2.ProxFinAtencion_1 = fila1.ProxFinAtencion_1;
+                                        fila2.ProxFinAtencion_2 = fila1.ProxFinAtencion_2;
+
+                                        fila2.EstadoEmpleado_1 = fila1.EstadoEmpleado_1;
+                                        fila2.EstadoEmpleado_2 = fila1.EstadoEmpleado_2;
+
+                                        fila2.Persona.Add(cliente);
+                                        cliente.EnFilaNumero = NumeroSimulacionActual;
+
+                                        cliente.Tipo = log.CalcularTipoAtencion(fila2.RND_TipoAtencion, ProbabilidadPedirLibro, ProbabilidadDevolverLibro, ProbabilidadConsulta);
+
+                                        if (cliente.Tipo == "Pedir libro")
                                         {
-                                            fila2.RND_TipoAtencion = log.GenerarRND();
-                                            cliente.Tipo = log.CalcularTipoAtencion(fila2.RND_TipoAtencion, ProbabilidadPedirLibro, ProbabilidadDevolverLibro, ProbabilidadConsulta);
-
-                                            fila2.RND_FinAtencion = log.GenerarRND();
-                                            if (cliente.Tipo == "Pedir libro")
-                                            {
-                                                fila2.TiempoAtencion = log.VariableAleatoriaExponencial(6, fila2.RND_FinAtencion);
-                                                fila2.ProxFinAtencion_1 = fila2.Reloj + fila2.TiempoAtencion;
-                                                fila2.EstadoEmpleado_1 = estadosAPedidoLibro["Empleado 1"];
-                                            }
-                                            if (cliente.Tipo == "Devolver libro")
-                                            {
-                                                fila2.TiempoAtencion = log.VariableAleatoriaConvolucion(2, 0.5);
-                                                fila2.ProxFinAtencion_1 = fila2.Reloj + fila2.TiempoAtencion;
-                                                fila2.EstadoEmpleado_1 = estadosADevolucionLibro["Empleado 1"];
-                                            }
-                                            if (cliente.Tipo == "Consulta")
-                                            {
-                                                fila2.TiempoAtencion = log.VariableAleatoriaUniforme(A, B, fila2.RND_FinAtencion);
-                                                fila2.ProxFinAtencion_2 = fila2.Reloj + fila2.TiempoAtencion;
-                                                fila2.EstadoEmpleado_2 = estadosAConsulta["Empleado 2"];
-                                            }
-
-                                            fila2.EstadoEmpleado_2 = fila1.EstadoEmpleado_2;
-                                            fila2.ProxFinAtencion_2 = fila1.ProxFinAtencion_2;
-                                            fila2.EstadoEmpleado_2 = fila1.EstadoEmpleado_2;
-                                            fila2.EstadoEmpleado_2 = fila1.EstadoEmpleado_2;
-
-                                            cliente.Estado = SiendoAtendido;
-                                            cliente.SiendoAtendidoPor = Empleado1;
-                                            fila2.Persona.Add(cliente);
-                                            cliente.EnFilaNumero = NumeroSimulacionActual;
-                                            TodosLosClientes.Add(cliente.CopiarCliente(cliente));
+                                            cliente.Estado = EPedirLibro;
                                         }
-                                        else
+                                        if (cliente.Tipo == "Devolver libro")
                                         {
-                                            if (fila1.EstadoEmpleado_2.Libre)
-                                            {
-                                                fila2.RND_TipoAtencion = log.GenerarRND();
-                                                cliente.Tipo = log.CalcularTipoAtencion(fila2.RND_TipoAtencion, ProbabilidadPedirLibro, ProbabilidadDevolverLibro, ProbabilidadConsulta);
-
-                                                fila2.RND_FinAtencion = log.GenerarRND();
-                                                if (cliente.Tipo == "Pedir libro")
-                                                {
-                                                    fila2.TiempoAtencion = log.VariableAleatoriaExponencial(6, fila2.RND_FinAtencion);
-                                                    fila2.ProxFinAtencion_2 = fila2.Reloj + fila2.TiempoAtencion;
-                                                    fila2.EstadoEmpleado_2 = estadosAPedidoLibro["Empleado 2"];
-                                                }
-                                                if (cliente.Tipo == "Devolver libro")
-                                                {
-                                                    fila2.TiempoAtencion = log.VariableAleatoriaConvolucion(2, 0.5);
-                                                    fila2.ProxFinAtencion_2 = fila2.Reloj + fila2.TiempoAtencion;
-                                                    fila2.EstadoEmpleado_2 = estadosADevolucionLibro["Empleado 2"];
-                                                }
-                                                if (cliente.Tipo == "Consulta")
-                                                {
-                                                    fila2.TiempoAtencion = log.VariableAleatoriaUniforme(2, 5, fila2.RND_FinAtencion);
-                                                    fila2.ProxFinAtencion_2 = fila2.Reloj + fila2.TiempoAtencion;
-                                                    fila2.EstadoEmpleado_2 = estadosAConsulta["Empleado 2"];
-                                                }
-
-                                                fila2.EstadoEmpleado_1 = fila1.EstadoEmpleado_1;
-                                                fila2.ProxFinAtencion_1 = fila1.ProxFinAtencion_1;
-                                                fila2.EstadoEmpleado_1 = fila1.EstadoEmpleado_1;
-                                                fila2.EstadoEmpleado_1 = fila1.EstadoEmpleado_1;
-
-                                                cliente.Estado = SiendoAtendido;
-                                                cliente.SiendoAtendidoPor = Empleado2;
-                                                fila2.Persona.Add(cliente);
-                                                cliente.EnFilaNumero = NumeroSimulacionActual;
-                                            }
-                                            else
-                                            {
-                                                fila2.Cola = fila1.Cola + 1;
-                                                fila2.ProxFinAtencion_1 = fila1.ProxFinAtencion_1;
-                                                fila2.ProxFinAtencion_2 = fila1.ProxFinAtencion_2;
-
-                                                fila2.EstadoEmpleado_1 = fila1.EstadoEmpleado_1;
-                                                fila2.EstadoEmpleado_2 = fila1.EstadoEmpleado_2;
-
-                                                fila2.Persona.Add(cliente);
-                                                cliente.EnFilaNumero = NumeroSimulacionActual;
-
-                                                fila2.RND_TipoAtencion = log.GenerarRND();
-                                                cliente.Tipo = log.CalcularTipoAtencion(fila2.RND_TipoAtencion, ProbabilidadPedirLibro, ProbabilidadDevolverLibro, ProbabilidadConsulta);
-
-                                                if (cliente.Tipo == "Pedir libro")
-                                                {
-                                                    cliente.Estado = EPedirLibro;
-                                                }
-                                                if (cliente.Tipo == "Devolver libro")
-                                                {
-                                                    cliente.Estado = EDevolverLibro;
-                                                }
-                                                if (cliente.Tipo == "Consulta")
-                                                {
-                                                    cliente.Estado = EConsultar;
-                                                }
-                                                fila2.RND_FinAtencion = 0;
-                                                fila2.TiempoAtencion = 0;
-
-                                            }
+                                            cliente.Estado = EDevolverLibro;
                                         }
-
+                                        if (cliente.Tipo == "Consulta")
+                                        {
+                                            cliente.Estado = EConsultar;
+                                        }
+                                        fila2.RND_FinAtencion = 0;
+                                        fila2.TiempoAtencion = 0;
 
                                     }
+
                                 }
                             }
                         }
@@ -506,6 +453,8 @@ namespace TP4SIM.Entidades
                             fila2.CantPersonasQueNoIngresanBiblio = fila1.CantPersonasQueNoIngresanBiblio + 1;
                         }
                         TodosLosClientes.Add(cliente.CopiarCliente(cliente));
+
+
 
                         fila2.TiempoPermanenciaBiblioteca = fila1.TiempoPermanenciaBiblioteca + (fila2.Reloj - fila1.Reloj) * fila2.CantPersonasBiblioteca;
                         if (fila2.CantPersonasBiblioteca > 0)
@@ -522,7 +471,7 @@ namespace TP4SIM.Entidades
                         }
                         else
                         {
-                            fila2.PromPersonasQueNoIngresanBiblio = (double) fila2.CantPersonasQueNoIngresanBiblio / (fila1.CantTotalPersonas + 1);
+                            fila2.PromPersonasQueNoIngresanBiblio = (double)fila2.CantPersonasQueNoIngresanBiblio / (fila1.CantTotalPersonas + 1);
                         }
 
                         break;
@@ -789,11 +738,11 @@ namespace TP4SIM.Entidades
                         fila2.CantTotalPersonas = fila1.CantTotalPersonas;
                         if (fila2.CantTotalPersonas > 0)
                         {
-                            fila2.PromPersonasQueNoIngresanBiblio = (double) fila2.CantPersonasQueNoIngresanBiblio / fila2.CantTotalPersonas;
+                            fila2.PromPersonasQueNoIngresanBiblio = (double)fila2.CantPersonasQueNoIngresanBiblio / fila2.CantTotalPersonas;
                         }
                         else
                         {
-                            fila2.PromPersonasQueNoIngresanBiblio = (double) fila2.CantPersonasQueNoIngresanBiblio / (fila1.CantTotalPersonas + 1);
+                            fila2.PromPersonasQueNoIngresanBiblio = (double)fila2.CantPersonasQueNoIngresanBiblio / (fila1.CantTotalPersonas + 1);
                         }
                         fila2.ProximaLlegada = fila1.ProximaLlegada;
 
@@ -837,6 +786,7 @@ namespace TP4SIM.Entidades
                 if (iteracionesGrilla.Contains(i))
                 {
                     AgregarFilaEnGrilla(fila2, proximoReloj);
+                    CargarColumnasClientes();
                 }
             }
 
@@ -935,6 +885,310 @@ namespace TP4SIM.Entidades
                 }
             }
         }
+        private void CargarColumnasClientes()
+        {
 
+            foreach (Temporal cliente in TodosLosClientes)
+            {
+                if (cliente.Estado.Nombre == "EConsultar") { cliente.TipoResumido = "EC"; }
+
+                if (cliente.Estado.Nombre == "EPedirLibro") { cliente.TipoResumido = "EPL"; }
+
+                if (cliente.Estado.Nombre == "EDevolverLibro") { cliente.TipoResumido = "EDL"; }
+
+                if (cliente.Estado.Nombre == "EnBiblioteca") { cliente.TipoResumido = "EB"; }
+                if (cliente.Estado.Nombre == "SiendoAtendido") { cliente.TipoResumido = "SA"; }
+                if (cliente.Estado.Nombre == "Destruido") { cliente.TipoResumido = "DES"; }
+            }
+
+            foreach (Temporal cliente in TodosLosClientes)
+            {
+
+                int fila = cliente.EnFilaNumero;
+
+                // Si se diese el caso de que se intenta modificar una fila pasado el 'hasta' mostrar la grilla directamente.
+
+                if (cliente.EnFilaNumero > FilaHasta && cliente.EnFilaNumero >= Grilla.RowCount - 1)
+                {
+                    return;
+                }
+
+                // Si el cliente es de tipo especial "Inicializacion" entonces llenar la fila de espacios vacios.
+
+                if (cliente.Estado.Nombre == "Destruido" && cliente.EnFilaNumero == 0)
+                {
+                    for (int indiceColumna = 27; indiceColumna < Grilla.Columns.Count; ++indiceColumna)
+                    {
+                        Grilla.Rows[fila].Cells[indiceColumna].Value = null;
+                    }
+                    continue;
+                }
+
+
+                if (cliente.Estado.Nombre == "EConsultar" || cliente.Estado.Nombre == "EnBiblioteca" || cliente.Estado.Nombre == "SiendoAtendido" || cliente.Estado.Nombre == "EPedirLibro" || cliente.Estado.Nombre == "EDevolverLibro")
+                {
+
+                    bool existente = false;
+                    int indiceDeHallazgo = 0;
+
+                    // Recorrer todas las columnas de clientes a ver si el cliente ya había sido añadido antes.
+
+                    for (int indiceColumna = 27; indiceColumna < Grilla.Columns.Count; ++indiceColumna)
+                    {
+                        string valor = Grilla.Rows[fila - 1].Cells[indiceColumna].Value?.ToString() ?? string.Empty;
+
+                        if (valor.Contains("Número: (" + cliente.Numero.ToString() + ")") && valor.Contains("(" + cliente.TipoResumido.ToString() + ")"))
+                        {
+
+                            // Si ya había sido añadido antes, entonces agregarlo en la columna encontrada, en la fila donde debería reflejarse la actualización de estado.
+
+                            existente = true;
+
+                            if (cliente.Estado.Nombre == "SiendoAtendido")
+                            {
+                                Grilla.Rows[fila].Cells[indiceColumna].Value =
+                                            "Número: ("
+                                            + cliente.Numero.ToString()
+                                            + ") (" + cliente.TipoResumido + ") (" + cliente.Estado.Nombre + ") ("
+                                            + cliente.SiendoAtendidoPor.Nombre + ") HI: "
+                                            + cliente.HoraIngreso.ToString();
+                                indiceDeHallazgo = indiceColumna;
+                            }
+                            else if (cliente.Estado.Nombre == "EConsultar")
+                            {
+                                Grilla.Rows[fila].Cells[indiceColumna].Value =
+                                            "Número: ("
+                                            + cliente.Numero.ToString()
+                                            + ") (" + cliente.TipoResumido + ") (" + cliente.Estado.Nombre + ") ("
+                                            + cliente.SiendoAtendidoPor.Nombre + ") HI: "
+                                            + cliente.HoraIngreso.ToString();
+                                indiceDeHallazgo = indiceColumna;
+                            }
+                            else if (cliente.Estado.Nombre == "EDevolverLibro")
+                            {
+                                Grilla.Rows[fila].Cells[indiceColumna].Value =
+                                            "Número: ("
+                                            + cliente.Numero.ToString()
+                                            + ") (" + cliente.TipoResumido + ") (" + cliente.Estado.Nombre + ") ("
+                                            + cliente.SiendoAtendidoPor.Nombre + ") HI: "
+                                            + cliente.HoraIngreso.ToString();
+                                indiceDeHallazgo = indiceColumna;
+                            }
+                            else if (cliente.Estado.Nombre == "EPedirLibro")
+                            {
+                                Grilla.Rows[fila].Cells[indiceColumna].Value =
+                                            "Número: ("
+                                            + cliente.Numero.ToString()
+                                            + ") (" + cliente.TipoResumido + ") (" + cliente.Estado.Nombre + ") ("
+                                            + cliente.SiendoAtendidoPor.Nombre + ") HI: "
+                                            + cliente.HoraIngreso.ToString();
+                                indiceDeHallazgo = indiceColumna;
+                            }
+                            else
+                            {
+                                Grilla.Rows[fila].Cells[indiceColumna].Value =
+                                            "Número: ("
+                                            + cliente.Numero.ToString()
+                                            + ") (" + cliente.TipoResumido + ") (" + cliente.Estado.Nombre + ") ("
+                                            + "Nadie" + ") HI: "
+                                            + cliente.HoraIngreso.ToString();
+                                indiceDeHallazgo = indiceColumna;
+                            }
+                            break;
+                        }
+                    }
+
+                    // Si lo encontró y colocó en su lugar, entonces tiene que arrastrar todos los demás a excepción del que encontró.
+
+                    if (existente)
+                    {
+                        for (int indiceColumna = 27; indiceColumna < Grilla.Columns.Count; ++indiceColumna)
+                        {
+                            string valor = Grilla.Rows[fila - 1].Cells[indiceColumna].Value?.ToString() ?? string.Empty;
+
+                            if (indiceColumna != indiceDeHallazgo)
+                            {
+                                Grilla.Rows[fila].Cells[indiceColumna].Value = Grilla.Rows[fila - 1].Cells[indiceColumna].Value;
+                            }
+
+                        }
+                    }
+
+                    // Si no lo encontró entonces el cliente no había sido añadido anteriormente, significa que es la primera vez y hay que agregarlo.
+
+                    if (!existente)
+                    {
+                        bool añadido = false;
+
+                        // Buscar el primer lugar con cliente destruido y agregarlo ahí.
+
+                        for (int indiceColumna = 27; indiceColumna < Grilla.Columns.Count; ++indiceColumna)
+                        {
+                            string valor = Grilla.Rows[fila - 1].Cells[indiceColumna].Value?.ToString() ?? string.Empty;
+
+                            if (valor.Contains("Destruido") && !añadido)
+                            {
+                                if (cliente.Estado.Nombre == "SiendoAtendido")
+                                {
+                                    Grilla.Rows[fila].Cells[indiceColumna].Value =
+                                                "Número: ("
+                                                + cliente.Numero.ToString()
+                                                + ") (" + cliente.TipoResumido + ") (" + cliente.Estado.Nombre + ") ("
+                                                + cliente.SiendoAtendidoPor.Nombre + ") HI: "
+                                                + cliente.HoraIngreso.ToString();
+                                    añadido = true;
+                                }
+                                else
+                                {
+                                    Grilla.Rows[fila].Cells[indiceColumna].Value =
+                                                "Número: ("
+                                                + cliente.Numero.ToString()
+                                                + ") (" + cliente.TipoResumido + ") (" + cliente.Estado.Nombre + ") ("
+                                                + "Nadie" + ") HI: "
+                                                + cliente.HoraIngreso.ToString();
+                                    añadido = true;
+                                }
+                            }
+                            else
+                            {
+                                // Como no es destruido, significa que ese lugar pertenece a otro cliente, entonces arrastrar el valor de la fila anterior a la fila actual.
+
+                                Grilla.Rows[fila].Cells[indiceColumna].Value = Grilla.Rows[fila - 1].Cells[indiceColumna].Value;
+                            }
+                        }
+
+                        // Si no fue añadido hasta ahora, es porque no había clientes destruidos, entonces debe crear una nueva columna y añadirse al final.
+
+
+                        int indiceColumnaCliente = 0;
+
+                        for (int indiceColumna = 27; indiceColumna < Grilla.Columns.Count; ++indiceColumna)
+                        {
+                            if (Grilla.Rows[fila].Cells[indiceColumna].Value == null)
+                            {
+                                indiceColumnaCliente = indiceColumna;
+                                break;
+                            }
+                        }
+
+                        if (indiceColumnaCliente == 0)
+                        {
+                            DataGridViewColumn nuevaColumna = new DataGridViewTextBoxColumn();
+                            nuevaColumna.Name = "Cliente";
+                            Grilla.Columns.Add(nuevaColumna);
+
+                            int indiceColumnaNueva = Grilla.Columns.Count - 1;
+
+
+                            if (cliente.Estado.Nombre == "SiendoAtendido")
+                            {
+                                Grilla.Rows[fila].Cells[indiceColumnaNueva].Value =
+                                            "Número: ("
+                                            + cliente.Numero.ToString()
+                                            + ") (" + cliente.TipoResumido + ") (" + cliente.Estado.Nombre + ") ("
+                                            + cliente.SiendoAtendidoPor.Nombre + ") HI: "
+                                            + cliente.HoraIngreso.ToString();
+                            }
+                            else
+                            {
+                                Grilla.Rows[fila].Cells[indiceColumnaNueva].Value =
+                                            "Número: ("
+                                            + cliente.Numero.ToString()
+                                            + ") (" + cliente.TipoResumido + ") (" + cliente.Estado.Nombre + ") ("
+                                            + "Nadie" + ") HI: "
+                                            + cliente.HoraIngreso.ToString();
+                            }
+
+                            continue;
+                        }
+
+                        if (cliente.Estado.Nombre == "SiendoAtendido")
+                        {
+                            Grilla.Rows[fila].Cells[indiceColumnaCliente].Value =
+                                        "Número: ("
+                                        + cliente.Numero.ToString()
+                                        + ") (" + cliente.TipoResumido + ") (" + cliente.Estado.Nombre + ") ("
+                                        + cliente.SiendoAtendidoPor.Nombre + ") HI: "
+                                        + cliente.HoraIngreso.ToString();
+                        }
+                        else
+                        {
+                            Grilla.Rows[fila].Cells[indiceColumnaCliente].Value =
+                                        "Número: ("
+                                        + cliente.Numero.ToString()
+                                        + ") (" + cliente.TipoResumido + ") (" + cliente.Estado.Nombre + ") ("
+                                        + "Nadie" + ") HI: "
+                                        + cliente.HoraIngreso.ToString();
+                        }
+                    }
+                }
+
+                // Si el cliente que hay en lista es un cambio de estado a destruido, debe buscar donde estaba.
+
+                if (cliente.Estado.Nombre == "Destruido")
+                {
+                    for (int indiceColumna = 27; indiceColumna < Grilla.Columns.Count; ++indiceColumna)
+                    {
+                        if (fila > 0)
+                        {
+                            string valor = Grilla.Rows[fila - 1].Cells[indiceColumna].Value?.ToString() ?? string.Empty;
+
+                            if (valor.Contains("Número: (" + cliente.Numero.ToString() + ")") && valor.Contains("(" + cliente.TipoResumido.ToString() + ")"))
+                            {
+                                Console.WriteLine("Estado del cliente: " + cliente.Estado.Nombre);
+                                Grilla.Rows[fila].Cells[indiceColumna].Value =
+                                                "Número: ("
+                                                + cliente.Numero.ToString()
+                                                + ") (" + cliente.TipoResumido + ") (" + cliente.Estado.Nombre + ") ("
+                                                + cliente.SiendoAtendidoPor.Nombre + ") HI: "
+                                                + cliente.HoraIngreso.ToString();
+
+                                // Cambiar el color a rojo.
+
+                                Grilla.Rows[fila].Cells[indiceColumna].Style.BackColor = System.Drawing.Color.Red;
+
+                            }
+                            else
+                            {
+                                // A todos los que no fueron destruidos los debe arrastrar igual.
+
+                                if (Grilla.Rows[fila].Cells[indiceColumna].Value == null)
+                                {
+                                    Grilla.Rows[fila].Cells[indiceColumna].Value = Grilla.Rows[fila - 1].Cells[indiceColumna].Value;
+                                }
+                            }
+                        }
+
+                    }
+                }
+
+                // Si sucede que el objeto se destruye pero se muestra con un estado que no es, cambiarlo a destruido.
+
+                if (true)
+                {
+                    for (int indiceColumna = 44; indiceColumna < Grilla.Columns.Count; ++indiceColumna)
+                    {
+                        if (Grilla.Rows[fila].Cells[indiceColumna].Style.BackColor == System.Drawing.Color.Red)
+                        {
+                            string textoActual = Grilla.Rows[fila].Cells[indiceColumna].Value.ToString();
+                            string textoModificado = "";
+
+                            if (textoActual.Contains("SiendoAtendido"))
+                            {
+                                textoModificado = textoActual.Replace("SiendoAtendido", "Destruido");
+                            }
+                            else
+                            {
+                                textoModificado = textoActual.Replace("Esperando Atención", "Destruido");
+                            }
+
+                            Grilla.Rows[fila].Cells[indiceColumna].Value = textoModificado;
+                        }
+
+                    }
+                }
+
+            }
+        }
     }
 }

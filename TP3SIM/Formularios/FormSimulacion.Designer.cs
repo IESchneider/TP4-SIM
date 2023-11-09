@@ -65,9 +65,10 @@
             // 
             // btnGenerarMetrica
             // 
-            this.btnGenerarMetrica.Location = new System.Drawing.Point(1646, 893);
+            this.btnGenerarMetrica.Location = new System.Drawing.Point(2195, 1099);
+            this.btnGenerarMetrica.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btnGenerarMetrica.Name = "btnGenerarMetrica";
-            this.btnGenerarMetrica.Size = new System.Drawing.Size(146, 36);
+            this.btnGenerarMetrica.Size = new System.Drawing.Size(195, 44);
             this.btnGenerarMetrica.TabIndex = 19;
             this.btnGenerarMetrica.Text = "Métricas Adicionales";
             this.btnGenerarMetrica.UseVisualStyleBackColor = true;
@@ -127,6 +128,7 @@
             this.dgvGrillaSimulacion.DefaultCellStyle = dataGridViewCellStyle2;
             this.dgvGrillaSimulacion.Dock = System.Windows.Forms.DockStyle.Top;
             this.dgvGrillaSimulacion.Location = new System.Drawing.Point(0, 0);
+            this.dgvGrillaSimulacion.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.dgvGrillaSimulacion.Name = "dgvGrillaSimulacion";
             this.dgvGrillaSimulacion.ReadOnly = true;
             dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
@@ -138,7 +140,7 @@
             dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
             this.dgvGrillaSimulacion.RowHeadersDefaultCellStyle = dataGridViewCellStyle3;
             this.dgvGrillaSimulacion.RowHeadersWidth = 51;
-            this.dgvGrillaSimulacion.Size = new System.Drawing.Size(1241, 528);
+            this.dgvGrillaSimulacion.Size = new System.Drawing.Size(1655, 804);
             this.dgvGrillaSimulacion.TabIndex = 0;
             // 
             // Evento
@@ -358,14 +360,15 @@
             // 
             // FormSimulacion
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(1241, 648);
+            this.ClientSize = new System.Drawing.Size(1655, 798);
             this.Controls.Add(this.btnGenerarMetrica);
             this.Controls.Add(this.dgvGrillaSimulacion);
             this.DoubleBuffered = true;
+            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Name = "FormSimulacion";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Resultado de la simulación";
