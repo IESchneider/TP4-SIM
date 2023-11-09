@@ -786,7 +786,7 @@ namespace TP4SIM.Entidades
                 if (iteracionesGrilla.Contains(i))
                 {
                     AgregarFilaEnGrilla(fila2, proximoReloj);
-                    CargarColumnasClientes();
+                    CargarColumnasClientes3();
                 }
             }
 
@@ -885,6 +885,8 @@ namespace TP4SIM.Entidades
                 }
             }
         }
+
+
         private void CargarColumnasClientes()
         {
 
@@ -1189,6 +1191,1001 @@ namespace TP4SIM.Entidades
                 }
 
             }
+        }
+
+        private void CargarColumnasClientes3()
+        {
+
+            foreach (Temporal cliente in TodosLosClientes)
+            {
+                if (cliente.Estado.Nombre == "EConsultar") { cliente.TipoResumido = "EC"; }
+
+                if (cliente.Estado.Nombre == "EPedirLibro") { cliente.TipoResumido = "EPL"; }
+
+                if (cliente.Estado.Nombre == "EDevolverLibro") { cliente.TipoResumido = "EDL"; }
+
+                if (cliente.Estado.Nombre == "EnBiblioteca") { cliente.TipoResumido = "EB"; }
+                if (cliente.Estado.Nombre == "SiendoAtendido") { cliente.TipoResumido = "SA"; }
+                if (cliente.Estado.Nombre == "Destruido") { cliente.TipoResumido = "DES"; }
+            }
+
+            foreach (Temporal cliente in TodosLosClientes)
+            {
+
+                int fila = cliente.EnFilaNumero;
+
+                // Si se diese el caso de que se intenta modificar una fila pasado el 'hasta' mostrar la grilla directamente.
+
+                if (cliente.EnFilaNumero > FilaHasta && cliente.EnFilaNumero >= Grilla.RowCount - 1)
+                {
+                    return;
+                }
+
+                // Si el cliente es de tipo especial "Inicializacion" entonces llenar la fila de espacios vacios.
+
+                if (cliente.Estado.Nombre == "Destruido" && cliente.EnFilaNumero == 0)
+                {
+                    for (int indiceColumna = 27; indiceColumna < Grilla.Columns.Count; ++indiceColumna)
+                    {
+                        Grilla.Rows[fila].Cells[indiceColumna].Value = null;
+                    }
+                    continue;
+                }
+
+
+                if (cliente.Estado.Nombre == "EConsultar" || cliente.Estado.Nombre == "EnBiblioteca" || cliente.Estado.Nombre == "SiendoAtendido" || cliente.Estado.Nombre == "EPedirLibro" || cliente.Estado.Nombre == "EDevolverLibro")
+                {
+
+                    bool existente = false;
+                    int indiceDeHallazgo = 0;
+
+                    // Recorrer todas las columnas de clientes a ver si el cliente ya había sido añadido antes.
+
+                    for (int indiceColumna = 27; indiceColumna < Grilla.Columns.Count; ++indiceColumna)
+                    {
+                        string valor = Grilla.Rows[fila - 1].Cells[indiceColumna].Value?.ToString() ?? string.Empty;
+
+                        if (valor.Contains("Número: (" + cliente.Numero.ToString() + ")") && valor.Contains("(" + cliente.TipoResumido.ToString() + ")"))
+                        {
+
+                            // Si ya había sido añadido antes, entonces agregarlo en la columna encontrada, en la fila donde debería reflejarse la actualización de estado.
+
+                            existente = true;
+
+                            if (cliente.Estado.Nombre == "SiendoAtendido")
+                            {
+                                Grilla.Rows[fila].Cells[indiceColumna].Value =
+                                            "Número: ("
+                                            + cliente.Numero.ToString()
+                                            + ") (" + cliente.TipoResumido + ") (" + cliente.Estado.Nombre + ") ("
+                                            + cliente.SiendoAtendidoPor.Nombre + ") HI: "
+                                            + cliente.HoraIngreso.ToString();
+                                indiceDeHallazgo = indiceColumna;
+                            }
+                            else if (cliente.Estado.Nombre == "EConsultar")
+                            {
+                                Grilla.Rows[fila].Cells[indiceColumna].Value =
+                                            "Número: ("
+                                            + cliente.Numero.ToString()
+                                            + ") (" + cliente.TipoResumido + ") (" + cliente.Estado.Nombre + ") ("
+                                            + cliente.SiendoAtendidoPor.Nombre + ") HI: "
+                                            + cliente.HoraIngreso.ToString();
+                                indiceDeHallazgo = indiceColumna;
+                            }
+                            else if (cliente.Estado.Nombre == "EDevolverLibro")
+                            {
+                                Grilla.Rows[fila].Cells[indiceColumna].Value =
+                                            "Número: ("
+                                            + cliente.Numero.ToString()
+                                            + ") (" + cliente.TipoResumido + ") (" + cliente.Estado.Nombre + ") ("
+                                            + cliente.SiendoAtendidoPor.Nombre + ") HI: "
+                                            + cliente.HoraIngreso.ToString();
+                                indiceDeHallazgo = indiceColumna;
+                            }
+                            else if (cliente.Estado.Nombre == "EPedirLibro")
+                            {
+                                Grilla.Rows[fila].Cells[indiceColumna].Value =
+                                            "Número: ("
+                                            + cliente.Numero.ToString()
+                                            + ") (" + cliente.TipoResumido + ") (" + cliente.Estado.Nombre + ") ("
+                                            + cliente.SiendoAtendidoPor.Nombre + ") HI: "
+                                            + cliente.HoraIngreso.ToString();
+                                indiceDeHallazgo = indiceColumna;
+                            }
+                            else if (cliente.Estado.Nombre == "EnBiblioteca")
+                            {
+                                Grilla.Rows[fila].Cells[indiceColumna].Value =
+                                            "Número: ("
+                                            + cliente.Numero.ToString()
+                                            + ") (" + cliente.TipoResumido + ") (" + cliente.Estado.Nombre + ") ("
+                                            + cliente.SiendoAtendidoPor.Nombre + ") HI: "
+                                            + cliente.HoraIngreso.ToString();
+                                indiceDeHallazgo = indiceColumna;
+                            }
+                            else
+                            {
+                                Grilla.Rows[fila].Cells[indiceColumna].Value =
+                                            "Número: ("
+                                            + cliente.Numero.ToString()
+                                            + ") (" + cliente.TipoResumido + ") (" + cliente.Estado.Nombre + ") ("
+                                            + "Nadie" + ") HI: "
+                                            + cliente.HoraIngreso.ToString();
+                                indiceDeHallazgo = indiceColumna;
+                            }
+                            break;
+                        }
+                    }
+
+                    // Si lo encontró y colocó en su lugar, entonces tiene que arrastrar todos los demás a excepción del que encontró.
+
+                    if (existente)
+                    {
+                        for (int indiceColumna = 27; indiceColumna < Grilla.Columns.Count; ++indiceColumna)
+                        {
+                            string valor = Grilla.Rows[fila - 1].Cells[indiceColumna].Value?.ToString() ?? string.Empty;
+
+                            if (indiceColumna != indiceDeHallazgo)
+                            {
+                                Grilla.Rows[fila].Cells[indiceColumna].Value = Grilla.Rows[fila - 1].Cells[indiceColumna].Value;
+                            }
+
+                        }
+                    }
+
+                    // Si no lo encontró entonces el cliente no había sido añadido anteriormente, significa que es la primera vez y hay que agregarlo.
+
+                    if (!existente)
+                    {
+                        bool añadido = false;
+
+                        // Buscar el primer lugar con cliente destruido y agregarlo ahí.
+
+                        for (int indiceColumna = 27; indiceColumna < Grilla.Columns.Count; ++indiceColumna)
+                        {
+                            string valor = Grilla.Rows[fila - 1].Cells[indiceColumna].Value?.ToString() ?? string.Empty;
+
+                            if (valor.Contains("Destruido") && !añadido)
+                            {
+                                if (cliente.Estado.Nombre == "SiendoAtendido")
+                                {
+                                    Grilla.Rows[fila].Cells[indiceColumna].Value =
+                                                "Número: ("
+                                                + cliente.Numero.ToString()
+                                                + ") (" + cliente.TipoResumido + ") (" + cliente.Estado.Nombre + ") ("
+                                                + cliente.SiendoAtendidoPor.Nombre + ") HI: "
+                                                + cliente.HoraIngreso.ToString();
+                                    indiceDeHallazgo = indiceColumna;
+                                }
+                                else if (cliente.Estado.Nombre == "EConsultar")
+                                {
+                                    Grilla.Rows[fila].Cells[indiceColumna].Value =
+                                                "Número: ("
+                                                + cliente.Numero.ToString()
+                                                + ") (" + cliente.TipoResumido + ") (" + cliente.Estado.Nombre + ") ("
+                                                + cliente.SiendoAtendidoPor.Nombre + ") HI: "
+                                                + cliente.HoraIngreso.ToString();
+                                    indiceDeHallazgo = indiceColumna;
+                                }
+                                else if (cliente.Estado.Nombre == "EDevolverLibro")
+                                {
+                                    Grilla.Rows[fila].Cells[indiceColumna].Value =
+                                                "Número: ("
+                                                + cliente.Numero.ToString()
+                                                + ") (" + cliente.TipoResumido + ") (" + cliente.Estado.Nombre + ") ("
+                                                + cliente.SiendoAtendidoPor.Nombre + ") HI: "
+                                                + cliente.HoraIngreso.ToString();
+                                    indiceDeHallazgo = indiceColumna;
+                                }
+                                else if (cliente.Estado.Nombre == "EPedirLibro")
+                                {
+                                    Grilla.Rows[fila].Cells[indiceColumna].Value =
+                                                "Número: ("
+                                                + cliente.Numero.ToString()
+                                                + ") (" + cliente.TipoResumido + ") (" + cliente.Estado.Nombre + ") ("
+                                                + cliente.SiendoAtendidoPor.Nombre + ") HI: "
+                                                + cliente.HoraIngreso.ToString();
+                                    indiceDeHallazgo = indiceColumna;
+                                }
+                                else if (cliente.Estado.Nombre == "EnBiblioteca")
+                                {
+                                    Grilla.Rows[fila].Cells[indiceColumna].Value =
+                                                "Número: ("
+                                                + cliente.Numero.ToString()
+                                                + ") (" + cliente.TipoResumido + ") (" + cliente.Estado.Nombre + ") ("
+                                                + cliente.SiendoAtendidoPor.Nombre + ") HI: "
+                                                + cliente.HoraIngreso.ToString();
+                                    indiceDeHallazgo = indiceColumna;
+                                }
+                                else
+                                {
+                                    Grilla.Rows[fila].Cells[indiceColumna].Value =
+                                                "Número: ("
+                                                + cliente.Numero.ToString()
+                                                + ") (" + cliente.TipoResumido + ") (" + cliente.Estado.Nombre + ") ("
+                                                + "Nadie" + ") HI: "
+                                                + cliente.HoraIngreso.ToString();
+                                    indiceDeHallazgo = indiceColumna;
+                                }
+
+                            }
+                            else
+                            {
+                                // Como no es destruido, significa que ese lugar pertenece a otro cliente, entonces arrastrar el valor de la fila anterior a la fila actual.
+
+                                Grilla.Rows[fila].Cells[indiceColumna].Value = Grilla.Rows[fila - 1].Cells[indiceColumna].Value;
+                            }
+                        }
+
+                        // Si no fue añadido hasta ahora, es porque no había clientes destruidos, entonces debe crear una nueva columna y añadirse al final.
+
+
+                        int indiceColumnaCliente = 0;
+
+                        for (int indiceColumna = 27; indiceColumna < Grilla.Columns.Count; ++indiceColumna)
+                        {
+                            if (Grilla.Rows[fila].Cells[indiceColumna].Value == null)
+                            {
+                                indiceColumnaCliente = indiceColumna;
+                                break;
+                            }
+                        }
+
+                        if (indiceColumnaCliente == 0)
+                        {
+                            DataGridViewColumn nuevaColumna = new DataGridViewTextBoxColumn();
+                            nuevaColumna.Name = "Cliente";
+                            Grilla.Columns.Add(nuevaColumna);
+
+                            int indiceColumnaNueva = Grilla.Columns.Count - 1;
+
+
+                            if (cliente.Estado.Nombre == "SiendoAtendido")
+                            {
+                                Grilla.Rows[fila].Cells[indiceColumnaNueva].Value =
+                                            "Número: ("
+                                            + cliente.Numero.ToString()
+                                            + ") (" + cliente.TipoResumido + ") (" + cliente.Estado.Nombre + ") ("
+                                            + cliente.SiendoAtendidoPor.Nombre + ") HI: "
+                                            + cliente.HoraIngreso.ToString();
+                                indiceDeHallazgo = indiceColumnaNueva;
+                            }
+                            else if (cliente.Estado.Nombre == "EConsultar")
+                            {
+                                Grilla.Rows[fila].Cells[indiceColumnaNueva].Value =
+                                            "Número: ("
+                                            + cliente.Numero.ToString()
+                                            + ") (" + cliente.TipoResumido + ") (" + cliente.Estado.Nombre + ") ("
+                                            + cliente.SiendoAtendidoPor.Nombre + ") HI: "
+                                            + cliente.HoraIngreso.ToString();
+                                indiceDeHallazgo = indiceColumnaNueva;
+                            }
+                            else if (cliente.Estado.Nombre == "EDevolverLibro")
+                            {
+                                Grilla.Rows[fila].Cells[indiceColumnaNueva].Value =
+                                            "Número: ("
+                                            + cliente.Numero.ToString()
+                                            + ") (" + cliente.TipoResumido + ") (" + cliente.Estado.Nombre + ") ("
+                                            + cliente.SiendoAtendidoPor.Nombre + ") HI: "
+                                            + cliente.HoraIngreso.ToString();
+                                indiceDeHallazgo = indiceColumnaNueva;
+                            }
+                            else if (cliente.Estado.Nombre == "EPedirLibro")
+                            {
+                                Grilla.Rows[fila].Cells[indiceColumnaNueva].Value =
+                                            "Número: ("
+                                            + cliente.Numero.ToString()
+                                            + ") (" + cliente.TipoResumido + ") (" + cliente.Estado.Nombre + ") ("
+                                            + cliente.SiendoAtendidoPor.Nombre + ") HI: "
+                                            + cliente.HoraIngreso.ToString();
+                                indiceDeHallazgo = indiceColumnaNueva;
+                            }
+                            else if (cliente.Estado.Nombre == "EnBiblioteca")
+                            {
+                                Grilla.Rows[fila].Cells[indiceColumnaNueva].Value =
+                                            "Número: ("
+                                            + cliente.Numero.ToString()
+                                            + ") (" + cliente.TipoResumido + ") (" + cliente.Estado.Nombre + ") ("
+                                            + cliente.SiendoAtendidoPor.Nombre + ") HI: "
+                                            + cliente.HoraIngreso.ToString();
+                                indiceDeHallazgo = indiceColumnaNueva;
+                            }
+                            else
+                            {
+                                Grilla.Rows[fila].Cells[indiceColumnaNueva].Value =
+                                            "Número: ("
+                                            + cliente.Numero.ToString()
+                                            + ") (" + cliente.TipoResumido + ") (" + cliente.Estado.Nombre + ") ("
+                                            + "Nadie" + ") HI: "
+                                            + cliente.HoraIngreso.ToString();
+                                indiceDeHallazgo = indiceColumnaNueva;
+                            }
+
+                            continue;
+                        }
+
+                        if (cliente.Estado.Nombre == "SiendoAtendido")
+                        {
+                            Grilla.Rows[fila].Cells[indiceColumnaCliente].Value =
+                                        "Número: ("
+                                        + cliente.Numero.ToString()
+                                        + ") (" + cliente.TipoResumido + ") (" + cliente.Estado.Nombre + ") ("
+                                        + cliente.SiendoAtendidoPor.Nombre + ") HI: "
+                                        + cliente.HoraIngreso.ToString();
+                            indiceDeHallazgo = indiceColumnaCliente;
+                        }
+                        else if (cliente.Estado.Nombre == "EConsultar")
+                        {
+                            Grilla.Rows[fila].Cells[indiceColumnaCliente].Value =
+                                        "Número: ("
+                                        + cliente.Numero.ToString()
+                                        + ") (" + cliente.TipoResumido + ") (" + cliente.Estado.Nombre + ") ("
+                                        + cliente.SiendoAtendidoPor.Nombre + ") HI: "
+                                        + cliente.HoraIngreso.ToString();
+                            indiceDeHallazgo = indiceColumnaCliente;
+                        }
+                        else if (cliente.Estado.Nombre == "EDevolverLibro")
+                        {
+                            Grilla.Rows[fila].Cells[indiceColumnaCliente].Value =
+                                        "Número: ("
+                                        + cliente.Numero.ToString()
+                                        + ") (" + cliente.TipoResumido + ") (" + cliente.Estado.Nombre + ") ("
+                                        + cliente.SiendoAtendidoPor.Nombre + ") HI: "
+                                        + cliente.HoraIngreso.ToString();
+                            indiceDeHallazgo = indiceColumnaCliente;
+                        }
+                        else if (cliente.Estado.Nombre == "EPedirLibro")
+                        {
+                            Grilla.Rows[fila].Cells[indiceColumnaCliente].Value =
+                                        "Número: ("
+                                        + cliente.Numero.ToString()
+                                        + ") (" + cliente.TipoResumido + ") (" + cliente.Estado.Nombre + ") ("
+                                        + cliente.SiendoAtendidoPor.Nombre + ") HI: "
+                                        + cliente.HoraIngreso.ToString();
+                            indiceDeHallazgo = indiceColumnaCliente;
+                        }
+                        else if (cliente.Estado.Nombre == "EnBiblioteca")
+                        {
+                            Grilla.Rows[fila].Cells[indiceColumnaCliente].Value =
+                                        "Número: ("
+                                        + cliente.Numero.ToString()
+                                        + ") (" + cliente.TipoResumido + ") (" + cliente.Estado.Nombre + ") ("
+                                        + cliente.SiendoAtendidoPor.Nombre + ") HI: "
+                                        + cliente.HoraIngreso.ToString();
+                            indiceDeHallazgo = indiceColumnaCliente;
+                        }
+                        else
+                        {
+                            Grilla.Rows[fila].Cells[indiceColumnaCliente].Value =
+                                        "Número: ("
+                                        + cliente.Numero.ToString()
+                                        + ") (" + cliente.TipoResumido + ") (" + cliente.Estado.Nombre + ") ("
+                                        + "Nadie" + ") HI: "
+                                        + cliente.HoraIngreso.ToString();
+                            indiceDeHallazgo = indiceColumnaCliente;
+
+                        }
+                    }
+
+                    // Si el cliente que hay en lista es un cambio de estado a destruido, debe buscar donde estaba.
+
+                    if (cliente.Estado.Nombre == "Destruido")
+                    {
+                        for (int indiceColumna = 27; indiceColumna < Grilla.Columns.Count; ++indiceColumna)
+                        {
+                            if (fila > 0)
+                            {
+                                string valor = Grilla.Rows[fila - 1].Cells[indiceColumna].Value?.ToString() ?? string.Empty;
+
+                                if (valor.Contains("Número: (" + cliente.Numero.ToString() + ")") && valor.Contains("(" + cliente.TipoResumido.ToString() + ")"))
+                                {
+                                    Console.WriteLine("Estado del cliente: " + cliente.Estado.Nombre);
+                                    Grilla.Rows[fila].Cells[indiceColumna].Value =
+                                                    "Número: ("
+                                                    + cliente.Numero.ToString()
+                                                    + ") (" + cliente.TipoResumido + ") (" + cliente.Estado.Nombre + ") ("
+                                                    + cliente.SiendoAtendidoPor.Nombre + ") HI: "
+                                                    + cliente.HoraIngreso.ToString();
+
+                                    // Cambiar el color a rojo.
+
+                                    Grilla.Rows[fila].Cells[indiceColumna].Style.BackColor = System.Drawing.Color.Red;
+
+                                }
+                                else
+                                {
+                                    // A todos los que no fueron destruidos los debe arrastrar igual.
+
+                                    if (Grilla.Rows[fila].Cells[indiceColumna].Value == null)
+                                    {
+                                        Grilla.Rows[fila].Cells[indiceColumna].Value = Grilla.Rows[fila - 1].Cells[indiceColumna].Value;
+                                    }
+                                }
+                            }
+
+                        }
+                    }
+
+                    // Si sucede que el objeto se destruye pero se muestra con un estado que no es, cambiarlo a destruido.
+
+                    if (true)
+                    {
+                        for (int indiceColumna = 27; indiceColumna < Grilla.Columns.Count; ++indiceColumna)
+                        {
+                            if (Grilla.Rows[fila].Cells[indiceColumna].Style.BackColor == System.Drawing.Color.Red)
+                            {
+                                string textoActual = Grilla.Rows[fila].Cells[indiceColumna].Value.ToString();
+                                string textoModificado = "";
+
+                                if (textoActual.Contains("SiendoAtendido"))
+                                {
+                                    textoModificado = textoActual.Replace("SiendoAtendido", "Destruido");
+                                }
+
+                                else if (textoActual.Contains("EConsultar"))
+                                {
+                                    textoModificado = textoActual.Replace("EConsultar", "Destruido");
+                                }
+
+                                else if (textoActual.Contains("EDevolverLibro"))
+                                {
+                                    textoModificado = textoActual.Replace("EDevolverLibro", "Destruido");
+                                }
+
+                                else if (textoActual.Contains("EPedirLibro"))
+                                {
+                                    textoModificado = textoActual.Replace("EPedirLibro", "Destruido");
+                                }
+
+                                else if (textoActual.Contains("EnBiblioteca"))
+                                {
+                                    textoModificado = textoActual.Replace("EnBiblioteca", "Destruido");
+                                }
+
+                                Grilla.Rows[fila].Cells[indiceColumna].Value = textoModificado;
+                            }
+
+                        }
+                    }
+
+                }
+            }
+
+            /*
+            private void CargarColumnasClientes2()
+            {
+
+                foreach (Temporal cliente in TodosLosClientes)
+                {
+                    //if (cliente.Tipo == "Renueva permiso") { cliente.TipoResumido = "RP"; }
+                    //if (cliente.Tipo == "Nuevo permiso") { cliente.TipoResumido = "NP"; }
+                    //if (cliente.Tipo == "Interesado en matricula") { cliente.TipoResumido = "IM"; }
+
+                    if (cliente.Estado.Nombre == "EConsultar") { cliente.TipoResumido = "EC"; }
+
+                    if (cliente.Estado.Nombre == "EPedirLibro") { cliente.TipoResumido = "EPL"; }
+
+                    if (cliente.Estado.Nombre == "EDevolverLibro") { cliente.TipoResumido = "EDL"; }
+
+                    if (cliente.Estado.Nombre == "EnBiblioteca") { cliente.TipoResumido = "EB"; }
+
+                    if (cliente.Estado.Nombre == "SiendoAtendido") { cliente.TipoResumido = "SA"; }
+
+                    if (cliente.Estado.Nombre == "Destruido") { cliente.TipoResumido = "DES"; }
+                }
+
+                foreach (Temporal cliente in TodosLosClientes)
+                {
+
+                    int fila = cliente.EnFilaNumero;
+
+                    // Si se diese el caso de que se intenta modificar una fila pasado el 'hasta' mostrar la grilla directamente.
+
+                    if (cliente.EnFilaNumero > FilaHasta && cliente.EnFilaNumero >= Grilla.RowCount - 1)
+                    {
+                        return;
+                    }
+
+                    // Si el cliente es de tipo especial "Inicializacion" entonces llenar la fila de espacios vacios.
+
+                    if (cliente.Tipo == "Inicializacion")
+                    {
+                        for (int indiceColumna = 27; indiceColumna < Grilla.Columns.Count; ++indiceColumna)
+                        {
+                            Grilla.Rows[fila].Cells[indiceColumna].Value = null;
+                        }
+                        continue;
+                    }
+
+                    if (cliente.Estado.Nombre == "EConsultar" || cliente.Estado.Nombre == "EnBiblioteca" || cliente.Estado.Nombre == "SiendoAtendido" ||
+                        cliente.Estado.Nombre == "EPedirLibro" || cliente.Estado.Nombre == "EDevolverLibro")
+                    {
+
+                        bool existente = false;
+                        int indiceDeHallazgo = 0;
+
+                        // Recorrer todas las columnas de clientes a ver si el cliente ya había sido añadido antes.
+
+                        for (int indiceColumna = 27; indiceColumna < Grilla.Columns.Count; ++indiceColumna)
+                        {
+                            string valor = Grilla.Rows[fila - 1].Cells[indiceColumna].Value?.ToString() ?? string.Empty;
+
+                            if (valor.Contains("Número: (" + cliente.Numero.ToString() + ")") && valor.Contains("(" + cliente.TipoResumido.ToString() + ")"))
+                            {
+
+                                // Si ya había sido añadido antes, entonces agregarlo en la columna encontrada, en la fila donde debería reflejarse la actualización de estado.
+
+                                existente = true;
+
+                                if (cliente.Estado.Nombre == "SiendoAtendido")
+                                {
+                                    Grilla.Rows[fila].Cells[indiceColumna].Value =
+                                                "Número: ("
+                                                + cliente.Numero.ToString()
+                                                + ") (" + cliente.TipoResumido + ") (" + cliente.Estado.Nombre + ") ("
+                                                + cliente.SiendoAtendidoPor.Nombre + ") HI: "
+                                                + cliente.HoraIngreso.ToString();
+                                    indiceDeHallazgo = indiceColumna;
+                                }
+                                else if (cliente.Estado.Nombre == "EConsultar")
+                                {
+                                    Grilla.Rows[fila].Cells[indiceColumna].Value =
+                                                "Número: ("
+                                                + cliente.Numero.ToString()
+                                                + ") (" + cliente.TipoResumido + ") (" + cliente.Estado.Nombre + ") ("
+                                                + cliente.SiendoAtendidoPor.Nombre + ") HI: "
+                                                + cliente.HoraIngreso.ToString();
+                                    indiceDeHallazgo = indiceColumna;
+                                }
+                                else if (cliente.Estado.Nombre == "EDevolverLibro")
+                                {
+                                    Grilla.Rows[fila].Cells[indiceColumna].Value =
+                                                "Número: ("
+                                                + cliente.Numero.ToString()
+                                                + ") (" + cliente.TipoResumido + ") (" + cliente.Estado.Nombre + ") ("
+                                                + cliente.SiendoAtendidoPor.Nombre + ") HI: "
+                                                + cliente.HoraIngreso.ToString();
+                                    indiceDeHallazgo = indiceColumna;
+                                }
+                                else if (cliente.Estado.Nombre == "EPedirLibro")
+                                {
+                                    Grilla.Rows[fila].Cells[indiceColumna].Value =
+                                                "Número: ("
+                                                + cliente.Numero.ToString()
+                                                + ") (" + cliente.TipoResumido + ") (" + cliente.Estado.Nombre + ") ("
+                                                + cliente.SiendoAtendidoPor.Nombre + ") HI: "
+                                                + cliente.HoraIngreso.ToString();
+                                    indiceDeHallazgo = indiceColumna;
+                                }
+                                else if (cliente.Estado.Nombre == "EnBiblioteca")
+                                {
+                                    Grilla.Rows[fila].Cells[indiceColumna].Value =
+                                                "Número: ("
+                                                + cliente.Numero.ToString()
+                                                + ") (" + cliente.TipoResumido + ") (" + cliente.Estado.Nombre + ") ("
+                                                + cliente.SiendoAtendidoPor.Nombre + ") HI: "
+                                                + cliente.HoraIngreso.ToString();
+                                    indiceDeHallazgo = indiceColumna;
+                                }
+                                else
+                                {
+                                    Grilla.Rows[fila].Cells[indiceColumna].Value =
+                                                "Número: ("
+                                                + cliente.Numero.ToString()
+                                                + ") (" + cliente.TipoResumido + ") (" + cliente.Estado.Nombre + ") ("
+                                                + "Nadie" + ") HI: "
+                                                + cliente.HoraIngreso.ToString();
+                                    indiceDeHallazgo = indiceColumna;
+                                }
+                                break;
+
+                            }
+                        }
+
+                        // Si lo encontró y colocó en su lugar, entonces tiene que arrastrar todos los demás a excepción del que encontró.
+
+                        if (existente)
+                        {
+                            for (int indiceColumna = 27; indiceColumna < Grilla.Columns.Count; ++indiceColumna)
+                            {
+                                string valor = Grilla.Rows[fila - 1].Cells[indiceColumna].Value?.ToString() ?? string.Empty;
+
+                                if (indiceColumna != indiceDeHallazgo)
+                                {
+                                    Grilla.Rows[fila].Cells[indiceColumna].Value = Grilla.Rows[fila - 1].Cells[indiceColumna].Value;
+                                }
+
+                            }
+                        }
+
+                        // Si no lo encontró entonces el cliente no había sido añadido anteriormente, significa que es la primera vez y hay que agregarlo.
+
+                        if (!existente)
+                        {
+                            bool añadido = false;
+
+                            // Buscar el primer lugar con cliente destruido y agregarlo ahí.
+
+                            for (int indiceColumna = 27; indiceColumna < Grilla.Columns.Count; ++indiceColumna)
+                            {
+                                string valor = Grilla.Rows[fila - 1].Cells[indiceColumna].Value?.ToString() ?? string.Empty;
+
+                                if (valor.Contains("Destruido") && !añadido)
+                                {
+                                    if (cliente.Estado.Nombre == "SiendoAtendido")
+                                    {
+                                        Grilla.Rows[fila].Cells[indiceColumna].Value =
+                                                    "Número: ("
+                                                    + cliente.Numero.ToString()
+                                                    + ") (" + cliente.TipoResumido + ") (" + cliente.Estado.Nombre + ") ("
+                                                    + cliente.SiendoAtendidoPor.Nombre + ") HI: "
+                                                    + cliente.HoraIngreso.ToString();
+                                        indiceDeHallazgo = indiceColumna;
+                                    }
+                                    else if (cliente.Estado.Nombre == "EConsultar")
+                                    {
+                                        Grilla.Rows[fila].Cells[indiceColumna].Value =
+                                                    "Número: ("
+                                                    + cliente.Numero.ToString()
+                                                    + ") (" + cliente.TipoResumido + ") (" + cliente.Estado.Nombre + ") ("
+                                                    + cliente.SiendoAtendidoPor.Nombre + ") HI: "
+                                                    + cliente.HoraIngreso.ToString();
+                                        indiceDeHallazgo = indiceColumna;
+                                    }
+                                    else if (cliente.Estado.Nombre == "EDevolverLibro")
+                                    {
+                                        Grilla.Rows[fila].Cells[indiceColumna].Value =
+                                                    "Número: ("
+                                                    + cliente.Numero.ToString()
+                                                    + ") (" + cliente.TipoResumido + ") (" + cliente.Estado.Nombre + ") ("
+                                                    + cliente.SiendoAtendidoPor.Nombre + ") HI: "
+                                                    + cliente.HoraIngreso.ToString();
+                                        indiceDeHallazgo = indiceColumna;
+                                    }
+                                    else if (cliente.Estado.Nombre == "EPedirLibro")
+                                    {
+                                        Grilla.Rows[fila].Cells[indiceColumna].Value =
+                                                    "Número: ("
+                                                    + cliente.Numero.ToString()
+                                                    + ") (" + cliente.TipoResumido + ") (" + cliente.Estado.Nombre + ") ("
+                                                    + cliente.SiendoAtendidoPor.Nombre + ") HI: "
+                                                    + cliente.HoraIngreso.ToString();
+                                        indiceDeHallazgo = indiceColumna;
+                                    }
+                                    else if (cliente.Estado.Nombre == "EnBiblioteca")
+                                    {
+                                        Grilla.Rows[fila].Cells[indiceColumna].Value =
+                                                    "Número: ("
+                                                    + cliente.Numero.ToString()
+                                                    + ") (" + cliente.TipoResumido + ") (" + cliente.Estado.Nombre + ") ("
+                                                    + cliente.SiendoAtendidoPor.Nombre + ") HI: "
+                                                    + cliente.HoraIngreso.ToString();
+                                        indiceDeHallazgo = indiceColumna;
+                                    }
+                                    else
+                                    {
+                                        Grilla.Rows[fila].Cells[indiceColumna].Value =
+                                                    "Número: ("
+                                                    + cliente.Numero.ToString()
+                                                    + ") (" + cliente.TipoResumido + ") (" + cliente.Estado.Nombre + ") ("
+                                                    + "Nadie" + ") HI: "
+                                                    + cliente.HoraIngreso.ToString();
+                                        indiceDeHallazgo = indiceColumna;
+                                    }
+                                    //break;
+                                }
+                                else
+                                {
+                                    // Como no es destruido, significa que ese lugar pertenece a otro cliente, entonces arrastrar el valor de la fila anterior a la fila actual.
+
+                                    Grilla.Rows[fila].Cells[indiceColumna].Value = Grilla.Rows[fila - 1].Cells[indiceColumna].Value;
+                                }
+                            }
+
+                            // Si no fue añadido hasta ahora, es porque no había clientes destruidos, entonces debe crear una nueva columna y añadirse al final.
+
+                            if (!añadido && Grilla.Rows[fila].Cells[2].Value.ToString() == "1")
+                            {
+                                DataGridViewColumn nuevaColumna = new DataGridViewTextBoxColumn();
+                                nuevaColumna.Name = "Cliente";
+                                Grilla.Columns.Add(nuevaColumna);
+
+                                int indiceColumnaNueva = Grilla.Columns.Count - 1;
+
+                                if (cliente.Estado.Nombre == "SiendoAtendido")
+                                {
+                                    Grilla.Rows[fila].Cells[indiceColumnaNueva].Value =
+                                                "Número: ("
+                                                + cliente.Numero.ToString()
+                                                + ") (" + cliente.TipoResumido + ") (" + cliente.Estado.Nombre + ") ("
+                                                + cliente.SiendoAtendidoPor.Nombre + ") HI: "
+                                                + cliente.HoraIngreso.ToString();
+                                    indiceDeHallazgo = indiceColumnaNueva;
+                                }
+                                else if (cliente.Estado.Nombre == "EConsultar")
+                                {
+                                    Grilla.Rows[fila].Cells[indiceColumnaNueva].Value =
+                                                "Número: ("
+                                                + cliente.Numero.ToString()
+                                                + ") (" + cliente.TipoResumido + ") (" + cliente.Estado.Nombre + ") ("
+                                                + cliente.SiendoAtendidoPor.Nombre + ") HI: "
+                                                + cliente.HoraIngreso.ToString();
+                                    indiceDeHallazgo = indiceColumnaNueva;
+                                }
+                                else if (cliente.Estado.Nombre == "EDevolverLibro")
+                                {
+                                    Grilla.Rows[fila].Cells[indiceColumnaNueva].Value =
+                                                "Número: ("
+                                                + cliente.Numero.ToString()
+                                                + ") (" + cliente.TipoResumido + ") (" + cliente.Estado.Nombre + ") ("
+                                                + cliente.SiendoAtendidoPor.Nombre + ") HI: "
+                                                + cliente.HoraIngreso.ToString();
+                                    indiceDeHallazgo = indiceColumnaNueva;
+                                }
+                                else if (cliente.Estado.Nombre == "EPedirLibro")
+                                {
+                                    Grilla.Rows[fila].Cells[indiceColumnaNueva].Value =
+                                                "Número: ("
+                                                + cliente.Numero.ToString()
+                                                + ") (" + cliente.TipoResumido + ") (" + cliente.Estado.Nombre + ") ("
+                                                + cliente.SiendoAtendidoPor.Nombre + ") HI: "
+                                                + cliente.HoraIngreso.ToString();
+                                    indiceDeHallazgo = indiceColumnaNueva;
+                                }
+                                else if (cliente.Estado.Nombre == "EnBiblioteca")
+                                {
+                                    Grilla.Rows[fila].Cells[indiceColumnaNueva].Value =
+                                                "Número: ("
+                                                + cliente.Numero.ToString()
+                                                + ") (" + cliente.TipoResumido + ") (" + cliente.Estado.Nombre + ") ("
+                                                + cliente.SiendoAtendidoPor.Nombre + ") HI: "
+                                                + cliente.HoraIngreso.ToString();
+                                    indiceDeHallazgo = indiceColumnaNueva;
+                                }
+                                else
+                                {
+                                    Grilla.Rows[fila].Cells[indiceColumnaNueva].Value =
+                                                "Número: ("
+                                                + cliente.Numero.ToString()
+                                                + ") (" + cliente.TipoResumido + ") (" + cliente.Estado.Nombre + ") ("
+                                                + "Nadie" + ") HI: "
+                                                + cliente.HoraIngreso.ToString();
+                                    indiceDeHallazgo = indiceColumnaNueva;
+                                }
+                                //break;
+                            }
+                            else if (!añadido && Convert.ToDouble(Grilla.Rows[fila].Cells[2].Value.ToString()) > 1)
+                            {
+
+                                int indiceColumnaCliente = 0;
+
+                                for (int indiceColumna = 27; indiceColumna < Grilla.Columns.Count; ++indiceColumna)
+                                {
+                                    if (Grilla.Rows[fila].Cells[indiceColumna].Value == null)
+                                    {
+                                        indiceColumnaCliente = indiceColumna;
+                                        break;
+                                    }
+                                }
+
+                                if (indiceColumnaCliente == 0)
+                                {
+                                    DataGridViewColumn nuevaColumna = new DataGridViewTextBoxColumn();
+                                    nuevaColumna.Name = "Cliente";
+                                    Grilla.Columns.Add(nuevaColumna);
+
+                                    int indiceColumnaNueva = Grilla.Columns.Count - 1;
+
+
+                                    if (cliente.Estado.Nombre == "SiendoAtendido")
+                                    {
+                                        Grilla.Rows[fila].Cells[indiceColumnaNueva].Value =
+                                                    "Número: ("
+                                                    + cliente.Numero.ToString()
+                                                    + ") (" + cliente.TipoResumido + ") (" + cliente.Estado.Nombre + ") ("
+                                                    + cliente.SiendoAtendidoPor.Nombre + ") HI: "
+                                                    + cliente.HoraIngreso.ToString();
+                                        indiceDeHallazgo = indiceColumnaNueva;
+                                    }
+                                    else if (cliente.Estado.Nombre == "EConsultar")
+                                    {
+                                        Grilla.Rows[fila].Cells[indiceColumnaNueva].Value =
+                                                    "Número: ("
+                                                    + cliente.Numero.ToString()
+                                                    + ") (" + cliente.TipoResumido + ") (" + cliente.Estado.Nombre + ") ("
+                                                    + cliente.SiendoAtendidoPor.Nombre + ") HI: "
+                                                    + cliente.HoraIngreso.ToString();
+                                        indiceDeHallazgo = indiceColumnaNueva;
+                                    }
+                                    else if (cliente.Estado.Nombre == "EDevolverLibro")
+                                    {
+                                        Grilla.Rows[fila].Cells[indiceColumnaNueva].Value =
+                                                    "Número: ("
+                                                    + cliente.Numero.ToString()
+                                                    + ") (" + cliente.TipoResumido + ") (" + cliente.Estado.Nombre + ") ("
+                                                    + cliente.SiendoAtendidoPor.Nombre + ") HI: "
+                                                    + cliente.HoraIngreso.ToString();
+                                        indiceDeHallazgo = indiceColumnaNueva;
+                                    }
+                                    else if (cliente.Estado.Nombre == "EPedirLibro")
+                                    {
+                                        Grilla.Rows[fila].Cells[indiceColumnaNueva].Value =
+                                                    "Número: ("
+                                                    + cliente.Numero.ToString()
+                                                    + ") (" + cliente.TipoResumido + ") (" + cliente.Estado.Nombre + ") ("
+                                                    + cliente.SiendoAtendidoPor.Nombre + ") HI: "
+                                                    + cliente.HoraIngreso.ToString();
+                                        indiceDeHallazgo = indiceColumnaNueva;
+                                    }
+                                    else if (cliente.Estado.Nombre == "EnBiblioteca")
+                                    {
+                                        Grilla.Rows[fila].Cells[indiceColumnaNueva].Value =
+                                                    "Número: ("
+                                                    + cliente.Numero.ToString()
+                                                    + ") (" + cliente.TipoResumido + ") (" + cliente.Estado.Nombre + ") ("
+                                                    + cliente.SiendoAtendidoPor.Nombre + ") HI: "
+                                                    + cliente.HoraIngreso.ToString();
+                                        indiceDeHallazgo = indiceColumnaNueva;
+                                    }
+                                    else
+                                    {
+                                        Grilla.Rows[fila].Cells[indiceColumnaNueva].Value =
+                                                    "Número: ("
+                                                    + cliente.Numero.ToString()
+                                                    + ") (" + cliente.TipoResumido + ") (" + cliente.Estado.Nombre + ") ("
+                                                    + "Nadie" + ") HI: "
+                                                    + cliente.HoraIngreso.ToString();
+                                        indiceDeHallazgo = indiceColumnaNueva;
+                                    }
+
+                                    continue;
+                                }
+
+                                if (cliente.Estado.Nombre == "SiendoAtendido")
+                                {
+                                    Grilla.Rows[fila].Cells[indiceColumnaCliente].Value =
+                                                "Número: ("
+                                                + cliente.Numero.ToString()
+                                                + ") (" + cliente.TipoResumido + ") (" + cliente.Estado.Nombre + ") ("
+                                                + cliente.SiendoAtendidoPor.Nombre + ") HI: "
+                                                + cliente.HoraIngreso.ToString();
+                                    indiceDeHallazgo = indiceColumnaCliente;
+                                }
+                                else if (cliente.Estado.Nombre == "EConsultar")
+                                {
+                                    Grilla.Rows[fila].Cells[indiceColumnaCliente].Value =
+                                                "Número: ("
+                                                + cliente.Numero.ToString()
+                                                + ") (" + cliente.TipoResumido + ") (" + cliente.Estado.Nombre + ") ("
+                                                + cliente.SiendoAtendidoPor.Nombre + ") HI: "
+                                                + cliente.HoraIngreso.ToString();
+                                    indiceDeHallazgo = indiceColumnaCliente;
+                                }
+                                else if (cliente.Estado.Nombre == "EDevolverLibro")
+                                {
+                                    Grilla.Rows[fila].Cells[indiceColumnaCliente].Value =
+                                                "Número: ("
+                                                + cliente.Numero.ToString()
+                                                + ") (" + cliente.TipoResumido + ") (" + cliente.Estado.Nombre + ") ("
+                                                + cliente.SiendoAtendidoPor.Nombre + ") HI: "
+                                                + cliente.HoraIngreso.ToString();
+                                    indiceDeHallazgo = indiceColumnaCliente;
+                                }
+                                else if (cliente.Estado.Nombre == "EPedirLibro")
+                                {
+                                    Grilla.Rows[fila].Cells[indiceColumnaCliente].Value =
+                                                "Número: ("
+                                                + cliente.Numero.ToString()
+                                                + ") (" + cliente.TipoResumido + ") (" + cliente.Estado.Nombre + ") ("
+                                                + cliente.SiendoAtendidoPor.Nombre + ") HI: "
+                                                + cliente.HoraIngreso.ToString();
+                                    indiceDeHallazgo = indiceColumnaCliente;
+                                }
+                                else if (cliente.Estado.Nombre == "EnBiblioteca")
+                                {
+                                    Grilla.Rows[fila].Cells[indiceColumnaCliente].Value =
+                                                "Número: ("
+                                                + cliente.Numero.ToString()
+                                                + ") (" + cliente.TipoResumido + ") (" + cliente.Estado.Nombre + ") ("
+                                                + cliente.SiendoAtendidoPor.Nombre + ") HI: "
+                                                + cliente.HoraIngreso.ToString();
+                                    indiceDeHallazgo = indiceColumnaCliente;
+                                }
+                                else
+                                {
+                                    Grilla.Rows[fila].Cells[indiceColumnaCliente].Value =
+                                                "Número: ("
+                                                + cliente.Numero.ToString()
+                                                + ") (" + cliente.TipoResumido + ") (" + cliente.Estado.Nombre + ") ("
+                                                + "Nadie" + ") HI: "
+                                                + cliente.HoraIngreso.ToString();
+                                    indiceDeHallazgo = indiceColumnaCliente;
+                                }
+                            }
+                        }
+                    }
+
+                    // Si el cliente que hay en lista es un cambio de estado a destruido, debe buscar donde estaba.
+
+                    if (cliente.Estado.Nombre == "Destruido")
+                    {
+                        for (int indiceColumna = 27; indiceColumna < Grilla.Columns.Count; ++indiceColumna)
+                        {
+                            string valor = Grilla.Rows[fila - 1].Cells[indiceColumna].Value?.ToString() ?? string.Empty;
+
+                            if (valor.Contains("Número: (" + cliente.Numero.ToString() + ")") && valor.Contains("(" + cliente.TipoResumido.ToString() + ")"))
+                            {
+                                Console.WriteLine("Estado del cliente: " + cliente.Estado.Nombre);
+                                Grilla.Rows[fila].Cells[indiceColumna].Value =
+                                                "Número: ("
+                                                + cliente.Numero.ToString()
+                                                + ") (" + cliente.TipoResumido + ") (" + cliente.Estado.Nombre + ") ("
+                                                + cliente.SiendoAtendidoPor.Nombre + ") HI: "
+                                                + cliente.HoraIngreso.ToString();
+
+                                // Cambiar el color a rojo.
+
+                                Grilla.Rows[fila].Cells[indiceColumna].Style.BackColor = System.Drawing.Color.Red;
+
+                            }
+                            else
+                            {
+                                // A todos los que no fueron destruidos los debe arrastrar igual.
+
+                                if (Grilla.Rows[fila].Cells[indiceColumna].Value == null)
+                                {
+                                    Grilla.Rows[fila].Cells[indiceColumna].Value = Grilla.Rows[fila - 1].Cells[indiceColumna].Value;
+                                }
+                            }
+                        }
+                    }
+
+                    // Si sucede que el objeto se destruye pero se muestra con un estado que no es, cambiarlo a destruido.
+
+                    if (true)
+                    {
+                        for (int indiceColumna = 27; indiceColumna < Grilla.Columns.Count; ++indiceColumna)
+                        {
+                            if (Grilla.Rows[fila].Cells[indiceColumna].Style.BackColor == System.Drawing.Color.Red)
+                            {
+                                string textoActual = Grilla.Rows[fila].Cells[indiceColumna].Value.ToString();
+                                string textoModificado = "";
+
+                                if (textoActual.Contains("SiendoAtendido"))
+                                {
+                                    textoModificado = textoActual.Replace("SiendoAtendido", "Destruido");
+                                }
+
+                                else if (textoActual.Contains("EConsultar"))
+                                {
+                                    textoModificado = textoActual.Replace("EConsultar", "Destruido");
+                                }
+
+                                else if (textoActual.Contains("EDevolverLibro"))
+                                {
+                                    textoModificado = textoActual.Replace("EDevolverLibro", "Destruido");
+                                }
+
+                                else if (textoActual.Contains("EPedirLibro"))
+                                {
+                                    textoModificado = textoActual.Replace("EPedirLibro", "Destruido");
+                                }
+
+                                else if (textoActual.Contains("EnBiblioteca"))
+                                {
+                                    textoModificado = textoActual.Replace("EnBiblioteca", "Destruido");
+                                }
+
+                                Grilla.Rows[fila].Cells[indiceColumna].Value = textoModificado;
+                            }
+
+                        }
+                    }
+
+                }
+            }
+
+            */
+
         }
     }
 }
