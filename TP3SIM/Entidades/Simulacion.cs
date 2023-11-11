@@ -549,6 +549,8 @@ namespace TP4SIM.Entidades
                                 fila2.ProxFinAtencion_1 = fila2.Reloj + fila2.TiempoAtencion;
                                 fila2.EstadoEmpleado_1 = estadosAConsulta["Empleado 1"];
                             }
+                            proxCliente.Estado = SiendoAtendido;
+                            proxCliente.SiendoAtendidoPor = Empleado1;
                             fila2.EstadoBiblioteca = abierta;
                             fila2.Cola = fila1.Cola - 1;
 
@@ -662,7 +664,8 @@ namespace TP4SIM.Entidades
                                 fila2.ProxFinAtencion_2 = fila2.Reloj + fila2.TiempoAtencion;
                                 fila2.EstadoEmpleado_2 = estadosAConsulta["Empleado 2"];
                             }
-
+                            proxCliente.Estado = SiendoAtendido;
+                            proxCliente.SiendoAtendidoPor = Empleado2;
                             fila2.EstadoBiblioteca = abierta;
                             fila2.Cola = fila1.Cola - 1;
 
@@ -786,7 +789,7 @@ namespace TP4SIM.Entidades
                 if (iteracionesGrilla.Contains(i))
                 {
                     AgregarFilaEnGrilla(fila2, proximoReloj);
-                    CargarColumnasClientes3();
+                    CargarColumnasClientes();
                 }
             }
 
@@ -906,7 +909,7 @@ namespace TP4SIM.Entidades
             foreach (Temporal cliente in TodosLosClientes)
             {
 
-                int fila = cliente.EnFilaNumero;
+                int fila = NumeroSimulacionActual;
 
                 // Si se diese el caso de que se intenta modificar una fila pasado el 'hasta' mostrar la grilla directamente.
 
@@ -939,7 +942,7 @@ namespace TP4SIM.Entidades
                     {
                         string valor = Grilla.Rows[fila - 1].Cells[indiceColumna].Value?.ToString() ?? string.Empty;
 
-                        if (valor.Contains("Número: (" + cliente.Numero.ToString() + ")") && valor.Contains("(" + cliente.TipoResumido.ToString() + ")"))
+                        if (valor.Contains("Número: (" + cliente.Numero.ToString() + ")"))
                         {
 
                             // Si ya había sido añadido antes, entonces agregarlo en la columna encontrada, en la fila donde debería reflejarse la actualización de estado.
@@ -947,36 +950,6 @@ namespace TP4SIM.Entidades
                             existente = true;
 
                             if (cliente.Estado.Nombre == "SiendoAtendido")
-                            {
-                                Grilla.Rows[fila].Cells[indiceColumna].Value =
-                                            "Número: ("
-                                            + cliente.Numero.ToString()
-                                            + ") (" + cliente.TipoResumido + ") (" + cliente.Estado.Nombre + ") ("
-                                            + cliente.SiendoAtendidoPor.Nombre + ") HI: "
-                                            + cliente.HoraIngreso.ToString();
-                                indiceDeHallazgo = indiceColumna;
-                            }
-                            else if (cliente.Estado.Nombre == "EConsultar")
-                            {
-                                Grilla.Rows[fila].Cells[indiceColumna].Value =
-                                            "Número: ("
-                                            + cliente.Numero.ToString()
-                                            + ") (" + cliente.TipoResumido + ") (" + cliente.Estado.Nombre + ") ("
-                                            + cliente.SiendoAtendidoPor.Nombre + ") HI: "
-                                            + cliente.HoraIngreso.ToString();
-                                indiceDeHallazgo = indiceColumna;
-                            }
-                            else if (cliente.Estado.Nombre == "EDevolverLibro")
-                            {
-                                Grilla.Rows[fila].Cells[indiceColumna].Value =
-                                            "Número: ("
-                                            + cliente.Numero.ToString()
-                                            + ") (" + cliente.TipoResumido + ") (" + cliente.Estado.Nombre + ") ("
-                                            + cliente.SiendoAtendidoPor.Nombre + ") HI: "
-                                            + cliente.HoraIngreso.ToString();
-                                indiceDeHallazgo = indiceColumna;
-                            }
-                            else if (cliente.Estado.Nombre == "EPedirLibro")
                             {
                                 Grilla.Rows[fila].Cells[indiceColumna].Value =
                                             "Número: ("
@@ -997,22 +970,6 @@ namespace TP4SIM.Entidades
                                 indiceDeHallazgo = indiceColumna;
                             }
                             break;
-                        }
-                    }
-
-                    // Si lo encontró y colocó en su lugar, entonces tiene que arrastrar todos los demás a excepción del que encontró.
-
-                    if (existente)
-                    {
-                        for (int indiceColumna = 27; indiceColumna < Grilla.Columns.Count; ++indiceColumna)
-                        {
-                            string valor = Grilla.Rows[fila - 1].Cells[indiceColumna].Value?.ToString() ?? string.Empty;
-
-                            if (indiceColumna != indiceDeHallazgo)
-                            {
-                                Grilla.Rows[fila].Cells[indiceColumna].Value = Grilla.Rows[fila - 1].Cells[indiceColumna].Value;
-                            }
-
                         }
                     }
 
@@ -1061,30 +1018,53 @@ namespace TP4SIM.Entidades
 
                         // Si no fue añadido hasta ahora, es porque no había clientes destruidos, entonces debe crear una nueva columna y añadirse al final.
 
-
-                        int indiceColumnaCliente = 0;
-
-                        for (int indiceColumna = 27; indiceColumna < Grilla.Columns.Count; ++indiceColumna)
+                        if(añadido != true)
                         {
-                            if (Grilla.Rows[fila].Cells[indiceColumna].Value == null)
+                            int indiceColumnaCliente = 0;
+
+                            for (int indiceColumna = 27; indiceColumna < Grilla.Columns.Count; ++indiceColumna)
                             {
-                                indiceColumnaCliente = indiceColumna;
-                                break;
+                                if (Grilla.Rows[fila].Cells[indiceColumna].Value == null)
+                                {
+                                    indiceColumnaCliente = indiceColumna;
+                                    break;
+                                }
                             }
-                        }
 
-                        if (indiceColumnaCliente == 0)
-                        {
-                            DataGridViewColumn nuevaColumna = new DataGridViewTextBoxColumn();
-                            nuevaColumna.Name = "Cliente";
-                            Grilla.Columns.Add(nuevaColumna);
+                            if (indiceColumnaCliente == 0)
+                            {
+                                DataGridViewColumn nuevaColumna = new DataGridViewTextBoxColumn();
+                                nuevaColumna.Name = "Cliente";
+                                Grilla.Columns.Add(nuevaColumna);
 
-                            int indiceColumnaNueva = Grilla.Columns.Count - 1;
+                                int indiceColumnaNueva = Grilla.Columns.Count - 1;
 
+
+                                if (cliente.Estado.Nombre == "SiendoAtendido")
+                                {
+                                    Grilla.Rows[fila].Cells[indiceColumnaNueva].Value =
+                                                "Número: ("
+                                                + cliente.Numero.ToString()
+                                                + ") (" + cliente.TipoResumido + ") (" + cliente.Estado.Nombre + ") ("
+                                                + cliente.SiendoAtendidoPor.Nombre + ") HI: "
+                                                + cliente.HoraIngreso.ToString();
+                                }
+                                else
+                                {
+                                    Grilla.Rows[fila].Cells[indiceColumnaNueva].Value =
+                                                "Número: ("
+                                                + cliente.Numero.ToString()
+                                                + ") (" + cliente.TipoResumido + ") (" + cliente.Estado.Nombre + ") ("
+                                                + "Nadie" + ") HI: "
+                                                + cliente.HoraIngreso.ToString();
+                                }
+
+                                continue;
+                            }
 
                             if (cliente.Estado.Nombre == "SiendoAtendido")
                             {
-                                Grilla.Rows[fila].Cells[indiceColumnaNueva].Value =
+                                Grilla.Rows[fila].Cells[indiceColumnaCliente].Value =
                                             "Número: ("
                                             + cliente.Numero.ToString()
                                             + ") (" + cliente.TipoResumido + ") (" + cliente.Estado.Nombre + ") ("
@@ -1093,35 +1073,15 @@ namespace TP4SIM.Entidades
                             }
                             else
                             {
-                                Grilla.Rows[fila].Cells[indiceColumnaNueva].Value =
+                                Grilla.Rows[fila].Cells[indiceColumnaCliente].Value =
                                             "Número: ("
                                             + cliente.Numero.ToString()
                                             + ") (" + cliente.TipoResumido + ") (" + cliente.Estado.Nombre + ") ("
                                             + "Nadie" + ") HI: "
                                             + cliente.HoraIngreso.ToString();
                             }
-
-                            continue;
                         }
-
-                        if (cliente.Estado.Nombre == "SiendoAtendido")
-                        {
-                            Grilla.Rows[fila].Cells[indiceColumnaCliente].Value =
-                                        "Número: ("
-                                        + cliente.Numero.ToString()
-                                        + ") (" + cliente.TipoResumido + ") (" + cliente.Estado.Nombre + ") ("
-                                        + cliente.SiendoAtendidoPor.Nombre + ") HI: "
-                                        + cliente.HoraIngreso.ToString();
-                        }
-                        else
-                        {
-                            Grilla.Rows[fila].Cells[indiceColumnaCliente].Value =
-                                        "Número: ("
-                                        + cliente.Numero.ToString()
-                                        + ") (" + cliente.TipoResumido + ") (" + cliente.Estado.Nombre + ") ("
-                                        + "Nadie" + ") HI: "
-                                        + cliente.HoraIngreso.ToString();
-                        }
+                        
                     }
                 }
 
@@ -1135,7 +1095,7 @@ namespace TP4SIM.Entidades
                         {
                             string valor = Grilla.Rows[fila - 1].Cells[indiceColumna].Value?.ToString() ?? string.Empty;
 
-                            if (valor.Contains("Número: (" + cliente.Numero.ToString() + ")") && valor.Contains("(" + cliente.TipoResumido.ToString() + ")"))
+                            if (valor.Contains("Número: (" + cliente.Numero.ToString() + ")"))
                             {
                                 Console.WriteLine("Estado del cliente: " + cliente.Estado.Nombre);
                                 Grilla.Rows[fila].Cells[indiceColumna].Value =
@@ -1149,15 +1109,6 @@ namespace TP4SIM.Entidades
 
                                 Grilla.Rows[fila].Cells[indiceColumna].Style.BackColor = System.Drawing.Color.Red;
 
-                            }
-                            else
-                            {
-                                // A todos los que no fueron destruidos los debe arrastrar igual.
-
-                                if (Grilla.Rows[fila].Cells[indiceColumna].Value == null)
-                                {
-                                    Grilla.Rows[fila].Cells[indiceColumna].Value = Grilla.Rows[fila - 1].Cells[indiceColumna].Value;
-                                }
                             }
                         }
 
