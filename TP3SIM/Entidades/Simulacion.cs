@@ -455,8 +455,6 @@ namespace TP4SIM.Entidades
                         TodosLosClientes.Add(cliente.CopiarCliente(cliente));
 
 
-
-                        fila2.TiempoPermanenciaBiblioteca = fila1.TiempoPermanenciaBiblioteca + (fila2.Reloj - fila1.Reloj) * fila2.CantPersonasBiblioteca;
                         if (fila2.CantPersonasBiblioteca > 0)
                         {
                             fila2.PromTiempoPermanenciaBiblio = fila2.TiempoPermanenciaBiblioteca / fila2.CantPersonasQueIngresanBiblio;
@@ -507,6 +505,7 @@ namespace TP4SIM.Entidades
                                     else
                                     {
                                         client.DestruirCliente(client);
+                                        fila2.TiempoPermanenciaBiblioteca = fila1.TiempoPermanenciaBiblioteca + (fila2.Reloj - client.HoraIngreso);
                                         break;
                                     }
                                 }
@@ -520,6 +519,7 @@ namespace TP4SIM.Entidades
                                     fila2.ProxFinAtencion_1 = 0;
                                     fila2.EstadoBiblioteca = abierta;
                                     client.DestruirCliente(client);
+                                    fila2.TiempoPermanenciaBiblioteca = fila1.TiempoPermanenciaBiblioteca + (fila2.Reloj - client.HoraIngreso);
                                     break;
                                 }
 
@@ -565,7 +565,6 @@ namespace TP4SIM.Entidades
 
                         }
 
-                        fila2.TiempoPermanenciaBiblioteca = fila1.TiempoPermanenciaBiblioteca + (fila2.Reloj - fila1.Reloj) * fila1.CantPersonasBiblioteca;
                         if (fila2.CantPersonasBiblioteca > 0)
                         {
                             fila2.PromTiempoPermanenciaBiblio = fila2.TiempoPermanenciaBiblioteca / fila2.CantPersonasQueIngresanBiblio;
@@ -622,6 +621,7 @@ namespace TP4SIM.Entidades
                                     {
                                         fila2.EstadoBiblioteca = abierta;
                                         client.DestruirCliente(client);
+                                        fila2.TiempoPermanenciaBiblioteca = fila1.TiempoPermanenciaBiblioteca + (fila2.Reloj - client.HoraIngreso);
                                         break;
                                     }
                                 }
@@ -635,6 +635,7 @@ namespace TP4SIM.Entidades
                                     fila2.ProxFinAtencion_2 = 0;
                                     fila2.EstadoBiblioteca = abierta;
                                     client.DestruirCliente(client);
+                                    fila2.TiempoPermanenciaBiblioteca = fila1.TiempoPermanenciaBiblioteca + (fila2.Reloj - client.HoraIngreso);
                                     break;
                                 }
 
@@ -680,8 +681,6 @@ namespace TP4SIM.Entidades
 
                         }
 
-
-                        fila2.TiempoPermanenciaBiblioteca = fila1.TiempoPermanenciaBiblioteca + (fila2.Reloj - fila1.Reloj) * fila1.CantPersonasBiblioteca;
                         if (fila2.CantPersonasBiblioteca > 0)
                         {
                             fila2.PromTiempoPermanenciaBiblio = fila2.TiempoPermanenciaBiblioteca / fila2.CantPersonasQueIngresanBiblio;
@@ -717,6 +716,7 @@ namespace TP4SIM.Entidades
                             if (client.HoraFinLectura == fila2.Reloj)
                             {
                                 client.DestruirCliente(client);
+                                fila2.TiempoPermanenciaBiblioteca = fila1.TiempoPermanenciaBiblioteca + (fila2.Reloj - client.HoraIngreso);
                                 break;
                             }
                         }
@@ -728,7 +728,7 @@ namespace TP4SIM.Entidades
                         fila2.TiempoLectura = 0;
                         fila2.ProxFinLectura = 0;
                         fila2.EstadoBiblioteca = abierta;
-                        fila2.TiempoPermanenciaBiblioteca = fila1.TiempoPermanenciaBiblioteca + (fila2.Reloj - fila1.Reloj) * fila1.CantPersonasBiblioteca;
+                        
                         if (fila2.CantPersonasBiblioteca > 0)
                         {
                             fila2.PromTiempoPermanenciaBiblio = fila2.TiempoPermanenciaBiblioteca / fila2.CantPersonasQueIngresanBiblio;
