@@ -391,13 +391,13 @@ namespace TP4SIM.Entidades
                                         {
                                             fila2.TiempoAtencion = log.VariableAleatoriaExponencial(6, fila2.RND_FinAtencion);
                                             fila2.ProxFinAtencion_2 = fila2.Reloj + fila2.TiempoAtencion;
-                                            fila2.EstadoEmpleado_2 = estadosAPedidoLibro["Empleado 1"];
+                                            fila2.EstadoEmpleado_2 = estadosAPedidoLibro["Empleado 2"];
                                         }
                                         if (cliente.Tipo == "Devolver libro")
                                         {
                                             fila2.TiempoAtencion = log.VariableAleatoriaConvolucion(2, 0.5);
                                             fila2.ProxFinAtencion_2 = fila2.Reloj + fila2.TiempoAtencion;
-                                            fila2.EstadoEmpleado_2 = estadosADevolucionLibro["Empleado 1"];
+                                            fila2.EstadoEmpleado_2 = estadosADevolucionLibro["Empleado 2"];
                                         }
                                         if (cliente.Tipo == "Consulta")
                                         {
@@ -407,7 +407,7 @@ namespace TP4SIM.Entidades
                                         }
 
                                         cliente.Estado = SiendoAtendido;
-                                        cliente.SiendoAtendidoPor = Empleado1;
+                                        cliente.SiendoAtendidoPor = Empleado2;
                                         fila2.Persona.Add(cliente);
                                         cliente.EnFilaNumero = NumeroSimulacionActual;
                                     }
@@ -613,7 +613,7 @@ namespace TP4SIM.Entidades
                                         client.HoraFinLectura = fila2.ProxFinLectura;
                                         client.Estado = EnBiblioteca;
                                         fila2.EstadoBiblioteca = fila1.EstadoBiblioteca;
-                                        tiemposFinLectura.Add((int)fila2.ProxFinLectura);
+                                        tiemposFinLectura.Add((double)fila2.ProxFinLectura);
                                         fila2.CantPersonasBiblioteca = fila2.CantPersonasBiblioteca + 1;
                                         break;
                                     }
@@ -1107,8 +1107,6 @@ namespace TP4SIM.Entidades
 
                                 // Cambiar el color a rojo.
 
-                                Grilla.Rows[fila].Cells[indiceColumna].Style.BackColor = System.Drawing.Color.Red;
-
                             }
                         }
 
@@ -1539,7 +1537,6 @@ namespace TP4SIM.Entidades
 
                                     // Cambiar el color a rojo.
 
-                                    Grilla.Rows[fila].Cells[indiceColumna].Style.BackColor = System.Drawing.Color.Red;
 
                                 }
                                 else
